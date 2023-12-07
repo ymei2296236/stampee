@@ -1,0 +1,36 @@
+.top-bar {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	row-gap: var(--espace-2);
+	justify-content: space-between;
+	align-items: center;
+	background-color: white;
+	padding: var(--espace-1half) var(--espace-4) var(--espace-1) var(--espace-4);
+
+	& .logo {
+		width: 12rem;
+	}
+
+	& a {
+		text-decoration: none;
+		margin-right: var(--espace-1);
+		cursor: pointer;
+		color: var(--coul-principale);
+	}
+
+	& a:hover {
+		color: var(--coul-accent);
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.top-bar {
+		justify-content: center;
+		padding: var(--espace-half);
+
+		& div {
+			display: none;
+		}
+	}
+}

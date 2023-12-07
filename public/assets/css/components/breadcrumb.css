@@ -1,0 +1,14 @@
+.breadcrumb {
+	font-family: var(--police-texte);
+	font-size: var(--texte-sm);
+	color: var(--police-texte);
+	padding: var(--espace-2);
+}
+
+/* mobile */
+
+@media screen and (max-width: 480px) {
+	.breadcrumb {
+		display: none;
+	}
+}

@@ -1,0 +1,79 @@
+.navigation {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	background-color: var(--coul-principale);
+	padding: var(--espace-1half) var(--espace-10) var(--espace-1half)
+		var(--espace-4);
+	font-family: var(--police-texte);
+	font-size: var(--texte-sm);
+	text-transform: uppercase;
+	align-items: center;
+	gap: var(--espace-1half);
+}
+
+.navigation .menu-mobile {
+	display: none;
+}
+
+.navigation ul {
+	display: flex;
+	gap: var(--espace-2);
+}
+
+.navigation a {
+	color: var(--coul-texte-clair);
+	text-decoration: none;
+}
+
+.navigation a:hover {
+	color: var(--coul-texte-clair);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.navigation__form {
+	display: flex;
+	width: 30rem;
+}
+
+.navigation__input {
+	flex: 100%;
+	border-radius: 2px 0px 0px 2px;
+	border: 2px solid var(--coul-accent);
+}
+
+.navigation__input:focus {
+	border: 2px solid var(--coul-accent);
+}
+
+@media screen and (max-width: 480px) {
+	.navigation {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		background-color: var(--coul-principale);
+		padding: var(--espace-1half);
+
+		& .aPropos {
+			display: none;
+		}
+
+		& .menu-mobile {
+			display: block;
+			color: var(--coul-accent);
+		}
+
+		& nav {
+			display: flex;
+			width: 100%;
+			justify-content: space-between;
+		}
+		& .navigation__recherche {
+			display: flex;
+			gap: var(--espace-2);
+			width: 100%;
+			align-items: center;
+		}
+	}
+}

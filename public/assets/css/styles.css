@@ -1,0 +1,25 @@
+/* import base */
+@import url(base/reset.css);
+@import url(base/base.css);
+@import url(base/couleurs.css);
+@import url(base/typographie.css);
+@import url(base/rythme.css);
+
+/* import components */
+@import url(components/breadcrumb.css);
+@import url(components/filtres.css);
+@import url(components/buttons.css);
+@import url(components/input.css);
+@import url(components/tri.css);
+
+/* import layout */
+@import url(layout/liste.css);
+@import url(layout/top-bar.css);
+@import url(layout/navigation.css);
+@import url(layout/pagination.css);
+@import url(layout/footer.css);
+
+/* import pages */
+@import url(pages/index.css);
+@import url(pages/catalogue.css);
+@import url(pages/produit.css);

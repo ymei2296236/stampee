@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Error{% endblock %}
+
+{% block body %}
+
+    <h1>Créer un profil</h1>
+
+    <form action="" method="post" novalidate>
+        <label>Utilisateur
+            <input type="text" name="username" value="{{ user.username }}"></input>
+        </label>
+        <label>Mot de passe
+            <input type="password" name="password" ></input>
+        </label>
+        <label>Privilège
+            <select name="privilege_id">
+                <option value="">Choississez un privilège</option>
+                {% for privilege in privileges %}
+                <option value="{{ privilege.id }}" {% if privilege.id == user.privilege_id %} selected {% endif %}>{{ privilege.nom }}</option>     
+                {% endfor %}
+            </select>
+        </label>
+        <div class="boutons" >
+            <input class="bouton" type="submit" value="Enregistrer">
+        </div>
+    </form>
+{% endblock %}

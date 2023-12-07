@@ -1,0 +1,11 @@
+[data-page="catalogue"] {
+	& main {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0;
+
+		& .liste {
+			padding-bottom: var(--espace-6);
+		}
+	}
+}

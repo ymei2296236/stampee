@@ -1,0 +1,34 @@
+/* Général et global*/
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	font-family: var(--police-texte);
+	font-size: var(--texte-sm);
+	font-weight: normal;
+	color: var(--coul-texte);
+}
+
+main {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--espace-2);
+}
+
+img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+/* mobile */
+
+@media screen and (max-width: 480px) {
+	main {
+		gap: var(--espace-1);
+	}
+}

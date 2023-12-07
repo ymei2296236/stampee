@@ -1,0 +1,12 @@
+:root {
+	--coul-principale: #2b4865;
+	--coul-secondaire: #256d85;
+	--coul-accent: #8fe3cf;
+	--coul-neutre: #f4f5f6;
+
+	--coul-texte: #002b5b;
+	--coul-texte-clair: #ffffff;
+	--coul-texte-accent: var(--coul-accent);
+
+	--coul-arriere-plan: var(--coul-texte-clair);
+}

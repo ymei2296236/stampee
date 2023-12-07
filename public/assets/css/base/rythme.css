@@ -1,0 +1,17 @@
+:root {
+	--espace-quart: 0.25rem;
+	--espace-3quarts: 0.75rem;
+	--espace-half: 0.5rem;
+	--espace-1: 1rem;
+	--espace-1half: 1.5rem;
+	--espace-2: 2rem;
+	--espace-3: 3rem;
+	--espace-4: 4rem;
+	--espace-5: 5rem;
+	--espace-6: 6rem;
+	--espace-8: 8rem;
+	--espace-10: 10rem;
+	--espace-12: 12rem;
+	--espace-15: 15rem;
+	--espace-22: 22rem;
+}

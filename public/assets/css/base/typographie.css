@@ -1,0 +1,81 @@
+@font-face {
+	font-family: "Pathway";
+	src: url("../../fonts/Pathway_Gothic_One/PathwayGothicOne-Regular.ttf");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Helvetica";
+	src: url("../../fonts/Helvetica/Helvetica.eot");
+	src: url("../../fonts/Helvetica/Helvetica.eot?#iefix")
+			format("embedded-opentype"),
+		url("../../fonts/Helvetica/Helvetica.woff2") format("woff2"),
+		url("../../fonts/Helvetica/Helvetica.woff") format("woff");
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Helvetica";
+	src: url("../../fonts/Helvetica/Helvetica-Bold.eot");
+	src: url("../../fonts/Helvetica/Helvetica-Bold.eot?#iefix")
+			format("embedded-opentype"),
+		url("../../fonts/Helvetica/Helvetica-Bold.woff2") format("woff2"),
+		url("../../fonts/Helvetica/Helvetica-Bold.woff") format("woff");
+	font-weight: bold;
+	font-style: normal;
+	font-display: swap;
+}
+
+:root {
+	--police-titre: "Pathway", serif;
+	--police-texte: "Helvetica", serif;
+
+	/* Échelle typographique */
+	--texte-xs: 0.875rem;
+	--texte-sm: 1rem;
+	--texte-md: 1.5rem;
+	--texte-lg: 2.25rem;
+	--texte-xl: 4rem;
+}
+
+h1 {
+	font-family: var(--police-titre);
+	font-size: var(--texte-xl);
+	color: var(--coul-texte);
+	margin-top: var(--espace-1);
+}
+
+h2 {
+	font-family: var(--police-titre);
+	font-size: var(--texte-lg);
+	color: var(--coul-texte);
+	margin-bottom: var(--espace-1);
+	line-height: 100%;
+}
+
+h3 {
+	font-family: var(--police-texte);
+	font-size: var(--texte-sm);
+	font-weight: bold;
+	color: var(--coul-texte);
+	line-height: 150%;
+}
+
+p {
+	font-family: var(--police-texte);
+	font-size: var(--texte-sm);
+	font-weight: normal;
+	color: var(--coul-texte);
+	line-height: 150%;
+}
+
+.note {
+	font-family: var(--police-texte);
+	font-size: var(--texte-xs);
+	color: var(--coul-texte);
+	line-height: 120%;
+}

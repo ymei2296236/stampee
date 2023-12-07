@@ -1,0 +1,128 @@
+.liste {
+	flex: 1 1 auto;
+	flex: calc(80%);
+	display: flex;
+	flex-direction: column;
+	padding: var(--espace-1) var(--espace-4) var(--espace-1) var(--espace-4);
+	color: var(--coul-texte);
+}
+
+.liste__contenu {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--espace-1);
+	justify-content: space-between;
+}
+
+.item {
+	flex: calc(25% - var(--espace-1));
+	border: 0.5px solid var(--coul-principale);
+	cursor: pointer;
+}
+
+.item:hover {
+	box-shadow: 0px 0px 5px 5px var(--coul-neutre);
+}
+
+.item__coups-de-coeur {
+	height: 37px;
+	padding: var(--espace-quart) var(--espace-2);
+}
+
+.item__coups-de-coeur--yes {
+	display: flex;
+	gap: var(--espace-half);
+	background-color: var(--coul-accent);
+	justify-content: center;
+	align-items: center;
+}
+
+.item__contenu {
+	display: flex;
+	flex-direction: column;
+	gap: var(--espace-1);
+	padding: var(--espace-3quarts);
+	padding-top: 0;
+}
+
+.item__img {
+	background-color: var(--coul-neutre);
+	display: flex;
+	justify-content: center;
+	height: auto;
+	padding: var(--espace-half);
+}
+
+.item__img > img {
+	max-width: 100%;
+	max-height: 160px;
+	width: auto;
+	height: auto;
+}
+
+.item__description {
+	text-align: center;
+}
+
+.prix {
+	text-align: center;
+}
+
+.prix__description {
+	text-align: center;
+	font-size: var(--texte-xs);
+}
+
+.prix__description--termine,
+.prix__montant--termine {
+	color: var(--coul-secondaire);
+}
+
+.prix__montant {
+	font-size: var(--texte-lg);
+	font-family: var(--police-titre);
+	line-height: 100%;
+}
+
+.prix_decimal {
+	font-size: var(--texte-md);
+}
+
+.item__lien {
+	text-decoration: none;
+}
+
+.item__btn {
+	width: 100%;
+}
+
+.item__btn--termine {
+	display: none;
+}
+
+.item__termine {
+	display: flex;
+	height: 40px;
+	gap: var(--espace-half);
+	justify-content: center;
+	align-items: center;
+}
+
+/* tablette */
+@media screen and (max-width: 768px) {
+	.item {
+		flex-basis: calc(50% - var(--espace-1));
+	}
+}
+
+/* mobile en portrait */
+
+@media screen and (max-width: 480px) {
+	.liste {
+		padding: var(--espace-1);
+	}
+
+	.item {
+		flex-basis: 100%;
+	}
+}

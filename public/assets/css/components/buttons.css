@@ -1,0 +1,70 @@
+.btn {
+	padding: var(--espace-half) var(--espace-1half);
+	font-family: var(--police-texte);
+	font-size: var(--texte-sm);
+	line-height: 150%;
+	text-align: center;
+	border-radius: 2px;
+	cursor: pointer;
+	border: none;
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.btn--principal {
+	background-color: var(--coul-principale);
+	border: 1px solid var(--coul-principale);
+	color: var(--coul-texte-clair);
+}
+.btn--principal:hover {
+	background-color: var(--coul-secondaire);
+	border: 1px solid var(--coul-secondaire);
+	color: var(--coul-texte-clair);
+}
+
+.btn--secondaire {
+	background-color: var(--coul-arriere-plan);
+	border: 1px solid var(--coul-principale);
+	color: var(--coul-texte);
+}
+
+.btn--secondaire:hover {
+	background-color: var(--coul-secondaire);
+	border: 1px solid var(--coul-secondaire);
+	color: var(--coul-texte-clair);
+}
+
+.btn--icon-text {
+	display: flex;
+	height: 40px;
+	gap: var(--espace-half);
+	justify-content: center;
+	align-items: center;
+	padding: 0;
+	font-size: var(--texte-xs);
+	color: var(--coul-texte);
+}
+
+.btn--icon-text:hover {
+	color: var(--coul-accent);
+
+	& p {
+		color: var(--coul-accent);
+	}
+}
+
+.btn--icon {
+	border-radius: 0px 2px 2px 0px;
+}
+
+.btn--banner {
+	margin-top: var(--espace-1);
+	background-color: var(--coul-accent);
+	color: var(--coul-texte);
+	padding: var(--espace-3quarts) var(--espace-1half);
+	font-weight: bold;
+	border-radius: 4px;
+}
+
+.btn--banner:hover {
+	background-color: var(--coul-arriere-plan);
+}

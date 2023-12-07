@@ -1,0 +1,108 @@
+fieldset {
+	display: flex;
+	flex-wrap: wrap;
+	font-family: var(--police-texte);
+	font-size: var(--texte-xs);
+	color: var(--coul-texte);
+	margin-top: var(--espace-half);
+	padding: var(--espace-half) var(--espace-1);
+}
+
+input[type="text"],
+input[type="number"] {
+	padding: 0.5rem 0.75rem;
+	font-family: var(--police-texte);
+	line-height: 150%;
+	color: var(--coul-texte);
+	height: 3rem;
+	border: 1px solid var(--coul-principale);
+	outline-offset: -1px;
+	font-size: var(--texte-sm);
+}
+
+input[type="text"]::placeholder {
+	color: var(--coul-secondaire);
+	font-family: var(--police-texte);
+	font-size: var(--texte-sm);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+	outline: none;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+	opacity: 0;
+	width: 0;
+	margin: 0;
+}
+
+input[type="checkbox"] + label,
+input[type="radio"] + label {
+	padding: var(--espace-half) var(--espace-1);
+	border-radius: 50px;
+	border: 2px solid var(--coul-arriere-plan);
+	margin-right: var(--espace-half);
+	margin-top: var(--espace-half);
+	transition: all 160ms ease-in-out;
+	cursor: pointer;
+	background-color: var(--coul-arriere-plan);
+}
+
+input[type="radio"] + label {
+	padding: var(--espace-half) var(--espace-quart);
+}
+
+input[type="checkbox"]:checked + label {
+	border: 2px solid var(--coul-accent);
+}
+
+input[type="radio"]:checked + label {
+	color: var(--coul-secondaire);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+select {
+	padding: var(--espace-half);
+	border-radius: 2px;
+	border: 1px solid var(--coul-principale);
+	outline: 1px solid transparent;
+	background: var(--coul-arriere-plan);
+}
+
+select:focus {
+	border: 1px solid var(--coul-accent);
+	outline: 1px solid var(--coul-accent);
+}
+
+legend,
+.labelBold {
+	flex: 100%;
+	font-weight: bold;
+	font-family: var(--police-texte);
+	font-size: var(--texte-xs);
+	font-weight: bold;
+	padding-top: var(--espace-half);
+	padding-bottom: var(--espace-half);
+	display: inline;
+	float: left;
+}
+
+legend > select,
+.labelBold > select {
+	float: left;
+	display: inline;
+}
+
+.legend-inline {
+	flex-wrap: nowrap;
+}
+
+@media screen and (max-width: 480px) {
+	input[type="radio"] + label {
+		padding: var(--espace-half) var(--espace-1) var(--espace-3)
+			var(--espace-1);
+	}
+}
