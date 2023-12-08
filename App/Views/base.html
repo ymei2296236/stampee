@@ -8,16 +8,16 @@
 <body>
     <header>
         <div class="top-bar">
-            <span class="logo"><img src="assets/img/svg/logo.svg" alt="logo du site"></span>
+            <span class="logo"><img src="{{url_racine}}assets/img/svg/logo.svg" alt="logo du site"></span>
             <div>
-                <a href="#">English</a>
+                <a href="#" class="lien">English</a>
                 {% if guest %}
 
-                <button aria-label="Se connecter" class="btn btn--secondaire">Se connecter</button>
-                <button aria-label="Devenir membre" class="btn btn--principal">Devenir membre</button>
+                <a href="{{url_racine}}login/index" aria-label="Se connecter" class="btn btn--secondaire">Se connecter</a>
+                <a href="{{url_racine}}usager/create" aria-label="Devenir membre" class="btn btn--principal">Devenir membre</a>
                 {% else %}
-                <button aria-label="Se déconnecter" class="btn btn--secondaire">Se déconnecter</button>
-                <a href="#">{{usager.id}}</a>
+                <a href="{{url_racine}}login/logout" aria-label="Se déconnecter" class="btn btn--secondaire">Se déconnecter</a>
+                <a href="#" class="profil">{{usager.id}}</a>
                 {% endif %}
 
             </div>

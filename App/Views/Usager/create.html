@@ -3,22 +3,24 @@
 {% block title %}Créer un profil{% endblock %}
 
 {% block body %}
-
+<main class="formulaire">
     <h1>Créer un profil</h1>
-
-    <form action="store" method="post" novalidate>
-        <label>Utilisateur
-            <input type="text" name="id"></input>
-        </label>
-        <label>Mot de passe
-            <input type="password" name="password" ></input>
-        </label>
-        <label>Alias
-            <input type="text" name="alias" ></input>
-        </label>
+    {% if errors is defined %}
+    <span class="msg-error">{{ errors | raw }}</span>
+    {% endif %}
+    <form class="formulaire__form" action="store" method="post" novalidate>
+        <label for="id">Utilisateur</label>
+        <input type="text" id="id" name="id" value="{{usager}}"></input>  
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="password" ></input>      
+        <label for="alias" >Alias</label>
+        <input type="text" id="alia" name="alias" ></input>
         <input type="hidden" name="privilege_id" value="2"> 
-        <div class="boutons" >
-            <input class="bouton" type="submit" value="Enregistrer">
-        </div>
+        <button type="submit" class="btn btn--principal" aria-label="Enregistrer">
+            Enregistrer
+        </button>
+
     </form>
+</main>
+
 {% endblock %}

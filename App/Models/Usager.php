@@ -14,6 +14,21 @@ class Usager extends CRUD
 
     // login authentication
 
+    public function checkDuplicate($id) 
+    {
+        $db = static::getDB();
+
+        $sql = "SELECT * FROM $this->table WHERE id = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($id));
+        $count = $stmt->rowCount();
+
+        if($count === 1) {
+            $error = "<ul><li>L'utilisateur {$id}déjà existe.</li></ul>";
+            return $error;
+        }
+    }
+
     public function checkUser($id, $password) 
     {
         $db = static::getDB();

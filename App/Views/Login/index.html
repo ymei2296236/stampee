@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Se connecter{% endblock %}
+
+{% block body %}
+<main class="formulaire">
+    <h1>Se connecter</h1>
+    {% if errors is defined %}
+    <span class="msg-error">{{ errors | raw }}</span>
+    {% endif %}
+    <form class="formulaire__form" action="auth" method="post">
+        <label for="id">Utilisateur</label>
+        <input id="id" type="text" name="id" value="{{ user.id }}"></input>
+        <label for="password" >Mot de passe</label>
+        <input id="password" type="password" name="password" ></input>
+        <button type="submit" class="btn btn--principal" aria-label="Enregistrer">
+            Enregistrer
+        </button>
+    </form>
+</main>
+
+{% endblock %}

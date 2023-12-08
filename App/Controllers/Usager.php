@@ -25,7 +25,7 @@ class Usager extends \Core\Controller
 
     public function storeAction()
     {
-        print_r($_POST);
+        // print_r($_POST);
         if(isset($_POST['id'], $_POST['password'] ))
         {
             if($_POST['id'] != '' && $_POST['password'] != '') 
@@ -34,6 +34,15 @@ class Usager extends \Core\Controller
             extract($_POST);
 
             $usager = new \App\Models\Usager;
+            $checkUser = $usager->checkDuplicate($_POST['id']);
+            
+            if ($checkUser)
+            {
+                View::renderTemplate('Usager/create.html', ['errors'=>$checkUser, 'usager'=>$_POST['id']]);
+                exit();
+
+            }
+
             $options = ['cost' => 10];
             $salt = "!dL$*u";
             $passwordSalt = $_POST['password'].$salt;

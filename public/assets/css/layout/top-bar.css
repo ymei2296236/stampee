@@ -11,16 +11,23 @@
 	& .logo {
 		width: 12rem;
 	}
-
 	& a {
+		text-decoration: none;
+	}
+	& .lien {
 		text-decoration: none;
 		margin-right: var(--espace-1);
 		cursor: pointer;
 		color: var(--coul-principale);
 	}
 
-	& a:hover {
+	& .lien:hover {
 		color: var(--coul-accent);
+	}
+
+	& .profil {
+		margin-left: var(--espace-2);
+		color: var(--coul-secondaire);
 	}
 }
 

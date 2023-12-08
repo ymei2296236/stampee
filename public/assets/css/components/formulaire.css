@@ -1,0 +1,21 @@
+.formulaire {
+	display: flex;
+	flex-direction: column;
+	gap: var(--espace-1);
+	margin: auto;
+
+	& * {
+		flex: 1;
+	}
+
+	& .formulaire__form {
+		display: flex;
+		flex-direction: column;
+		gap: var(--espace-1);
+		margin-top: var(--espace-2);
+	}
+
+	& .msg-error {
+		color: var(--coul-texte-erreur);
+	}
+}

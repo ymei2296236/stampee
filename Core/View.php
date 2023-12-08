@@ -48,6 +48,13 @@ class View
             $twig = new \Twig\Environment($loader);
         }
 
+        if(isset($_SESSION['fingerPrint']) && $_SESSION['fingerPrint'] === md5($_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']))
+            $guest = false;
+        else 
+            $guest = true;
+        
+        $twig->addGlobal('guest', $guest);   
+        $twig->addGlobal('session', $_SESSION);   
         $twig->addGlobal('url_racine', \App\Config::URL_RACINE);
         // $twig->addGlobal('path', \App\Config::PATH_DIR);
         

@@ -30,7 +30,7 @@ class Login extends \Core\Controller
         }
 
 
-        View::renderTemplate('Auth/index.html');
+        View::renderTemplate('Login/index.html');
     }
 
     public function authAction()
@@ -44,7 +44,7 @@ class Login extends \Core\Controller
 
         if(!$validation->isSuccess()) {
             $errors = $validation->displayErrors();
-            View::renderTemplate('Auth/index.html', ['errors'=>$errors, 'user'=>$_POST]);
+            View::renderTemplate('Login/index.html', ['errors'=>$errors, 'user'=>$_POST]);
             exit();
         }
 
@@ -56,7 +56,7 @@ class Login extends \Core\Controller
             $checkUser = $usager->checkUser($_POST['id'], $_POST['password']);
 
             print_r($checkUser);
-            View::renderTemplate('Auth/index.html', ['errors'=>$checkUser, 'user'=>$_POST]);
+            View::renderTemplate('Login/index.html', ['errors'=>$checkUser, 'user'=>$_POST]);
 
 
         //     }
@@ -68,6 +68,6 @@ class Login extends \Core\Controller
     public function logout()
     {
         session_destroy();
-        View::renderTemplate('Auth/index.html');
-    }
+        header("location:/stampee/public/index.php");
+        exit();    }
 }
