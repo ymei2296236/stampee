@@ -49,8 +49,8 @@ class View
         }
 
         $twig->addGlobal('url_racine', \App\Config::URL_RACINE);
+        // $twig->addGlobal('path', \App\Config::PATH_DIR);
         
-        $twig->addGlobal('path', PATH_DIR);   
 
         echo $twig->render($template, $args);
     }

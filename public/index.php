@@ -1,6 +1,6 @@
 <?php
 
-define('PATH_DIR', 'http://localhost:8888/stampee/');
+session_start();
 
 /**
  * Front controller
@@ -34,4 +34,3 @@ $router->add('{controller}/{action}/{id:\d+}');
 
 $router->dispatch($_SERVER['QUERY_STRING']);
 
-print_r($router->getParams());

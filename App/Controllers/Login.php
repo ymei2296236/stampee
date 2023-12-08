@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Controllers;
 
 use \Core\View;
@@ -18,34 +19,55 @@ class Login extends \Core\Controller
      * @return void
      */
     public function indexAction()
-    {
-        View::renderTemplate('Auth/index.html');
+    { 
+        \App\Library\CheckSession::sessionAuth(TRUE);
+        
+        if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') 
+        {
+            $usager_id = $_SESSION['user_id'];
+            $usager = new \App\Models\Usager;
+            $select = $usager->selectId($usager_id);
+        }
 
+
+        View::renderTemplate('Auth/index.html');
     }
 
-    public function auth()
+    public function authAction()
     {
-        // CheckSession::sessionAuth(TRUE);
+        \App\Library\CheckSession::sessionAuth(TRUE);
 
-        // $validation = new Validation;
-        // extract($_POST);
-        // $validation->name('Utilisateur')->value($username)->max(50)->required()->pattern('email');
-        // $validation->name('Mot de passe')->value($password)->max(20)->min(5);
+        $validation = new \App\Library\Validation;
+        extract($_POST);
+        $validation->name('Utilisateur')->value($id)->max(50)->required()->pattern('email');
+        $validation->name('Mot de passe')->value($password)->max(20)->min(5);
 
-        // if(!$validation->isSuccess()) {
-        //     $errors = $validation->displayErrors();
-        //     return Twig::render('auth/index.php', ['errors'=>$errors, 'user'=>$_POST]);
-        //     exit();
+        if(!$validation->isSuccess()) {
+            $errors = $validation->displayErrors();
+            View::renderTemplate('Auth/index.html', ['errors'=>$errors, 'user'=>$_POST]);
+            exit();
+        }
+
+        // if(isset($_POST['id'], $_POST['password'] ))
+        // {
+        //     if($_POST['id'] != '' && $_POST['password'] != '') 
+        //     {
+            $usager = new \App\Models\Usager;
+            $checkUser = $usager->checkUser($_POST['id'], $_POST['password']);
+
+            print_r($checkUser);
+            View::renderTemplate('Auth/index.html', ['errors'=>$checkUser, 'user'=>$_POST]);
+
+
+        //     }
         // }
-        $usager = new Usager;
-        $checkUser = $usager->checkUser($_POST['username'], $_POST['password']);
 
-        Twig::render('auth/index.php', ['errors'=>$checkUser, 'usager'=>$_POST]);    
+   
     }
 
     public function logout()
     {
-        // session_destroy();
-        // RequirePage::url('login');
+        session_destroy();
+        View::renderTemplate('Auth/index.html');
     }
 }

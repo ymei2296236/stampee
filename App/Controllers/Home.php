@@ -19,6 +19,19 @@ class Home extends \Core\Controller
      */
     public function indexAction()
     {
-        View::renderTemplate('Home/index.html');
+        // \App\Library\CheckSession::sessionAuth(TRUE);
+
+        if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') 
+        {
+            $usager_id = $_SESSION['user_id'];
+            $usager = new \App\Models\Usager;
+            $select = $usager->selectId($usager_id);
+        }
+        else
+        {
+            $select = '';
+        }
+
+        View::renderTemplate('Home/index.html', ['usager'=>$select]);
     }
 }

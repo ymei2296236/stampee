@@ -28,7 +28,7 @@ abstract class CRUD extends \Core\Model
         $db = static::getDB();
 
         $sql="SELECT * FROM $this->table WHERE $this->primaryKey = '$value'";
-        $stmt = $this->query($sql);
+        $stmt = $db->query($sql);
         $count = $stmt->rowCount();
 
         if($count == 1) return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -37,6 +37,8 @@ abstract class CRUD extends \Core\Model
 
     public function insert($data)
     {
+        $db = static::getDB();
+
         $data_keys = array_fill_keys($this->fillable, '');
         $data = array_intersect_key($data, $data_keys);
 
@@ -52,7 +54,7 @@ abstract class CRUD extends \Core\Model
         }
         $stmt->execute();
 
-        return $this->lastInsertId();
+        return $db->lastInsertId();
     }
 
     public function delete($value)

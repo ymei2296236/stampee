@@ -1,18 +1,26 @@
 <?php
 
+namespace App\Models;
+
+use PDO;
+
+use Model;
+
 class Usager extends CRUD 
 {
     protected $table = 'usager';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'nom_usager', 'password', 'alias', 'privilege_id'];
+    protected $fillable = ['id', 'password', 'alias', 'privilege_id'];
 
     // login authentication
 
-    public function checkUser($username, $password) 
+    public function checkUser($id, $password) 
     {
-        $sql = "SELECT * FROM $this->table WHERE username = ?";
-        $stmt = $this->prepare($sql);
-        $stmt->execute(array($username));
+        $db = static::getDB();
+
+        $sql = "SELECT * FROM $this->table WHERE id = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array($id));
         $count = $stmt->rowCount();
 
         if($count === 1) {
@@ -24,11 +32,10 @@ class Usager extends CRUD
             {
                 session_regenerate_id();
                 $_SESSION['user_id'] = $info_user['id'];
-                $_SESSION['username'] = $info_user['username'];
                 $_SESSION['privilege'] = $info_user['privilege_id'];
                 $_SESSION['fingerPrint'] = md5($_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']);
 
-                RequirePage::url('role');
+                header('location:'.\App\Config::URL_RACINE);
                 exit();
             }
             else

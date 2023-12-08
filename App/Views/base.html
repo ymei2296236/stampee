@@ -3,9 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{path}}public/assets/css/styles.css">
+    <link rel="stylesheet" href="{{url_racine}}assets/css/styles.css">
 </head>
 <body>
+    <header>
+        <div class="top-bar">
+            <span class="logo"><img src="assets/img/svg/logo.svg" alt="logo du site"></span>
+            <div>
+                <a href="#">English</a>
+                {% if guest %}
+
+                <button aria-label="Se connecter" class="btn btn--secondaire">Se connecter</button>
+                <button aria-label="Devenir membre" class="btn btn--principal">Devenir membre</button>
+                {% else %}
+                <button aria-label="Se déconnecter" class="btn btn--secondaire">Se déconnecter</button>
+                <a href="#">{{usager.id}}</a>
+                {% endif %}
+
+            </div>
+        </div>
+        <div class="navigation">
+            <nav>
+                <span class="menu-mobile"><i class="fa-solid fa-arrow-left fa-lg"></i></span>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="catalogue.html">Catalogue</a></li>
+                    <li class="aPropos"><a href="#">À propos</a></li>
+                </ul>
+                <span class="menu-mobile"><i class="fa-solid fa-bars fa-lg"></i></span>
+            </nav>
+            <div class="navigation__recherche">
+                <form class="navigation__form">
+                    <label for="rechercher"></label>
+                    <input class="navigation__input" type="text" placeholder="Rechercher" id="rechercher" name="rechercher">
+                    <button  aria-label="Rechercher" type="submit" class="btn btn--principal btn--icon"><i class="icon-recherche fa-solid fa-magnifying-glass"></i></button>
+                </form>
+            </div>
+
+        </div>
+        <div class="breadcrumb">
+            <span class="note btn btn--tertiaire">Accueil </span> / <span class="note btn btn--tertiaire"> Catalogue</span> / <span class="note btn btn--tertiaire"> Willie O’Ree : Carnet de 6 timbres PermanentsMC au tarif du régime intérieur </span>
+        </div>
+    </header>
     {% block body %}
     {% endblock %}
 </body>
