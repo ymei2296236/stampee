@@ -5,16 +5,22 @@
 {% block body %}
 <main class="formulaire">
     <h1>Créer un profil</h1>
+    <ul class="msg-error">
     {% if errors is defined %}
-    <span class="msg-error">{{ errors | raw }}</span>
+        <li>{{ errors | raw }}</li>
     {% endif %}
+    {% if msg %}
+        <li>{{ msg }}</li>
+    {% endif %}
+    </ul>
+    
     <form class="formulaire__form" action="store" method="post" novalidate>
         <label for="id">Utilisateur</label>
         <input type="text" id="id" name="id" value="{{usager}}"></input>  
         <label for="password">Mot de passe</label>
         <input type="password" id="password" name="password" ></input>      
         <label for="alias" >Alias</label>
-        <input type="text" id="alia" name="alias" ></input>
+        <input type="text" id="alia" name="alias" value="{{alias}}"></input>
         <input type="hidden" name="privilege_id" value="2"> 
         <button type="submit" class="btn btn--principal" aria-label="Enregistrer">
             Enregistrer

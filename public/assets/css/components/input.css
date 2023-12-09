@@ -12,9 +12,9 @@ input[type="text"],
 input[type="number"],
 input[type="password"],
 input[type="date"] {
-	padding: 0.5rem 0.75rem;
+	padding: var(--espace-half);
 	font-family: var(--police-texte);
-	line-height: 150%;
+	/* line-height: 150%; */
 	color: var(--coul-texte);
 	height: 3rem;
 	border: 1px solid var(--coul-principale);
@@ -67,11 +67,12 @@ input[type="radio"]:checked + label {
 }
 
 select {
-	padding: var(--espace-half);
+	padding: var(--espace-3quarts);
 	border-radius: 2px;
 	border: 1px solid var(--coul-principale);
 	outline: 1px solid transparent;
 	background: var(--coul-arriere-plan);
+	text-transform: capitalize;
 }
 
 select:focus {
@@ -100,6 +101,12 @@ legend > select,
 
 .legend-inline {
 	flex-wrap: nowrap;
+}
+
+.placeholder {
+	color: var(--coul-secondaire);
+	background-color: red;
+	text-transform: uppercase;
 }
 
 @media screen and (max-width: 480px) {

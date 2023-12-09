@@ -6,13 +6,13 @@
 <main class="formulaire">
     <h1>Ajouter un timbre</h1>
     <ul class="msg-error">
-        {% if errors is defined %}
-            <li>{{ errors | raw }}</li>
-        {% endif %}
-        {% if msg %}
-            <li>{{ msg }}</li>
-        {% endif %}
-        </ul>
+    {% if errors is defined %}
+        <li>{{ errors | raw }}</li>
+    {% endif %}
+    {% if msg %}
+        <li>{{ msg }}</li>
+    {% endif %}
+    </ul>
 
     <form class="formulaire__form" enctype="multipart/form-data" action="storeTimbre" method="post" novalidate>
         <input type="hidden" name="createur_id" value="{{session.user_id}}"> 
@@ -25,7 +25,7 @@
 
         <label for="etat">État <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <select name="etat_id" id="etat">
-            <option value="">Faire un choix</option>
+            <option value="" style="color:gray">Faire un choix</option>
             {% for etat in etats %}
             <option value="{{etat.id}}" {% if etat.id == timbre.etat_id %} selected {% endif %}>{{etat.nom}}</option>
             {% endfor %}
@@ -33,7 +33,7 @@
 
         <label for="dimension">Dimension <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <select name="dimension_id" id="dimension">
-            <option value="">Faire un choix</option>
+            <option value="" style="color:gray">Faire un choix</option>
             {% for dimension in dimensions %}
             <option value="{{dimension.id}}" {% if dimension.id == timbre.dimension_id %} selected {% endif %}>{{dimension.nom}}</option>
             {% endfor %}
@@ -41,7 +41,7 @@
 
         <label for="pays">Pays <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <select name="pays_id" id="pays">
-            <option value="">Faire un choix</option>
+            <option value="" style="color:gray">Faire un choix</option>
             {% for pays in tousPays %}
             <option value="{{pays.id}}" {% if pays.id == timbre.pays_id %} selected {% endif %}>{{pays.nom}}</option>
             {% endfor %}

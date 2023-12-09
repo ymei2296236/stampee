@@ -5,6 +5,11 @@
 	margin: var(--espace-5) auto var(--espace-10);
 	background-color: var(--coul-neutre);
 	padding: var(--espace-4);
+	width: 28rem;
+
+	& h1 {
+		text-align: center;
+	}
 
 	& * {
 		flex: 1;
