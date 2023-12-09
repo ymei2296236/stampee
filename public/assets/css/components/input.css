@@ -10,7 +10,8 @@ fieldset {
 
 input[type="text"],
 input[type="number"],
-input[type="password"] {
+input[type="password"],
+input[type="date"] {
 	padding: 0.5rem 0.75rem;
 	font-family: var(--police-texte);
 	line-height: 150%;

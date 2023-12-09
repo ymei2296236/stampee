@@ -5,7 +5,7 @@ namespace App\Controllers;
 use \Core\View;
 
 /**
- * Home controller
+ * Usager controller
  *
  * PHP version 7.0
  */

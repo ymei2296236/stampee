@@ -2,7 +2,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: var(--espace-1);
-	margin: auto;
+	margin: var(--espace-5) auto var(--espace-10);
 
 	& * {
 		flex: 1;
@@ -17,5 +17,16 @@
 
 	& .msg-error {
 		color: var(--coul-texte-erreur);
+	}
+
+	& input[type="checkbox"] {
+		opacity: 1;
+		width: var(--espace-2);
+		border: 2px solid var(--coul-principale);
+		margin: var(--espace-1) 0;
+	}
+
+	& button {
+		margin-top: var(--espace-1);
 	}
 }

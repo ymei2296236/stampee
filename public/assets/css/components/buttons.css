@@ -8,6 +8,7 @@
 	cursor: pointer;
 	border: none;
 	background-color: rgba(0, 0, 0, 0);
+	text-decoration: none;
 }
 
 .btn--principal {

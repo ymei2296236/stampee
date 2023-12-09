@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Ajouter un timbre{% endblock %}
+
+{% block body %}
+<main class="formulaire">
+    <h1>Ajouter un timbre</h1>
+    {% if errors is defined %}
+    <span class="msg-error">{{ errors | raw }}</span>
+    {% endif %}
+    <form class="formulaire__form" enctype="multipart/form-data" action="storeTimbre" method="post" novalidate>
+        <input type="hidden" name="createur_id" value="{{session.user_id}}"> 
+
+        <label for="nom">Nom <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
+        <input type="text" id="nom" name="nom" value="{{timbre.nom}}"></input>  
+
+        <label for="description">Description</label>
+        <input type="text" id="description" name="description" value="{{timbre.description}}"></input>  
+
+        <label for="etat">État <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
+        <select name="etat_id" id="etat">
+            <option value="">Faire un choix</option>
+            {% for etat in etats %}
+            <option value="{{etat.id}}" {% if etat.id == timbre.etat_id %} selected {% endif %}>{{etat.nom}}</option>
+            {% endfor %}
+        </select>
+
+        <label for="dimension">Dimension <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
+        <select name="dimension_id" id="dimension">
+            <option value="">Faire un choix</option>
+            {% for dimension in dimensions %}
+            <option value="{{dimension.id}}" {% if dimension.id == timbre.dimension_id %} selected {% endif %}>{{dimension.nom}}</option>
+            {% endfor %}
+        </select>
+
+        <label for="pays">Pays <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
+        <select name="pays_id" id="pays">
+            <option value="">Faire un choix</option>
+            {% for pays in tousPays %}
+            <option value="{{pays.id}}" {% if pays.id == timbre.pays_id %} selected {% endif %}>{{pays.nom}}</option>
+            {% endfor %}
+        </select>
+
+        <label for="certification">Certifié ?
+        <input type="checkbox" id="certification" name="certification" value="1" {% if certification == timbre.certification %} selected {% endif %}></input>  
+        </label>
+
+        <label for="date_emission">Date d'émission</label>
+        <input type="date" id="date_emission" name="date_emission" value="2023-01-01"></input>  
+
+
+        <label for="couleur">En couleur ?
+        <input type="checkbox" id="couleur" name="couleur" value="1" {% if couleur == timbre.couleur %} selected {% endif %}></input>  
+        </label>
+    
+
+        <label for="tirage">Tirage</label>
+        <input type="number" id="tirage" name="tirage" value="0"></input>  
+        
+        <label for="extrait">Extrait</label>
+        <input type="text" id="extrait" name="extrait" value="{{timbre.extrait}}"></input>  
+        
+        <label for="image0" > Téléverser l'image principale <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
+        <input type="file" id="image0" name="image0"/></input> 
+
+        <label for="image1" > Téléverser l'image supplémentaire 1</label>
+        <input type="file" id="image1" name="image1"/></input> 
+        
+
+        <button type="submit" class="btn btn--principal" name="upload" aria-label="Enregistrer">
+            Enregistrer
+        </button>
+
+    </form>
+</main>
+
+{% endblock %}

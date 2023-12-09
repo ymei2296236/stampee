@@ -6,7 +6,7 @@ namespace App\Controllers;
 use \Core\View;
 
 /**
- * Contact controller
+ * Login controller
  *
  * PHP version 7.0
  */
@@ -21,14 +21,6 @@ class Login extends \Core\Controller
     public function indexAction()
     { 
         \App\Library\CheckSession::sessionAuth(TRUE);
-        
-        if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != '') 
-        {
-            $usager_id = $_SESSION['user_id'];
-            $usager = new \App\Models\Usager;
-            $select = $usager->selectId($usager_id);
-        }
-
 
         View::renderTemplate('Login/index.html');
     }
@@ -48,21 +40,12 @@ class Login extends \Core\Controller
             exit();
         }
 
-        // if(isset($_POST['id'], $_POST['password'] ))
-        // {
-        //     if($_POST['id'] != '' && $_POST['password'] != '') 
-        //     {
-            $usager = new \App\Models\Usager;
-            $checkUser = $usager->checkUser($_POST['id'], $_POST['password']);
+        $usager = new \App\Models\Usager;
+        $checkUser = $usager->checkUser($_POST['id'], $_POST['password']);
 
-            print_r($checkUser);
-            View::renderTemplate('Login/index.html', ['errors'=>$checkUser, 'user'=>$_POST]);
+        print_r($checkUser);
+        View::renderTemplate('Login/index.html', ['errors'=>$checkUser, 'user'=>$_POST]);
 
-
-        //     }
-        // }
-
-   
     }
 
     public function logout()
