@@ -5,17 +5,23 @@
 {% block body %}
 <main class="formulaire">
     <h1>Ajouter un timbre</h1>
-    {% if errors is defined %}
-    <span class="msg-error">{{ errors | raw }}</span>
-    {% endif %}
+    <ul class="msg-error">
+        {% if errors is defined %}
+            <li>{{ errors | raw }}</li>
+        {% endif %}
+        {% if msg %}
+            <li>{{ msg }}</li>
+        {% endif %}
+        </ul>
+
     <form class="formulaire__form" enctype="multipart/form-data" action="storeTimbre" method="post" novalidate>
         <input type="hidden" name="createur_id" value="{{session.user_id}}"> 
 
         <label for="nom">Nom <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <input type="text" id="nom" name="nom" value="{{timbre.nom}}"></input>  
 
-        <label for="description">Description</label>
-        <input type="text" id="description" name="description" value="{{timbre.description}}"></input>  
+        <label for="nom_2">Description</label>
+        <input type="text" id="nom_2" name="nom_2" value="{{timbre.nom_2}}"></input>  
 
         <label for="etat">État <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <select name="etat_id" id="etat">
@@ -42,20 +48,20 @@
         </select>
 
         <label for="certification">Certifié ?
-        <input type="checkbox" id="certification" name="certification" value="1" {% if certification == timbre.certification %} selected {% endif %}></input>  
+        <input type="checkbox" id="certification" name="certification" value="1" {% if timbre.certification %} checked {% endif %} ></input>  
         </label>
 
         <label for="date_emission">Date d'émission</label>
-        <input type="date" id="date_emission" name="date_emission" value="2023-01-01"></input>  
+        <input type="date" id="date_emission" name="date_emission" {% if timbre.date_emission %} value="{{timbre.date_emission}}" {% else %} value="2001-01-01" {% endif %} ></input>  
 
 
         <label for="couleur">En couleur ?
-        <input type="checkbox" id="couleur" name="couleur" value="1" {% if couleur == timbre.couleur %} selected {% endif %}></input>  
+        <input type="checkbox" id="couleur" name="couleur" value="1" {% if timbre.couleur %} checked {% endif %} ></input>  
         </label>
     
 
         <label for="tirage">Tirage</label>
-        <input type="number" id="tirage" name="tirage" value="0"></input>  
+        <input type="number" id="tirage" name="tirage" {% if timbre.tirage %} value="{{timbre.tirage}}" {% else %}value="0" {% endif %}> </input>  
         
         <label for="extrait">Extrait</label>
         <input type="text" id="extrait" name="extrait" value="{{timbre.extrait}}"></input>  
