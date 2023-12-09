@@ -43,13 +43,7 @@ class Profil extends \Core\Controller
         
         // echo "<pre>";
         // print_r($_POST);
-
-        if (isset($_POST['upload']))
-        {
-            $_POST['image0'] = $_FILES["image0"]["name"];
-            $_POST['image1'] = $_FILES["image1"]["name"];
-        }
-
+        
         $validation = new \App\Library\Validation;
  
         $validation->name('Nom')->value($nom)->max(100)->min(2);
@@ -58,26 +52,11 @@ class Profil extends \Core\Controller
         $validation->name('Dimension')->value($dimension_id)->required();
         $validation->name('Pays')->value($pays_id)->required();
         $validation->name('Extrait')->value($extrait)->max(225);
+        $validation->name('Image')->value($upload)->required();
         // $validation->name('Tirage')->value($tirage)->pattern('int');
-        // $validation->name('Image')->value($image0)->required();
 
         $msg = '';
 
-        // validatoin du fichier à téléverser
-        // if ($image0) 
-        // {
-        //     $checkImg = getimagesize($_FILES["image0"]["tmp_name"]);
-        //     $imageFileType = strtolower(pathinfo("uploads/" . basename($_POST['image0']), PATHINFO_EXTENSION));
-
-        //     if($checkImg == false)  
-        //         $msg = "Le fichier téléversé n'est pas une image.";
-
-        //     if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") 
-        //         $msg = "Seuls les fichiers JPG, JPEG, PNG sont autorisés.";
-
-        //     if($_FILES["image0"]["size"]> 120000)
-        //         $msg = "Le fichier téléversé dépasse la taille maximale de 120ko.";
-        // }
 
         $etat = new \App\Models\Etat;
         $etats = $etat->select('nom');
@@ -88,7 +67,7 @@ class Profil extends \Core\Controller
         $pays = new \App\Models\Pays;
         $tousPays = $pays->select();
 
-
+        
         if(!$validation->isSuccess() || $msg) 
         {
             if (!$validation->isSuccess()) 
@@ -100,27 +79,35 @@ class Profil extends \Core\Controller
         } 
         else
         {
-            // téléverse le fichier au dossier uploads
-            $tempname = $_FILES["image0"]["tmp_name"];
-            $folder = $_SERVER['DOCUMENT_ROOT'] . "/Stampee/uploads/" . $_POST['image0'];
-            move_uploaded_file($tempname, $folder);
-
             // insère le film à la base de données
             $timbre = new \App\Models\Timbre;
             $insertTimbre = $timbre->insert($_POST);
 
+            // téléverse le fichier au dossier uploads
+            $img = $_FILES['img'];
+            $img_desc = \App\Library\UploadFiles::reArrayFiles($img);
+            $name = $_POST['nom'];
+            $folder = $_SERVER['DOCUMENT_ROOT'] . "/Stampee/uploads/";
             $_POST['timbre_id'] = $insertTimbre; 
-            $_POST['nom'] .= '_'.date('d-m-Y_H-i-s');
-
-            $image = new \App\Models\Image;
-            $insertImage = $image->insert($_POST);
+            
+            foreach($img_desc as $val)
+            {
+                $newname = $name."_".date('YmdHis',time())."_".mt_rand().".jpg";
+                move_uploaded_file($val['tmp_name'], $folder.$newname);
+                
+                $_POST['nom'] = $newname;
+                
+                $image = new \App\Models\Image;
+                $insertImage = $image->insert($_POST);
+            }
 
             View::renderTemplate('Profil/index.html');
-            
             exit();    
         }
+    }
 
-        }
+
+
 
     
 

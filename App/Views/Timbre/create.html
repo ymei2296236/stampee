@@ -60,11 +60,9 @@
         <label for="extrait">Extrait</label>
         <input type="text" id="extrait" name="extrait" value="{{timbre.extrait}}"></input>  
         
-        <label for="image0" > Téléverser l'image principale <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
-        <input type="file" id="image0" name="image0"/></input> 
+        <label for="img1" > Téléverser une ou plusieurs images <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
+        <input type="file" id="img1" name="img[]" multiple/></input> 
 
-        <label for="image1" > Téléverser l'image supplémentaire 1</label>
-        <input type="file" id="image1" name="image1"/></input> 
         
 
         <button type="submit" class="btn btn--principal" name="upload" aria-label="Enregistrer">
