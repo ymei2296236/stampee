@@ -1,16 +1,53 @@
 {% extends "base.html" %}
 
-{% block title %}Profil{% endblock %}
+{% block title %}Votre Compte{% endblock %}
 
 {% block body %}
-<main data-page="profil">
-    <h1>Profil</h1>
-    <div>
-        <a href="createTimbre" aria-label="Ajouter un timbre" class="btn btn--secondaire">Ajouter un timbre</a>
-        <a href="showTimbre" aria-label="Afficher tous les timbres" class="btn btn--secondaire">Afficher tous les timbres</a>
-        <a href="createEnchere" aria-label="Ajouter une enchères" class="btn btn--secondaire">Ajouter une enchères</a>
-        <a href="showEnchere" aria-label="Afficher toutes les enchères" class="btn btn--secondaire">Afficher toutes les enchères</a>
-
+<main class="pageProfil">
+    <div class="breadcrumb">
+        <a href="#" class="breadcrumb__parent">Votre compte</a> > <a href="#" class="breadcrumb__child">Vos timbres</a> 
+    </div>
+    <div class="pageProfil__actions">
+        <a href="createTimbre" aria-label="Ajouter un timbre" class="btn btn--principal">Vendre un nouveau timbre</a>
+    </div>
+    <div class="pageProfil__col">
+        <div class="listeTimbres__liste">
+            <h2>Vos timbres</h2>
+            {% for timbre in timbres %}
+            <div class="listeTimbres__item">
+                {{ loop.index }}
+                <div class="listeTimbres__timbre">
+                    <div class="listeTimbres__image">
+                        <img src="{{url_racine}}assets/img/jpg/{{ timbre.image }}" alt="Image du timbre {{timbre.nom}}">
+                    </div>
+                    {{ timbre.nom }} 
+                </div>
+                <div class="listeTimbres__actions">
+                    <a href="createEnchere" aria-label="Vendre " class="btn btn--principal">Vendre</a>
+                    <a href="updateTimbre" aria-label="Modifier" class="btn btn--icon-text "><i class="fa-solid fa-pen"></i>Modifier</a>
+                    <a href="deleteTimbre" aria-label="Supprimer" class="btn btn--icon-text "><i class="fa-solid fa-trash"></i>Supprimer</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="listeTimbres__liste">
+            <h2>Vos commandes</h2>
+            {% for timbre in timbres %}
+            <div class="listeTimbres__item">
+                {{ loop.index }}
+                <div class="listeTimbres__timbre">
+                    <div class="listeTimbres__image">
+                        <img src="{{url_racine}}assets/img/jpg/{{ timbre.image }}" alt="Image du timbre {{timbre.nom}}">
+                    </div>
+                    {{ timbre.nom }} 
+                </div>
+                <div class="listeTimbres__actions">
+                    <a href="updateTimbre" aria-label="Modifier" class="btn btn--icon-text "><i class="fa-solid fa-pen"></i>Modifier</a>
+                    <a href="deleteTimbre" aria-label="Supprimer" class="btn btn--icon-text "><i class="fa-solid fa-trash"></i>Supprimer</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </main>
 

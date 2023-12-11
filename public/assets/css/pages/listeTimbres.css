@@ -1,0 +1,22 @@
+[data-page="listeTimbres"] {
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+
+	& .listeTimbres__liste {
+		display: flex;
+		flex-direction: column;
+		gap: var(--espace-2);
+
+		& .listeTimbres__item {
+			display: flex;
+			align-items: center;
+			gap: var(--espace-1);
+
+			& .listeTimbres__image {
+				height: 10rem;
+				aspect-ratio: 1/1;
+			}
+		}
+	}
+}

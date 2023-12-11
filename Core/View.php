@@ -56,8 +56,7 @@ class View
         $twig->addGlobal('guest', $guest);   
         $twig->addGlobal('session', $_SESSION);   
         $twig->addGlobal('url_racine', \App\Config::URL_RACINE);
-        // $twig->addGlobal('path', \App\Config::PATH_DIR);
-        
+        $twig->addGlobal('path', $_SERVER['DOCUMENT_ROOT']."/Stampee/");
 
         echo $twig->render($template, $args);
     }

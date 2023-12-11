@@ -69,3 +69,24 @@
 .btn--banner:hover {
 	background-color: var(--coul-arriere-plan);
 }
+
+& a {
+	text-decoration: none;
+}
+& .lien {
+	text-decoration: none;
+	/* margin-right: var(--espace-1); */
+	cursor: pointer;
+	color: var(--coul-principale);
+	margin: var(--espace-1);
+}
+
+& .lien--current {
+	color: var(--coul-secondaire);
+	font-weight: bold;
+	border-bottom: 1px solid var(--coul-secondaire);
+}
+
+& .lien:hover {
+	color: var(--coul-accent);
+}

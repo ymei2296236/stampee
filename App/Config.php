@@ -41,7 +41,7 @@ class Config
      */
     const SHOW_ERRORS = true;
     
-    // const PATH_DIR = "http://localhost:8888/stampee/"; 
+    const PATH_DIR = "/Applications/MAMP/htdocs/Stampee/public/"; 
 
     const URL_RACINE = "http://localhost:8888/stampee/public/"; // mac
     // const URL_RACINE = "http://localhost:8000/stampee/public/"; // windows

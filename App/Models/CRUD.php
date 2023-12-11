@@ -35,6 +35,16 @@ abstract class CRUD extends \Core\Model
         else View::renderTemplate('404.html');
     }
 
+    public function selectByField($column, $value)
+    {
+        $db = static::getDB();
+
+        $sql="SELECT * FROM $this->table WHERE $column = '$value'";
+        $stmt = $db->query($sql);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function insert($data)
     {
         $db = static::getDB();
