@@ -1,15 +1,28 @@
 .pageProfil {
 	display: flex;
 	flex-direction: column;
-	padding: var(--espace-4);
-	padding-top: 0;
-	/* align-items: center; */
+	padding: var(--espace-2);
 
+	& h1 {
+		text-align: center;
+		margin: var(--espace-1);
+	}
+
+	& .pageProfil__actions {
+		margin: auto;
+	}
 	& .pageProfil__col {
 		display: flex;
 		flex-wrap: wrap;
-		justify-content: space-around;
-		margin: var(--espace-2) 0;
+		justify-content: center;
+		gap: var(--espace-2);
+		margin-top: var(--espace-2);
+
+		& > * {
+			border: 0.5px solid var(--coul-principale);
+			padding: var(--espace-2);
+			flex: 1;
+		}
 
 		& .listeTimbres__liste {
 			display: flex;

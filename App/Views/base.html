@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Catalogue des enchères de timbres de tous prix de tous pays de différentes dimensions">
-
-    <link rel="stylesheet" href="{{url_racine}}assets/css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{url_racine}}assets/css/styles.css"  media="screen">
+
     <title>{% block title %}{% endblock %}</title>
 
 </head>
@@ -22,8 +22,9 @@
                 <a href="{{url_racine}}login/index" aria-label="Se connecter" class="btn btn--secondaire">Se connecter</a>
                 <a href="{{url_racine}}usager/create" aria-label="Devenir membre" class="btn btn--principal">Devenir membre</a>
                 {% else %}
+                <span href="{{url_racine}}profil/index" class="profil">{{session.user_id}}</span>
+                <a href="{{url_racine}}profil/index" aria-label="Votre compte" class="btn btn--principal">Votre compte</a>
                 <a href="{{url_racine}}login/logout" aria-label="Se déconnecter" class="btn btn--secondaire">Se déconnecter</a>
-                <a href="{{url_racine}}profil/index" class="profil">{{session.user_id}}</a>
                 {% endif %}
 
             </div>
@@ -32,9 +33,9 @@
             <nav>
                 <span class="menu-mobile"><i class="fa-solid fa-arrow-left fa-lg"></i></span>
                 <ul>
-                    <li><a href="index.html">Accueil</a></li>
-                    <li><a href="catalogue.html">Catalogue</a></li>
-                    <li class="aPropos"><a href="#">À propos</a></li>
+                    <li><a href="{{url_racine}}login/index">Accueil</a></li>
+                    <li><a href="{{url_racine}}login/index">Catalogue</a></li>
+                    <li class="aPropos"><a href="{{url_racine}}login/index">À propos</a></li>
                 </ul>
                 <span class="menu-mobile"><i class="fa-solid fa-bars fa-lg"></i></span>
             </nav>

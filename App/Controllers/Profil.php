@@ -17,16 +17,22 @@ class Profil extends \Core\Controller
         \App\Library\CheckSession::sessionAuth(FALSE);
 
         $timbre = new \App\Models\Timbre;
-        $timbres = $timbre->selectByField('createur_id', $_SESSION['user_id']);
+        $timbres = $timbre->selectTimbreParUsager($_SESSION['user_id']);
 
         $image = new \App\Models\Image;
         $i=0;
+        
         foreach($timbres as $timbre)
         {
-            $selectImage = $image->selectByField('timbre_id', $timbre['id']);
+            $selectImage = $image->selectByField('timbre_id', $timbre['timbre_id']);
+
             $timbres[$i]['image'] = $selectImage[0]['nom'];
             $i++;
         }
+
+        // echo "<pre>";
+        // print_r($timbres);
+        // print_r($encheres);
         
         View::renderTemplate('Profil/index.html', ['timbres'=>$timbres]);
     }
@@ -125,10 +131,53 @@ class Profil extends \Core\Controller
                 }
             }
 
-            View::renderTemplate('Profil/index.html');
+            View::renderTemplate('Profil/createEnchere.html', ['timbre_id'=>$insertTimbre, 'createur_id'=>$_SESSION['user_id']]);
             exit();    
         }
     }
 
+    public function createEnchereAction()
+    {
+        \App\Library\CheckSession::sessionAuth(FALSE);
+
+        // echo "<pre>";
+        // print_r($_POST);
+
+        View::renderTemplate('Profil/createEnchere.html', ['timbre_id'=>$_POST['timbre_id'], 'createur_id'=>$_SESSION['user_id']]);
+    }
+
+    public function storeEnchereAction()
+    {
+        \App\Library\CheckSession::sessionAuth(FALSE);
+        extract($_POST);
+
+        $validation = new \App\Library\Validation;
+        $validation->name('Date de début')->value($date_debut)->required();
+        $validation->name('Date de fin')->value($date_fin)->required();
+        $validation->name('Prix plancher')->value($prix_plancher)->required();
+
+        
+        if(!$validation->isSuccess()) 
+        {
+            if (!$validation->isSuccess()) 
+                $errors = $validation->displayErrors();
+            else
+                $errors = '';
+            
+            View::renderTemplate('Profil/createEnchere.html', ['errors'=> $errors]);
+        } 
+        else
+        {
+            // insère le film à la base de données
+            $enchere = new \App\Models\Enchere;
+            $checkEnchere = $enchere->checkDuplicate($_POST['timbre_id']);
+
+            if (!$checkEnchere)
+                $insertEnchere = $enchere->insert($_POST);
+
+            header("location:/stampee/public/profil/index");
+            exit();    
+        }
+    }
 
 }

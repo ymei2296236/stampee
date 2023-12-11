@@ -4,15 +4,13 @@
 
 {% block body %}
 <main class="pageProfil">
-    <div class="breadcrumb">
-        <a href="#" class="breadcrumb__parent">Votre compte</a> > <a href="#" class="breadcrumb__child">Vos timbres</a> 
-    </div>
+    <h1>Votre compte</h1>
     <div class="pageProfil__actions">
         <a href="createTimbre" aria-label="Ajouter un timbre" class="btn btn--principal">Vendre un nouveau timbre</a>
     </div>
     <div class="pageProfil__col">
         <div class="listeTimbres__liste">
-            <h2>Vos timbres</h2>
+            <h2>Vos timbres et enchères</h2>
             {% for timbre in timbres %}
             <div class="listeTimbres__item">
                 {{ loop.index }}
@@ -20,18 +18,35 @@
                     <div class="listeTimbres__image">
                         <img src="{{url_racine}}assets/img/jpg/{{ timbre.image }}" alt="Image du timbre {{timbre.nom}}">
                     </div>
-                    {{ timbre.nom }} 
+                    {{ timbre.timbre_nom }} 
                 </div>
+
                 <div class="listeTimbres__actions">
-                    <a href="createEnchere" aria-label="Vendre " class="btn btn--principal">Vendre</a>
-                    <a href="updateTimbre" aria-label="Modifier" class="btn btn--icon-text "><i class="fa-solid fa-pen"></i>Modifier</a>
-                    <a href="deleteTimbre" aria-label="Supprimer" class="btn btn--icon-text "><i class="fa-solid fa-trash"></i>Supprimer</a>
+                    
+                    {% if timbre.enchere_id <= 0  %}
+                    <form action="createEnchere" method="post">
+                        <input type="hidden" name="timbre_id" value="{{timbre.timbre_id}}">
+                        <button class="btn btn--principal">Vendre aux enchères</button>
+                    </form>
+                    {% else %}
+                    <span>Enchère en cours</span>
+                    <span>Prix plancher :  {{timbre.prix_plancher}} $</span>
+                    <span>Date de fin : {{timbre.date_fin}}</span>
+                    {% endif %}
+                    <form action="updateTimbre" method="post">
+                        <input type="hidden" name="timbre_id" value="{{timbre.timbre_id}}">
+                        <button class="btn btn--icon-text "><i class="fa-solid fa-pen"></i>Modifier</button>
+                    </form>
+                    <form action="deleteTimbre" method="post">
+                        <input type="hidden" name="timbre_id" value="{{timbre.timbre_id}}">
+                        <button class="btn btn--icon-text "><i class="fa-solid fa-trash"></i>Retirer</button>
+                    </form>
                 </div>
             </div>
             {% endfor %}
         </div>
         <div class="listeTimbres__liste">
-            <h2>Vos commandes</h2>
+            <h2>Votre historique d'offre</h2>
             {% for timbre in timbres %}
             <div class="listeTimbres__item">
                 {{ loop.index }}
