@@ -29,10 +29,6 @@ class Profil extends \Core\Controller
             $timbres[$i]['image'] = $selectImage[0]['nom'];
             $i++;
         }
-
-        // echo "<pre>";
-        // print_r($timbres);
-        // print_r($encheres);
         
         View::renderTemplate('Profil/index.html', ['timbres'=>$timbres]);
     }
@@ -51,7 +47,7 @@ class Profil extends \Core\Controller
             $pays = new \App\Models\Pays;
             $tousPays = $pays->select();
 
-            View::renderTemplate('Profil/createTimbre.html', ['etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays]);
+            View::renderTemplate('Profil/createTimbre.html', ['etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'timbre_id'=>$_POST['timbre_id']]);
     }
 
     public function storeTimbreAction()
@@ -131,7 +127,7 @@ class Profil extends \Core\Controller
                 }
             }
 
-            View::renderTemplate('Profil/createEnchere.html', ['timbre_id'=>$insertTimbre, 'createur_id'=>$_SESSION['user_id']]);
+            View::renderTemplate('Profil/createEnchere.html', ['timbre_id'=>$insertTimbre]);
             exit();    
         }
     }
@@ -139,11 +135,13 @@ class Profil extends \Core\Controller
     public function createEnchereAction()
     {
         \App\Library\CheckSession::sessionAuth(FALSE);
+        print_r($_POST);
 
-        // echo "<pre>";
-        // print_r($_POST);
+        if($_POST['timbre_id'] != '')
+            $timbre_id = $_POST['timbre_id'];
 
-        View::renderTemplate('Profil/createEnchere.html', ['timbre_id'=>$_POST['timbre_id'], 'createur_id'=>$_SESSION['user_id']]);
+
+        View::renderTemplate('Profil/createEnchere.html', ['timbre_id'=>$timbre_id]);
     }
 
     public function storeEnchereAction()
@@ -155,22 +153,35 @@ class Profil extends \Core\Controller
         $validation->name('Date de début')->value($date_debut)->required();
         $validation->name('Date de fin')->value($date_fin)->required();
         $validation->name('Prix plancher')->value($prix_plancher)->required();
-
         
         if(!$validation->isSuccess()) 
         {
-            if (!$validation->isSuccess()) 
-                $errors = $validation->displayErrors();
-            else
-                $errors = '';
+            $errors = $validation->displayErrors();
+            $msg=[];
+
+            if($date_debut != '' && $date_debut < date("Y-m-d")) 
+            {
+                $msg[]= "La date de début ne peut pas être dans la passée";
+            }
+
+            if($date_fin != '' && $date_debut >= $date_fin) 
+            {
+                $msg[]= 'La date de fin ne peut pas être antérieure à la date de début';
+            }
             
-            View::renderTemplate('Profil/createEnchere.html', ['errors'=> $errors]);
+            View::renderTemplate('Profil/createEnchere.html', ['errors'=> $errors, 'msgs'=>$msg, 'enchere'=>$_POST]);
+            exit();    
+
         } 
         else
         {
             // insère le film à la base de données
+
+            echo "<pre>";
+            print_r($_POST);
             $enchere = new \App\Models\Enchere;
             $checkEnchere = $enchere->checkDuplicate($_POST['timbre_id']);
+
 
             if (!$checkEnchere)
                 $insertEnchere = $enchere->insert($_POST);

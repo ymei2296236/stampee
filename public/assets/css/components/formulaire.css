@@ -5,12 +5,7 @@
 	margin: var(--espace-5) auto var(--espace-10);
 	background-color: var(--coul-neutre);
 	padding: var(--espace-4);
-	width: 28rem;
-
-	& h1,
-	span {
-		text-align: center;
-	}
+	width: 32rem;
 
 	& * {
 		flex: 1;
@@ -27,7 +22,8 @@
 		color: var(--coul-texte-erreur);
 
 		& li {
-			padding: var(--espace-half) 0;
+			padding: var(--espace-quart) 0;
+			line-height: 1.4rem;
 		}
 	}
 

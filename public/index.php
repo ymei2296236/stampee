@@ -32,5 +32,8 @@ $router->add('', ['controller' => 'Home', 'action' => 'index']);
 $router->add('{controller}/{action}');
 $router->add('{controller}/{action}/{id:\d+}');
 
+// echo "<pre>";
+// print_r($router);
+// print_r($_SERVER['QUERY_STRING']);
 $router->dispatch($_SERVER['QUERY_STRING']);
 
