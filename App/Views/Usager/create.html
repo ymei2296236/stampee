@@ -9,8 +9,10 @@
     {% if errors is defined %}
         <li>{{ errors | raw }}</li>
     {% endif %}
-    {% if msg %}
-        <li>{{ msg }}</li>
+    {% if msgs %}
+        {% for msg in msgs %}
+        <li>{{ msg }}</li> 
+        {% endfor %}
     {% endif %}
     </ul>
     

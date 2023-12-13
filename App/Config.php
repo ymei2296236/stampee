@@ -21,12 +21,14 @@ class Config
      * @var string
      */
     const DB_NAME = 'stampee';
+    // const DB_NAME = 'e2296236'; // webdev
 
     /**
      * Database user
      * @var string
      */
     const DB_USER = 'root';
+    // const DB_USER = 'e2296236';// webdev
 
     /**
      * Database password
@@ -34,6 +36,7 @@ class Config
      */
     const DB_PASSWORD = 'root'; // mac
     // const DB_PASSWORD = ''; // windows
+    // const DB_PASSWORD = 'owioZ7vb1n0D0d4uLPw4'; // webdev
 
     /**
      * Show or hide error messages on screen
@@ -45,4 +48,7 @@ class Config
 
     const URL_RACINE = "http://localhost:8888/stampee/public/"; // mac
     // const URL_RACINE = "http://localhost:8000/stampee/public/"; // windows
+    // const URL_RACINE = "https://e2296236.webdev.cmaisonneuve.qc.ca/stampee/public/"; // webdev
+
+
 }

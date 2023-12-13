@@ -4,7 +4,7 @@ namespace App\Models;
 
 use PDO;
 
-use Model;
+use \Core\View;
 
 /**
  * Example user model
@@ -32,7 +32,7 @@ abstract class CRUD extends \Core\Model
         $count = $stmt->rowCount();
 
         if($count == 1) return $stmt->fetch(PDO::FETCH_ASSOC);
-        else \Core\View::renderTemplate('404.html');
+        else View::renderTemplate('404.html');
     }
 
     public function selectByField($column, $value)

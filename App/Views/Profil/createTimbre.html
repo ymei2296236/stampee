@@ -26,15 +26,16 @@
 
         <label for="etat">État <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <select name="etat_id" id="etat">
-            <option value="" style="color:gray">Faire un choix</option>
+            <option value="" >Faire un choix</option>
             {% for etat in etats %}
             <option value="{{etat.id}}" {% if etat.id == timbre.etat_id %} selected {% endif %}>{{etat.nom}}</option>
             {% endfor %}
         </select>
+        
 
         <label for="dimension">Dimension <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <select name="dimension_id" id="dimension">
-            <option value="" style="color:gray">Faire un choix</option>
+            <option value="" >Faire un choix</option>
             {% for dimension in dimensions %}
             <option value="{{dimension.id}}" {% if dimension.id == timbre.dimension_id %} selected {% endif %}>{{dimension.nom}}</option>
             {% endfor %}
@@ -42,7 +43,7 @@
 
         <label for="pays">Pays <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <select name="pays_id" id="pays">
-            <option value="" style="color:gray">Faire un choix</option>
+            <option value="" >Faire un choix</option>
             {% for pays in tousPays %}
             <option value="{{pays.id}}" {% if pays.id == timbre.pays_id %} selected {% endif %}>{{pays.nom}}</option>
             {% endfor %}
@@ -72,8 +73,8 @@
 
         
 
-        <button type="submit" class="btn btn--principal" name="upload" aria-label="Enregistrer">
-            Enregistrer
+        <button type="submit" class="btn btn--principal" name="upload" aria-label="Continuer">
+            Continuer
         </button>
         
     </form>

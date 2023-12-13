@@ -49,7 +49,9 @@ abstract class Controller
                 $this->after();
             }
         } else {
-            throw new \Exception("Method $method not found in controller " . get_class($this));
+            // throw new \Exception("Method $method not found in controller " . get_class($this));
+            View::renderTemplate('404.html', ['error'=>404]);
+
         }
     }
 

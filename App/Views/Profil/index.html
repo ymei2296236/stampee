@@ -48,21 +48,7 @@
         </div>
         <div class="listeTimbres__liste">
             <h2>Votre historique d'offre</h2>
-            {% for timbre in timbres %}
-            <div class="listeTimbres__item">
-                {{ loop.index }}
-                <div class="listeTimbres__timbre">
-                    <div class="listeTimbres__image">
-                        <img src="{{url_racine}}assets/img/jpg/{{ timbre.image }}" alt="Image du timbre {{timbre.nom}}">
-                    </div>
-                    {{ timbre.nom }} 
-                </div>
-                <div class="listeTimbres__actions">
-                    <a href="updateTimbre" aria-label="Modifier" class="btn btn--icon-text "><i class="fa-solid fa-pen"></i>Modifier</a>
-                    <a href="deleteTimbre" aria-label="Supprimer" class="btn btn--icon-text "><i class="fa-solid fa-trash"></i>Supprimer</a>
-                </div>
-            </div>
-            {% endfor %}
+            
         </div>
     </div>
 </main>

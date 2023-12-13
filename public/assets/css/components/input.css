@@ -72,12 +72,23 @@ select {
 	border: 1px solid var(--coul-principale);
 	outline: 1px solid transparent;
 	background: var(--coul-arriere-plan);
+	/* text-transform: */
+
+	font-size: var(--texte-sm);
+	color: var(--coul-texte);
+}
+
+option {
 	text-transform: capitalize;
 }
 
 select:focus {
 	border: 1px solid var(--coul-accent);
 	outline: 1px solid var(--coul-accent);
+}
+
+.greyText {
+	background-color: var(--coul-secondaire);
 }
 
 legend,

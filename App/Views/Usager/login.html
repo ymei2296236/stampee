@@ -7,12 +7,14 @@
     <h1>Se connecter</h1>
 
     <ul class="msg-error">
-        {% if errors is defined %}
-            <li>{{ errors | raw }}</li>
-        {% endif %}
-        {% if msg %}
-            <li>{{ msg }}</li>
-        {% endif %}
+    {% if errors is defined %}
+        <li>{{ errors | raw }}</li>
+    {% endif %}
+    {% if msgs %}
+        {% for msg in msgs %}
+        <li>{{ msg }}</li> 
+        {% endfor %}
+    {% endif %}
     </ul>
     <form class="formulaire__form" action="auth" method="post">
         <label for="id">Utilisateur</label>

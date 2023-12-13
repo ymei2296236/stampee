@@ -1,0 +1,13 @@
+https://e2296236.webdev.cmaisonneuve.qc.ca/stampee/public/
+
+usager1: usager1@gmail.com
+mdp: 12345
+
+usager2: usager2@gmail.com
+mdp: 12345
+
+usager3: usager3@gmail.com
+mdp: 12345
+
+usager4: usager3@gmail.com
+mdp: 12345

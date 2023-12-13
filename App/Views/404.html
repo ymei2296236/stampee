@@ -3,8 +3,10 @@
 {% block title %}Page not found{% endblock %}
 
 {% block body %}
+<main data-page="404">
 
-    <h1>Page not found</h1>
-    <p>Sorry, that page doesn't exist.</p>
+    <h1>{{error}}</h1>
+    <p>Désolé, cette page n'existe pas.</p>
+</main>
 
 {% endblock %}

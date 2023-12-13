@@ -1,6 +1,8 @@
 <?php
 namespace App\Library;
 
+use \App\Config;
+
 class RequirePage 
 {
     static public function model($model)
@@ -15,7 +17,7 @@ class RequirePage
 
     static public function url($url)
     {
-        header('location:'.PATH_DIR.$url);
+        header('location:'. Config::URL_RACINE.$url);
         exit();
     }
 }

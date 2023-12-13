@@ -20,7 +20,8 @@ class Timbre extends CRUD
         FROM $this->table 
         LEFT JOIN enchere 
         ON timbre.id = enchere.timbre_id  
-        WHERE timbre.createur_id = '$userId'";     
+        WHERE timbre.createur_id = '$userId'
+        ORDER by enchere_id";     
 
         $stmt = $db->query($sql);
 

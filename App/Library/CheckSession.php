@@ -1,37 +1,41 @@
 <?php
 namespace App\Library;
 
-class CheckSession {
+use \Core\View;
+use \App\Library\RequirePage;
 
+class CheckSession 
+{
     // valide la session
     static public function sessionAuth($status)
     {        
-        // empêche un logout non voulu
+        // empêcher une connextion répétitive
         if ($status == TRUE)
         {
             if(isset($_SESSION['fingerPrint']) && $_SESSION['fingerPrint'] === md5($_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']))
-                header('location:'.\App\Config::URL_RACINE);
+            {
+                RequirePage::url('index.php');
+                exit();
+
+            }
             else
+            {
                 return true;
+            }
         }
-        // impose un login
+        // imposer une connextion
         else
         {
             if(isset($_SESSION['fingerPrint']) && $_SESSION['fingerPrint'] === md5($_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']))
+            {
                 return true;
+            }
             else
-                View::renderTemplate('Home/index.html');
-
+            {
+                RequirePage::url('usager/login');
+                exit();
+            }
         }
-    }
-
-    // valide si l'usager connecté a le privilège de l'Admin
-    static public function privilegeAuth()
-    {
-        if($_SESSION['privilege'] == 1) 
-            return true;
-        else
-            header('location:'.\App\Config::URL_RACINE);
     }
 }
 

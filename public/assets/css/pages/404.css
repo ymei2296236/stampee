@@ -1,0 +1,12 @@
+[data-page="404"] {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: var(--coul-accent);
+	height: 100vh;
+	padding: var(--espace-5);
+
+	& h1 {
+		font-size: 20rem;
+	}
+}

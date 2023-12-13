@@ -1,6 +1,7 @@
 <?php
 
 namespace Core;
+use \Core\View;
 
 /**
  * Router
@@ -124,12 +125,17 @@ class Router
 
                 } else {
                     throw new \Exception("Method $action in controller $controller cannot be called directly - remove the Action suffix to call this method");
+                    // View::renderTemplate('404.html', ['error'=>404]);
+
                 }
             } else {
                 throw new \Exception("Controller class $controller not found");
+                // View::renderTemplate('404.html', ['error'=>404]);
+
             }
         } else {
-            throw new \Exception('No route matched.', 404);
+            // throw new \Exception('No route matched.', 404);
+            View::renderTemplate('404.html', ['error'=>404]);
         }
     }
 

@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use PDO;
+use \App\Library\RequirePage;
 
-use Model;
 
 class Usager extends CRUD 
 {
@@ -12,25 +12,23 @@ class Usager extends CRUD
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'password', 'alias', 'privilege_id'];
 
-    // login authentication
-
+    // valider l'inscription
     public function checkDuplicate($field='id', $value) 
     {
         $db = static::getDB();
 
         $sql = "SELECT * FROM $this->table WHERE $field = '$value'";
-        // print_r($sql);
-        // die();
         $stmt = $db->prepare($sql);
         $stmt->execute(array($value));
         $count = $stmt->rowCount();
 
         if($count === 1) {
-            $error = "<ul><li>L'utilisateur {$value} déjà existe.</li></ul>";
+            $error = "{$value} déjà existe.";
             return $error;
         }
     }
 
+    // valider login
     public function checkUser($id, $password) 
     {
         $db = static::getDB();
@@ -52,18 +50,18 @@ class Usager extends CRUD
                 $_SESSION['privilege'] = $info_user['privilege_id'];
                 $_SESSION['fingerPrint'] = md5($_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']);
 
-                header('location:'.\App\Config::URL_RACINE);
+                RequirePage::url('index.php');
                 exit();
             }
             else
             {
-                $errors = "<ul><li>Verifiez le mot de passe</li></ul>";
+                $errors = "La combinaison de l’ID utilisateur et le mot de passe entré n’est pas valide.";
                 return $errors;
             }
         }
         else
         {
-            $errors = "<ul><li>Verifiez le nom de l'utilisateur</li></ul>";
+            $errors = "La combinaison de l’ID utilisateur et le mot de passe entré n’est pas valide.";
             return $errors;
         }
     }
