@@ -3,12 +3,12 @@
 {% block title %}Votre Compte{% endblock %}
 
 {% block body %}
-<main class="pageProfil">
+<main data-page="profil">
     <h1>Votre compte</h1>
-    <div class="pageProfil__actions">
+    <div class="actions">
         <a href="createTimbre" aria-label="Ajouter un timbre" class="btn btn--principal">Vendre un nouveau timbre</a>
     </div>
-    <div class="pageProfil__col">
+    <div class="col">
         <div class="listeTimbres__liste">
             <h2>Vos timbres et enchères</h2>
             {% for timbre in timbres %}
@@ -16,7 +16,14 @@
                 {{ loop.index }}
                 <div class="listeTimbres__timbre">
                     <div class="listeTimbres__image">
+                        {% if timbre.enchere_id > 0  %}
+                        <a href="{{url_racine}}enchere/index/{{timbre.enchere_id}}">
+                        <!-- <a href="{{url_racine}}enchere/{{timbre.enchere_id}}"> -->
                         <img src="{{url_racine}}assets/img/jpg/{{ timbre.image }}" alt="Image du timbre {{timbre.nom}}">
+                        </a>
+                        {% else %}
+                        <img src="{{url_racine}}assets/img/jpg/{{ timbre.image }}" alt="Image du timbre {{timbre.nom}}">
+                        {% endif %}
                     </div>
                     {{ timbre.timbre_nom }} 
                 </div>

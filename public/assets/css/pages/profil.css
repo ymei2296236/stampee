@@ -1,4 +1,4 @@
-.pageProfil {
+[data-page="profil"] {
 	display: flex;
 	flex-direction: column;
 	padding: var(--espace-2);
@@ -6,12 +6,13 @@
 	& h1 {
 		text-align: center;
 		margin: var(--espace-1);
+		flex: 1;
 	}
 
-	& .pageProfil__actions {
+	& .actions {
 		margin: auto;
 	}
-	& .pageProfil__col {
+	& .col {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;

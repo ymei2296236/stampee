@@ -1,0 +1,168 @@
+[data-page="enchere"] {
+	padding: var(--espace-2) var(--espace-10) var(--espace-10) var(--espace-10);
+
+	& .images {
+		flex: 5;
+		display: flex;
+
+		& .images__thumbnails-container {
+			display: flex;
+			flex-direction: column;
+			gap: var(--espace-2);
+			margin-right: var(--espace-2);
+
+			& .images__thumbnails-item {
+				min-width: 15vh;
+				min-height: 15vh;
+				max-width: 10vw;
+				max-height: 10vw;
+				background-color: var(--coul-neutre);
+				height: auto;
+				padding: var(--espace-half);
+				aspect-ratio: 1 / 1;
+				cursor: pointer;
+			}
+
+			& .images__thumbnails-item:first-child {
+				border: 1px solid var(--coul-principale);
+			}
+		}
+
+		& .images__main {
+			background-color: var(--coul-neutre);
+			padding: var(--espace-2);
+			width: 70%;
+			aspect-ratio: 1 /1;
+		}
+	}
+
+	& .mise {
+		flex: 2;
+		display: flex;
+		flex-direction: column;
+		gap: var(--espace-half);
+		align-items: flex-start;
+		border: 0.5px solid var(--coul-principale);
+		padding: var(--espace-2);
+		padding-bottom: var(--espace-1);
+
+		& .afterh1 {
+			margin-bottom: var(--espace-1);
+		}
+
+		& .favoris {
+			margin: var(--espace-half) auto 0;
+		}
+		& form {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			gap: var(--espace-1);
+			border-top: 1px solid var(--coul-principale);
+			margin-top: var(--espace-1);
+
+			& input {
+				width: 100%;
+			}
+
+			& button {
+				margin-top: var(--espace-1half);
+			}
+		}
+
+		& .mise__info {
+			color: var(--coul-secondaire);
+		}
+
+		& span {
+			color: var(--coul-texte);
+		}
+
+		& table {
+			text-align: left;
+
+			& tr {
+				margin-bottom: var(--espace-1);
+			}
+
+			& th {
+				color: var(--coul-secondaire);
+				padding-top: var(--espace-half);
+				padding-right: var(--espace-1);
+				padding-bottom: var(--espace-half);
+			}
+
+			& td {
+				min-width: 10rem;
+				vertical-align: middle;
+			}
+			& .mise__prix-courant {
+				font-family: var(--police-titre);
+				font-size: var(--texte-lg);
+			}
+		}
+
+		& .mise-lable {
+			font-size: var(--texte-sm);
+			margin-bottom: var(--espace-half);
+		}
+	}
+
+	& .description {
+		flex: 100%;
+
+		& .description__item {
+			padding: var(--espace-2) 0 var(--espace-1) 0;
+		}
+
+		& .description__item:not(:last-child) {
+			border-bottom: 0.5px solid var(--coul-accent);
+		}
+	}
+
+	& .promo {
+		border-top: 1px solid var(--coul-principale);
+		margin-top: var(--espace-3);
+		padding-top: var(--espace-4);
+	}
+
+	@media screen and (max-width: 480px) {
+		& .produit {
+			flex-direction: column;
+			padding: var(--espace-1) var(--espace-1) var(--espace-3)
+				var(--espace-1);
+			gap: var(--espace-1);
+
+			& .images {
+				& .images__thumbnails-container {
+					display: none !important;
+				}
+
+				& .images__main {
+					width: 100%;
+				}
+			}
+
+			& .mise {
+				& h1 {
+					font-size: var(--texte-lg);
+				}
+
+				& form {
+					margin-top: var(--espace-half);
+					padding-top: 0;
+				}
+
+				& .afterh1 {
+					margin-bottom: var(--espace-half);
+				}
+			}
+
+			& .description {
+				& .description__item {
+					padding: var(--espace-1) 0;
+				}
+			}
+		}
+	}
+}

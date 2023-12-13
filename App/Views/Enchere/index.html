@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <main data-page="enchere">
+  
+        <div class="images">
+            <div class="images__thumbnails-container">
+                {% for image in images %}
+                <div class="images__thumbnails-item">
+                    <img src="{{url_racine}}assets/img/jpg/{{ image.nom }}" loading="lazy" alt="image du paquet">
+                </div>
+                {% endfor %}
+            </div>
+            <div class="images__main">
+                <img src="{{url_racine}}assets/img/jpg/{{ enchere.image_nom }}" alt="image du timbre en recto">
+            </div>
+        </div>
+        <div class="mise">
+            <p class="note">Enchère #{{enchere.enchere_id}}</p>
+            <div class="item__coups-de-coeur item__coups-de-coeur--yes">
+                <i class="fa-solid fa-heart"></i>
+                <p class="note">Coups de coeur du Lord</p>
+            </div>
+            <h1>{{enchere.timbre_nom}} </h1>
+            <p class="afterh1">{{enchere.timbre_nom_2}} </p>
+            <table>
+                <tr>
+                    <th>Mise courante </th>
+                    <td class="mise__prix-courant">18<small class="prix_decimal">30 $</small></td>
+                </tr>
+                <tr>
+                    <th>Nombres de mises</th>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <th>Se termine au</th>
+                    <td>{{enchere.date_fin}}</td>
+                </tr>
+                <tr>
+                    <th>État</th>
+                    <td>{{enchere.etat}}</td>
+                </tr>
+                <tr>
+                    <th>Vendeur·euse</th>
+                    <td>{{enchere.createur}}</td>
+                </tr>
+            </table>
+
+            <form action="produit.html">
+                <fieldset>
+                    <label for="mise-value" class="mise-lable">Votre mise</label>
+                    <input id="mise-value" type="number">
+                    <button aria-label="Miser" class="btn btn--principal item__btn">Miser</button>
+                </fieldset>
+            </form>
+            <div class="btn btn--icon-text favoris">
+                <i class="fa-regular fa-star fa-lg"></i>
+                <p class="note">Mettre en favoris</p>
+            </div>
+
+        </div>
+        <div class="description">
+            <div class="description__item">
+                <p>Pays d’origine</p>
+                <p>{{enchere.pays}}</p>
+            </div>
+            <div class="description__item">
+                <p>Date d’émission</p>
+                <p>{{enchere.date_emission}}</p>
+            </div>
+            <div class="description__item">
+                <p>Tirage</p>
+                <p>{{enchere.tirage}}</p>
+            </div>
+            <div class="description__item">
+                <p>Description</p>
+                <p>{{enchere.extrait}}</p>
+                
+            </div>
+        </div>
+
+    </main>
+
+    {% endblock %}
