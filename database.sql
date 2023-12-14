@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Dec 13, 2023 at 02:31 AM
+-- Generation Time: Dec 13, 2023 at 11:26 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.4.2
 
@@ -49,19 +49,18 @@ CREATE TABLE `enchere` (
   `date_fin` datetime NOT NULL,
   `prix_plancher` float NOT NULL,
   `coup_de_coeur` tinyint(1) DEFAULT NULL,
-  `createur_id` varchar(50) NOT NULL,
-  `timbre_id` int(11) NOT NULL
+  `timbre_id` int(11) NOT NULL,
+  `createur_id` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `enchere`
 --
 
-INSERT INTO `enchere` (`id`, `date_debut`, `date_fin`, `prix_plancher`, `coup_de_coeur`, `createur_id`, `timbre_id`) VALUES
-(1, '2023-12-11 00:00:00', '2023-12-18 00:00:00', 10, NULL, 'usager2@gmail.com', 50),
-(12, '2023-12-11 00:00:00', '2023-12-16 00:00:00', 21.5, NULL, 'usager3@gmail.com', 54),
-(13, '2023-12-12 00:00:00', '2023-12-12 00:00:00', 11, NULL, 'usager1@gmail.com', 56),
-(23, '2023-12-13 00:00:00', '2023-12-14 00:00:00', 8, NULL, 'usager2@gmail.com', 53);
+INSERT INTO `enchere` (`id`, `date_debut`, `date_fin`, `prix_plancher`, `coup_de_coeur`, `timbre_id`, `createur_id`) VALUES
+(28, '2023-12-14 00:00:00', '2023-12-17 00:00:00', 11.25, NULL, 50, 'usager2@gmail.com'),
+(29, '2023-12-14 00:00:00', '2023-12-20 00:00:00', 23.4, NULL, 53, 'usager1@gmail.com'),
+(30, '2023-12-14 00:00:00', '2023-12-22 00:00:00', 2, NULL, 54, 'usager2@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -93,7 +92,9 @@ INSERT INTO `etat` (`id`, `nom`) VALUES
 
 CREATE TABLE `favori` (
   `usager_id` varchar(45) NOT NULL,
-  `enchere_id` int(11) NOT NULL
+  `enchere_id` int(11) NOT NULL,
+  `timbre_id` int(11) NOT NULL,
+  `createur_id` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -124,8 +125,7 @@ INSERT INTO `image` (`id`, `timbre_id`, `nom`) VALUES
 (41, 54, 'Fondation communautaire _20231211195907_600925195.jpg'),
 (42, 55, 'Renoncule_20231211200608_1899987206.jpg'),
 (43, 55, 'Renoncule_20231211200608_1890416677.jpg'),
-(44, 55, 'Renoncule_20231211200608_1070822799.jpg'),
-(45, 57, '666_20231212164333_1466829768.jpg');
+(44, 55, 'Renoncule_20231211200608_1070822799.jpg');
 
 -- --------------------------------------------------------
 
@@ -136,8 +136,8 @@ INSERT INTO `image` (`id`, `timbre_id`, `nom`) VALUES
 CREATE TABLE `offre` (
   `id` int(11) NOT NULL,
   `prix` float NOT NULL,
-  `enchere_id` int(11) NOT NULL,
-  `usager_id` varchar(45) NOT NULL
+  `usager_id` varchar(45) NOT NULL,
+  `enchere_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -214,11 +214,10 @@ CREATE TABLE `timbre` (
 
 INSERT INTO `timbre` (`id`, `nom`, `nom_2`, `date_emission`, `couleur`, `tirage`, `extrait`, `certification`, `etat_id`, `dimension_id`, `pays_id`, `createur_id`) VALUES
 (50, 'Willie O’Ree ', 'Carnet de 6 timbres PermanentsMC au tarif du régime intérieur', '2022-06-21', 1, 100000, 'Célébrez Jose Kusugak, activiste inuit, linguiste et communicateur, avec ce carnet de 6 timbres PermanentsMC au tarif du régime intérieur.</p>                 Le recto du carnet met en vedette un agrandissement du timbre. L’intérieur du livret présente une photo d’enfance de Jose (à droite) avec d’autres membres de sa famille, vers 1955.', 1, 1, 3, 1, 'usager2@gmail.com'),
-(53, 'Dirigeants autochtones ', 'Jose Kusugak : Carnet de 6 timbres Permanents au tarif du régime intérieur', '1998-02-04', 1, 2000, 'Célébrez Jose Kusugak, activiste inuit, linguiste et communicateur, avec ce carnet de 6 timbres PermanentsMC au tarif du régime intérieur.', 1, 3, 4, 2, 'usager2@gmail.com'),
-(54, 'Fondation communautaire ', 'Don de 1 $ par carnet de 10 timbres Permanents au tarif du régime intérieur', '2017-01-01', 1, 1500, 'Notre timbre-poste philanthropique annuel est arrivé. Le dollar supplémentaire que vous déboursez à l’achat du carnet de 10 timbres est versé à la Fondation communautaire, laquelle appuie des organismes sans but lucratif locaux et nationaux qui créent des espaces où les jeunes peuvent s’épanouir.', 1, 2, 5, 5, 'usager3@gmail.com'),
+(53, 'Dirigeants autochtones ', 'Jose Kusugak : Carnet de 6 timbres Permanents au tarif du régime intérieur', '1998-02-04', 1, 2000, 'Célébrez Jose Kusugak, activiste inuit, linguiste et communicateur, avec ce carnet de 6 timbres PermanentsMC au tarif du régime intérieur.', 1, 3, 4, 2, 'usager1@gmail.com'),
+(54, 'Fondation communautaire ', 'Don de 1 $ par carnet de 10 timbres Permanents au tarif du régime intérieur', '2017-01-01', 1, 1500, 'Notre timbre-poste philanthropique annuel est arrivé. Le dollar supplémentaire que vous déboursez à l’achat du carnet de 10 timbres est versé à la Fondation communautaire, laquelle appuie des organismes sans but lucratif locaux et nationaux qui créent des espaces où les jeunes peuvent s’épanouir.', 1, 2, 5, 5, 'usager2@gmail.com'),
 (55, 'Renoncule', 'Timbres Permanents au tarif du régime intérieur – carnet de 10', '2006-11-07', 1, 1500, 'L’émission consacrée aux fleurs de cette année, qui comporte 2 timbres, met en vedette la Ranunculus asiaticus. Toujours très populaires, ces vignettes sont souvent utilisées pour les mariages, notamment sur les faire-part. Elles sont également fort appréciées des passionnés de jardinage. Ajoutez ce carnet de 10 timbres PermanentsMC au tarif du régime intérieur à votre collection ou offrez-le en cadeau.', 1, 3, 3, 4, 'usager3@gmail.com'),
-(56, 'Oiseaux des Fêtes – Geai bleu', 'Carnet de 6 timbres au tarif des envois à destination des États-Unis', '2013-10-11', NULL, 12000, '', 1, 1, 2, 6, 'usager1@gmail.com'),
-(57, '666', '', '2001-01-01', NULL, 0, '', NULL, 3, 2, 1, 'usager1@gmail.com');
+(56, 'Oiseaux des Fêtes – Geai bleu', 'Carnet de 6 timbres au tarif des envois à destination des États-Unis', '2013-10-11', NULL, 12000, '', 1, 1, 2, 6, 'usager1@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -240,7 +239,9 @@ CREATE TABLE `usager` (
 INSERT INTO `usager` (`id`, `password`, `alias`, `privilege_id`) VALUES
 ('usager1@gmail.com', '$2y$10$66ZIcE1YkeDrIyZXnGXO4ugUTxytr8gwt5yevRtGv2wJ.hOlo2hj6', 'Usager1', 2),
 ('usager2@gmail.com', '$2y$10$061qGoSnAE7TfJ8APTpNrOEdQPuVyX5IfvjSQifv/zfC/VOyRT1HW', 'Usager2', 2),
-('usager3@gmail.com', '$2y$10$hS.OYmgQdD1xyOTwYFwLg.dlQkWLi1fddX8rHVXfUlTTCutkipQmq', 'Usager3', 2);
+('usager3@gmail.com', '$2y$10$hS.OYmgQdD1xyOTwYFwLg.dlQkWLi1fddX8rHVXfUlTTCutkipQmq', 'Usager3', 2),
+('usager8@gmail.com', '$2y$10$X6.GwwyqPYpoImw76rMI4eoVxZ.u2Vk3X1vnojuDm2KhzkxGX6HrW', 'Usager8', 2),
+('usager9@gmail.com', '$2y$10$SSrxxd7AbpPcwjBEm/ZocuB8yccG4ZuDrYqEA.ZUrJMngTxbTWPT2', 'Usager9', 2);
 
 --
 -- Indexes for dumped tables
@@ -256,8 +257,8 @@ ALTER TABLE `dimension`
 -- Indexes for table `enchere`
 --
 ALTER TABLE `enchere`
-  ADD PRIMARY KEY (`id`,`timbre_id`),
-  ADD KEY `fk_enchere_timbre1_idx` (`timbre_id`);
+  ADD PRIMARY KEY (`id`,`timbre_id`,`createur_id`),
+  ADD KEY `fk_enchere_timbre1_idx` (`timbre_id`,`createur_id`);
 
 --
 -- Indexes for table `etat`
@@ -269,9 +270,9 @@ ALTER TABLE `etat`
 -- Indexes for table `favori`
 --
 ALTER TABLE `favori`
-  ADD PRIMARY KEY (`usager_id`,`enchere_id`),
+  ADD PRIMARY KEY (`usager_id`,`enchere_id`,`timbre_id`,`createur_id`),
   ADD KEY `fk_favori_usager1_idx` (`usager_id`),
-  ADD KEY `fk_favori_enchere1_idx` (`enchere_id`);
+  ADD KEY `fk_favori_enchere1_idx` (`enchere_id`,`timbre_id`,`createur_id`);
 
 --
 -- Indexes for table `image`
@@ -284,9 +285,9 @@ ALTER TABLE `image`
 -- Indexes for table `offre`
 --
 ALTER TABLE `offre`
-  ADD PRIMARY KEY (`id`,`enchere_id`,`usager_id`),
-  ADD KEY `fk_offre_enchere1_idx` (`enchere_id`),
-  ADD KEY `fk_offre_usager1_idx` (`usager_id`);
+  ADD PRIMARY KEY (`id`,`usager_id`,`enchere_id`),
+  ADD KEY `fk_offre_usager1_idx` (`usager_id`),
+  ADD KEY `fk_offre_enchere1_idx` (`enchere_id`);
 
 --
 -- Indexes for table `pays`
@@ -332,7 +333,7 @@ ALTER TABLE `dimension`
 -- AUTO_INCREMENT for table `enchere`
 --
 ALTER TABLE `enchere`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `etat`
@@ -344,7 +345,7 @@ ALTER TABLE `etat`
 -- AUTO_INCREMENT for table `image`
 --
 ALTER TABLE `image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `offre`
@@ -368,7 +369,7 @@ ALTER TABLE `privilege`
 -- AUTO_INCREMENT for table `timbre`
 --
 ALTER TABLE `timbre`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- Constraints for dumped tables
@@ -378,13 +379,13 @@ ALTER TABLE `timbre`
 -- Constraints for table `enchere`
 --
 ALTER TABLE `enchere`
-  ADD CONSTRAINT `fk_enchere_timbre1` FOREIGN KEY (`timbre_id`) REFERENCES `timbre` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_enchere_timbre1` FOREIGN KEY (`timbre_id`,`createur_id`) REFERENCES `timbre` (`id`, `createur_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `favori`
 --
 ALTER TABLE `favori`
-  ADD CONSTRAINT `fk_favori_enchere1` FOREIGN KEY (`enchere_id`) REFERENCES `enchere` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_favori_enchere1` FOREIGN KEY (`enchere_id`,`timbre_id`,`createur_id`) REFERENCES `enchere` (`id`, `timbre_id`, `createur_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_favori_usager1` FOREIGN KEY (`usager_id`) REFERENCES `usager` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --

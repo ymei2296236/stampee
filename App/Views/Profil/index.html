@@ -17,8 +17,7 @@
                 <div class="listeTimbres__timbre">
                     <div class="listeTimbres__image">
                         {% if timbre.enchere_id > 0  %}
-                        <a href="{{url_racine}}enchere/index/{{timbre.enchere_id}}">
-                        <!-- <a href="{{url_racine}}enchere/{{timbre.enchere_id}}"> -->
+                        <a href="{{url_racine}}enchere/show/{{timbre.enchere_id}}">
                         <img src="{{url_racine}}assets/img/jpg/{{ timbre.image }}" alt="Image du timbre {{timbre.nom}}">
                         </a>
                         {% else %}
@@ -55,7 +54,36 @@
         </div>
         <div class="listeTimbres__liste">
             <h2>Votre historique d'offre</h2>
-            
+            {% for offre in offres%}
+            <div class="listeTimbres__item">
+                {{ loop.index }}
+                <div class="listeTimbres__timbre">
+                    <div class="listeTimbres__image">
+                        {% if timbre.enchere_id > 0  %}
+                        <a href="{{url_racine}}enchere/show/{{timbre.enchere_id}}">
+                        <img src="{{url_racine}}assets/img/jpg/{{ timbre.image }}" alt="Image du timbre {{timbre.nom}}">
+                        </a>
+                        {% else %}
+                        <img src="{{url_racine}}assets/img/jpg/{{ timbre.image }}" alt="Image du timbre {{timbre.nom}}">
+                        {% endif %}
+                    </div>
+                    {{ timbre.timbre_nom }} 
+                </div>
+
+                <div class="listeTimbres__actions">
+                    <span>Votre mise :  {{timbre.prix_plancher}} $</span>
+                    <span>Date de fin : {{timbre.date_fin}}</span>
+                    <form action="updateTimbre" method="post">
+                        <input type="hidden" name="timbre_id" value="{{timbre.timbre_id}}">
+                        <button class="btn btn--icon-text "><i class="fa-solid fa-pen"></i>Modifier</button>
+                    </form>
+                    <form action="deleteTimbre" method="post">
+                        <input type="hidden" name="timbre_id" value="{{timbre.timbre_id}}">
+                        <button class="btn btn--icon-text "><i class="fa-solid fa-trash"></i>Retirer</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor%}
         </div>
     </div>
 </main>

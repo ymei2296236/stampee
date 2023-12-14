@@ -6,6 +6,7 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Config;
 use \App\Models\Timbre;
+use \App\Models\Offre;
 use \App\Models\Enchere;
 use \App\Models\Image;
 use \App\Models\Etat;
@@ -29,6 +30,9 @@ class Profil extends \Core\Controller
         
         $timbre = new Timbre;
         $timbres = $timbre->selectTimbreParUsager($_SESSION['user_id']);
+
+        $offre = new Offre;
+        $offres = $offre->selectOffresParUsager($_SESSION['user_id']);
         
         $image = new Image;
         $i=0;
@@ -47,7 +51,7 @@ class Profil extends \Core\Controller
             $i++;
         }
         
-        View::renderTemplate('Profil/index.html', ['timbres'=>$timbres]);
+        View::renderTemplate('Profil/index.html', ['timbres'=>$timbres, 'offres'=>$offres]);
 
     }
 

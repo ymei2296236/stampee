@@ -28,11 +28,11 @@
             <table>
                 <tr>
                     <th>Mise courante </th>
-                    <td class="mise__prix-courant">18<small class="prix_decimal">30 $</small></td>
+                    <td class="mise__prix-courant">{{offreDerniere.prix}}</td>
                 </tr>
                 <tr>
                     <th>Nombres de mises</th>
-                    <td>3</td>
+                    <td>{{nbOffres}}</td>
                 </tr>
                 <tr>
                     <th>Se termine au</th>
@@ -48,13 +48,22 @@
                 </tr>
             </table>
 
-            <form action="produit.html">
+            {% if session.user_id != enchere.createur %}
+            <form action="{{url_racine}}enchere/createOffre" method="post" novalidate>
+                <input type="hidden" name="usager_id" value="{{session.user_id}}">
+                <input type="hidden" name="enchere_id" value="{{enchere.enchere_id}}">
                 <fieldset>
-                    <label for="mise-value" class="mise-lable">Votre mise</label>
-                    <input id="mise-value" type="number">
-                    <button aria-label="Miser" class="btn btn--principal item__btn">Miser</button>
+                    <label for="prix" class="mise-lable">Votre mise</label>
+                    <input id="prix" type="number" name="prix">
                 </fieldset>
+                <ul class="msg-error">
+                    {% if errors is defined %}
+                        <li>{{ errors | raw }}</li>
+                    {% endif %}
+                </ul>
+                <button type="submit" aria-label="Miser" class="btn btn--principal item__btn">Miser</button>
             </form>
+            {% endif %}
             <div class="btn btn--icon-text favoris">
                 <i class="fa-regular fa-star fa-lg"></i>
                 <p class="note">Mettre en favoris</p>

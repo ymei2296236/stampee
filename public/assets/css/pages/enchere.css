@@ -57,16 +57,30 @@
 			width: 100%;
 			display: flex;
 			flex-direction: column;
-			gap: var(--espace-1);
 			border-top: 1px solid var(--coul-principale);
 			margin-top: var(--espace-1);
+			padding-top: var(--espace-1);
+
+			& .msg-error {
+				color: var(--coul-texte-erreur);
+
+				& li {
+					padding: var(--espace-quart) 0;
+					line-height: 1.4rem;
+					text-decoration: none;
+				}
+			}
+
+			& fieldset {
+				padding: 0;
+			}
 
 			& input {
 				width: 100%;
 			}
 
 			& button {
-				margin-top: var(--espace-1half);
+				margin-top: var(--espace-1);
 			}
 		}
 

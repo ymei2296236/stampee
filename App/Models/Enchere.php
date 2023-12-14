@@ -31,14 +31,7 @@ class Enchere extends CRUD
     {
         $db = static::getDB();
 
-        $sql = 
-        "SELECT timbre.id AS timbre_id, timbre.nom AS timbre_nom, enchere.id AS enchere_id, date_debut, date_fin, prix_plancher
-        FROM $this->table 
-        LEFT JOIN timbre 
-        ON timbre.id = enchere.timbre_id  
-        WHERE enchere.id = '$enchereId'";     
-
-        $sql2=
+        $sql=
         "SELECT timbre.id AS timbre_id, 
         timbre.nom AS timbre_nom, 
         timbre.nom_2 AS timbre_nom_2,
@@ -62,11 +55,13 @@ class Enchere extends CRUD
         WHERE enchere.id = '$enchereId'
         ";
 
-        $stmt = $db->query($sql2);
+        $stmt = $db->query($sql);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     }
+
+
 }
 
 
