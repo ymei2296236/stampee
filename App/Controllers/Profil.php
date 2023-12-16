@@ -31,15 +31,18 @@ class Profil extends \Core\Controller
         $timbre = new Timbre;
         $timbres = $timbre->selectTimbreParUsager($_SESSION['user_id']);
 
+        $enchere = new Enchere;
+
         $offre = new Offre;
         $offres = $offre->selectOffresParUsager($_SESSION['user_id']);
-        
+
         $image = new Image;
         $i=0;
         
         foreach($timbres as $timbre)
         {
             $selectImage = $image->selectByField('timbre_id', $timbre['timbre_id']);
+
             if($selectImage)
             {
                 $timbres[$i]['image'] = $selectImage[0]['nom'];
@@ -51,8 +54,29 @@ class Profil extends \Core\Controller
             $i++;
         }
         
+        $i=0;
+        
+        foreach($offres as $offreSingle)
+        {    
+            $enchereSelect = $enchere->selectEnchereParId($offreSingle['enchere_id']);  
+            
+            $offresToutes = $offre->selectOffreParEnchere($offreSingle['enchere_id']);
+            $offreDerniere = $offresToutes[0];
+            
+            $imagesTimbre = $image->selectByField('timbre_id', $enchereSelect['timbre_id']);
+            $imageTimbre = $imagesTimbre[0];
+            
+            $offres[$i]['timbre_id'] = $enchereSelect['timbre_id'];
+            $offres[$i]['timbre_nom'] = $enchereSelect['timbre_nom'];
+            $offres[$i]['image'] = $imageTimbre['nom'];
+            $offres[$i]['date_fin'] = $enchereSelect['date_fin'];
+            $offres[$i]['mise_courante'] = $offreDerniere['prix'];
+     
+            $i++;
+        }      
+        // echo "<pre>";
+        // print_r($offres);
         View::renderTemplate('Profil/index.html', ['timbres'=>$timbres, 'offres'=>$offres]);
-
     }
 
 
@@ -166,7 +190,11 @@ class Profil extends \Core\Controller
         if(isset($_POST['timbre_id']))
         {
             $timbre_id = $_POST['timbre_id'];
-            View::renderTemplate('Profil/createEnchere.html', ['timbre_id'=>$timbre_id]);
+            $image = new Image;
+            $images = $image->selectByField('timbre_id', $timbre_id);
+
+            
+            View::renderTemplate('Profil/createEnchere.html', ['timbre_id'=>$timbre_id, 'images'=>$images]);
         }
         else
         {
@@ -179,6 +207,11 @@ class Profil extends \Core\Controller
     {
         CheckSession::sessionAuth(FALSE);
         extract($_POST);
+
+
+        $timbre_id = $_POST['timbre_id'];
+        $image = new Image;
+        $images = $image->selectByField('timbre_id', $timbre_id);
 
         // Valider les champs
         $validation = new Validation;
@@ -212,17 +245,23 @@ class Profil extends \Core\Controller
                 $msg[]= 'La date de fin ne peut pas être antérieure à la date de début';
             }
         }
- 
+
         $validation->name('Prix plancher')->value($prix_plancher)->required();
 
         if(!$validation->isSuccess()) 
         {
             $errors = $validation->displayErrors();
         }
+
+
+        if(!isset($_POST['imagePrincipale']))
+        {
+            $msg[] = 'Vous devez sélectionner une image principale';
+        }
         
         if ($errors || $msg) 
         {
-            View::renderTemplate('Profil/createEnchere.html', ['errors'=> $errors, 'msgs'=>$msg, 'enchere'=>$_POST]);
+            View::renderTemplate('Profil/createEnchere.html', ['errors'=> $errors, 'msgs'=>$msg, 'enchere'=>$_POST, 'timbre_id'=>$timbre_id, 'images'=>$images]);
             exit();
         }
         else
@@ -232,15 +271,19 @@ class Profil extends \Core\Controller
             
             if ($checkEnchere)
             {
-                View::renderTemplate('Profil/createEnchere.html', ['errors'=>$checkEnchere, 'enchere'=>$_POST]);
+                View::renderTemplate('Profil/createEnchere.html', ['errors'=>$checkEnchere, 'enchere'=>$_POST, 'timbre_id'=>$timbre_id, 'images'=>$images]);
             }
             // insère le film à la base de données
             else
             {
+                // print_r($_POST);
+                $images = $image->updateImage($_POST['imagePrincipale'], $timbre_id);
                 $insertEnchere = $enchere->insert($_POST);
                 RequirePage::url('profil/index');
                 exit();    
             }
+
+
         }
     }
 

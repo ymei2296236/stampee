@@ -33,39 +33,64 @@ class Enchere extends \Core\Controller
 
         $id = $this->route_params['id'];
         $enchere = new \App\Models\Enchere();
-        $selectEnchere = $enchere->selectEnchereParUsager($id);
+        $selectEnchere = $enchere->selectEnchereParId($id);
 
         $image = new Image;
-        $images = $image->selectByField('timbre_id', $selectEnchere[0]['timbre_id']);
+        $images = $image->selectByField('timbre_id', $selectEnchere['timbre_id'], 'principal', 'DESC');
         
         $offre = new Offre;
-        $selectOffre = $offre->selectOffreParEnchere($selectEnchere[0]['enchere_id']);
-        $nbOffres = $offre->countOffres($selectEnchere[0]['enchere_id']);
+        $selectOffre = $offre->selectOffreParEnchere($selectEnchere['enchere_id']);
 
-        View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $selectEnchere[0], 'images'=>$images, 'offreDerniere'=> $selectOffre[0], 'nbOffres'=>$nbOffres]);
+        // echo "<pre> <br>";
+        // print_r($selectOffre);
+        // echo "<br>";
+
+        if($selectOffre)
+        {
+            $offreDerniere = $selectOffre[0]['prix'];
+        }
+        else
+        {
+            $offreDerniere = $selectEnchere['prix_plancher'];
+        }
+        $nbOffres = $offre->countOffres($selectEnchere['enchere_id']);
+        
+        // print_r($offreDerniere);
+
+        View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $selectEnchere, 'images'=>$images, 'offreDerniere'=> $offreDerniere, 'nbOffres'=>$nbOffres]);
     }
 
     public function createOffreAction()
     {
         CheckSession::sessionAuth(FALSE);
         $errors = '';
+        echo "<pre>";
 
         extract($_POST);
 
-        $validation = new Validation;
-        $validation->name('Votre mise')->value($prix)->required();
-
         $id = $_POST['enchere_id'];
         $enchere = new \App\Models\Enchere();
-        $selectEnchere = $enchere->selectEnchereParUsager($id);
-
+        $selectEnchere = $enchere->selectEnchereParId($id);
+        
         $image = new Image;
-        $images = $image->selectByField('timbre_id', $selectEnchere[0]['timbre_id']);
-
+        $images = $image->selectByField('timbre_id', $selectEnchere['timbre_id'], 'principal', 'DESC');
+        
         $offre = new Offre;
-        $selectOffre = $offre->selectOffreParEnchere($selectEnchere[0]['enchere_id']);
-        $nbOffres = $offre->countOffres($selectEnchere[0]['enchere_id']);
+        $selectOffre = $offre->selectOffreParEnchere($selectEnchere['enchere_id']);
+        
+        if($selectOffre)
+        {
+            $offreDerniere = $selectOffre;
+        }
+        else
+        {
+            $offreDerniere = $selectEnchere['prix_plancher'];
+        }
+        
+        $nbOffres = $offre->countOffres($selectEnchere['enchere_id']);
 
+        $validation = new Validation;
+        $validation->name('Votre mise')->value($prix)->required();
 
         if(!$validation->isSuccess()) 
         {
@@ -73,9 +98,9 @@ class Enchere extends \Core\Controller
         } 
         else{
 
-            if($prix <= $selectOffre[0]['prix'])
+            if($prix <= $offreDerniere)
             {
-                $errors = 'Votre mise doit être plus grande que la mise courante '. $selectOffre[0]['prix'] .' $.';
+                $errors = 'Votre mise doit être plus grande que la mise courante '. $offreDerniere .' $.';
             }
             else
             {
@@ -89,7 +114,7 @@ class Enchere extends \Core\Controller
             }
         }
 
-        View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $selectEnchere[0], 'images'=>$images, 'offreDerniere'=> $selectOffre[0], 'nbOffres'=>$nbOffres]);
+        View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $selectEnchere, 'images'=>$images, 'offreDerniere'=> $offreDerniere, 'nbOffres'=>$nbOffres]);
 
     }
 }

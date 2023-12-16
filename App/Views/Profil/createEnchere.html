@@ -22,14 +22,25 @@
         <input type="hidden" name="timbre_id" {% if timbre_id is defined %} value="{{timbre_id}}" {% else %} value="{{enchere.timbre_id}}" {% endif %}>
         <input type="hidden" name="createur_id" value="{{session.user_id}}">
 
-        <label for="date_debut">Date de début</label>
+        <label for="date_debut">Date de début <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <input type="date" id="date_debut" name="date_debut" {% if enchere.date_debut %} value="{{enchere.date_debut}}"{% endif %} ></input>  
 
-        <label for="date_fin">Date de fin</label>
+        <label for="date_fin">Date de fin <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <input type="date" id="date_fin" name="date_fin" {% if enchere.date_fin %} value="{{enchere.date_fin}}" {% else %} value="'now'|date('d-m-Y')" {% endif %} ></input>  
 
-        <label for="prix_plancher">Prix plancher</label>
+        <label for="prix_plancher">Prix plancher <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <input type="number" step="0.01" id="prix_plancher" name="prix_plancher" {% if enchere.prix_plancher %} value="{{enchere.prix_plancher}}" {% else %}value="" {% endif %}> </input>  
+
+        <fieldset class="radioImg">
+            <span>Choississez image principale <i class="fa-solid fa-star-of-life fa-2xs"></i></span>
+            {% for image in images %}
+            <label class="radioImg__label"> 
+                <input type="radio" value="{{ image.nom }}" name="imagePrincipale" class="radioImg__radio"/>
+                <img src="{{url_racine}}assets/img/jpg/{{ image.nom }}" alt="Image du timbre {{image.nom}}">
+            </label>          
+            {% endfor %}
+        </fieldset>
+
 
         <button type="submit" class="btn btn--principal" aria-label="Enregistrer">
             Terminer

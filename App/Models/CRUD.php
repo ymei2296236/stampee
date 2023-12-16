@@ -35,11 +35,11 @@ abstract class CRUD extends \Core\Model
         else View::renderTemplate('404.html');
     }
 
-    public function selectByField($column, $value)
+    public function selectByField($column, $value, $field='id', $order='ASC')
     {
         $db = static::getDB();
 
-        $sql="SELECT * FROM $this->table WHERE $column = '$value'";
+        $sql="SELECT * FROM $this->table WHERE $column = '$value' ORDER BY $field $order" ;
         $stmt = $db->query($sql);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

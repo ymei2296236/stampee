@@ -50,17 +50,19 @@ class Offre extends CRUD
         $db = static::getDB();
     
         $sql = 
-        "SELECT offre.id AS offre_id, prix, usager_id
+        "SELECT max(prix) AS prix, usager_id, enchere_id
         FROM $this->table 
         LEFT JOIN usager 
         ON offre.usager_id = usager.id 
         WHERE offre.usager_id = '$usagerId'
-        ORDER BY offre.id";    
+        GROUP BY enchere_id
+        ";   
         
         $stmt = $db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
+
 
 
 ?>

@@ -33,17 +33,21 @@ class Usager extends \Core\Controller
         $errors='';       
         $usager = new \App\Models\Usager;
  
-
+        // echo "<pre>";
+        
         $validation->name('Utilisateur')->value($id)->max(50)->required()->pattern('email');
-
+        
         if(!$validation->isSuccess()) 
         {
             $errors = $validation->displayErrors();
         }
         else
         {
-            $checkUser = $usager->checkDuplicate('id', $_POST['id']);
-            if ($checkUser) $msg[] = $checkUser;
+            if($id) 
+            {
+                $checkUser = $usager->checkDuplicate('id', $id);
+                if ($checkUser) $msg[] = $checkUser;
+            }
         }
 
         $validation->name('Mot de passe')->value($password)->max(20)->min(5);
@@ -113,7 +117,6 @@ class Usager extends \Core\Controller
         // si donnée saisie n'est pas valide, afficher le message
         // si valide, rédiriger ver l'accueil (chemain défini dans $usager->checkUser)
         View::renderTemplate('Usager/login.html', ['errors'=>$checkUser, 'user'=>$_POST]);
-
     }
 
     public function logoutAction()

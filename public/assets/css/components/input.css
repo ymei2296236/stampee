@@ -94,7 +94,6 @@ select:focus {
 legend,
 .labelBold {
 	flex: 100%;
-	font-weight: bold;
 	font-family: var(--police-texte);
 	font-size: var(--texte-xs);
 	font-weight: bold;

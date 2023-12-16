@@ -13,13 +13,12 @@ class Usager extends CRUD
     protected $fillable = ['id', 'password', 'alias', 'privilege_id'];
 
     // valider l'inscription
-    public function checkDuplicate($field='id', $value) 
+    public function checkDuplicate($field, $value) 
     {
         $db = static::getDB();
 
         $sql = "SELECT * FROM $this->table WHERE $field = '$value'";
-        $stmt = $db->prepare($sql);
-        $stmt->execute(array($value));
+        $stmt = $db->query($sql);
         $count = $stmt->rowCount();
 
         if($count === 1) {
@@ -33,9 +32,8 @@ class Usager extends CRUD
     {
         $db = static::getDB();
 
-        $sql = "SELECT * FROM $this->table WHERE id = ?";
-        $stmt = $db->prepare($sql);
-        $stmt->execute(array($id));
+        $sql = "SELECT * FROM $this->table WHERE id = '$id'";
+        $stmt = $db->query($sql);
         $count = $stmt->rowCount();
 
         if($count === 1) {

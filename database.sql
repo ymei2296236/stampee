@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Dec 13, 2023 at 11:26 PM
+-- Generation Time: Dec 14, 2023 at 11:11 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.4.2
 
@@ -139,6 +139,15 @@ CREATE TABLE `offre` (
   `usager_id` varchar(45) NOT NULL,
   `enchere_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `offre`
+--
+
+INSERT INTO `offre` (`id`, `prix`, `usager_id`, `enchere_id`) VALUES
+(1, 22, 'usager1@gmail.com', 29),
+(2, 33, 'usager1@gmail.com', 29),
+(3, 33.1, 'usager2@gmail.com', 29);
 
 -- --------------------------------------------------------
 
@@ -345,13 +354,13 @@ ALTER TABLE `etat`
 -- AUTO_INCREMENT for table `image`
 --
 ALTER TABLE `image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `offre`
 --
 ALTER TABLE `offre`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `pays`
@@ -369,7 +378,7 @@ ALTER TABLE `privilege`
 -- AUTO_INCREMENT for table `timbre`
 --
 ALTER TABLE `timbre`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- Constraints for dumped tables
