@@ -48,7 +48,7 @@
                 </tr>
             </table>
 
-            {% if session.user_id != enchere.createur %}
+            {% if session.user_id != enchere.createur_id %}
             <form action="{{url_racine}}enchere/createOffre" method="post" novalidate>
                 <input type="hidden" name="enchere_id" value="{{enchere.enchere_id}}">
                 <fieldset>

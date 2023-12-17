@@ -69,16 +69,21 @@ abstract class CRUD extends \Core\Model
 
     public function delete($value)
     {
+        $db = static::getDB();
+
         $sql = "DELETE FROM $this->table WHERE $this->primaryKey = :$this->primaryKey";
-        $stmt = $this->prepare($sql);
+        $stmt = $db->prepare($sql);
         $stmt->bindValue(":$this->primaryKey", $value);
 
         if($stmt->execute()) return true;
         else return $stmt->errorInfo();
+
     }
 
     public function update($data)
     { 
+        $db = static::getDB();
+
         $queryField = null;
 
         foreach($data as $key=>$value)
@@ -89,7 +94,7 @@ abstract class CRUD extends \Core\Model
         
         $sql = "UPDATE $this->table SET $queryField WHERE $this->primaryKey = :$this->primaryKey";
 
-        $stmt = $this->prepare($sql);
+        $stmt = $db->prepare($sql);
 
         foreach($data as $key => $value)
         {

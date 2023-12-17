@@ -60,6 +60,7 @@ class Enchere extends CRUD
         timbre.nom_2 AS timbre_nom_2,
         enchere.id AS enchere_id, 
         etat.nom AS etat, 
+        usager.id AS createur_id,
         usager.alias AS createur,
         pays.nom AS pays,
         date_debut, date_fin, prix_plancher, date_emission, tirage, extrait

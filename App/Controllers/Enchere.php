@@ -71,10 +71,11 @@ class Enchere extends \Core\Controller
         if($_SESSION) $usager_id = $_SESSION['user_id'];
         else $usager_id = '';
 
+        
         $id = $this->route_params['id'];
         $enchere = new \App\Models\Enchere();
         $selectEnchere = $enchere->selectEnchereParId($id);
-
+        
         $image = new Image;
         $images = $image->selectByField('timbre_id', $selectEnchere['timbre_id'], 'principal', 'DESC');
         

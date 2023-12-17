@@ -59,6 +59,7 @@ class Profil extends \Core\Controller
         foreach($offres as $offreSingle)
         {    
             $enchereSelect = $enchere->selectEnchereParId($offreSingle['enchere_id']);  
+
             
             $offresToutes = $offre->selectOffreParEnchere($offreSingle['enchere_id']);
             $offreDerniere = $offresToutes[0];
@@ -70,10 +71,11 @@ class Profil extends \Core\Controller
             $offres[$i]['image'] = $images[0]['nom'];
             $offres[$i]['date_fin'] = $enchereSelect['date_fin'];
             $offres[$i]['mise_courante'] = $offreDerniere['prix'];
-     
+            $offres[$i]['offre_id'] = $offreDerniere['offre_id'];
+            
             $i++;
         }      
-
+        
         View::renderTemplate('Profil/index.html', ['timbres'=>$timbres, 'offres'=>$offres, 'usager_id'=>$_SESSION['user_id']]);
     }
 
@@ -92,6 +94,7 @@ class Profil extends \Core\Controller
         $tousPays = $pays->select('nom');
 
         View::renderTemplate('Profil/createTimbre.html', ['etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'usager_id'=>$_SESSION['user_id']]);
+
     }
 
     public function storeTimbreAction()
@@ -174,10 +177,11 @@ class Profil extends \Core\Controller
                     
                     $image = new Image;
                     $insertImage = $image->insert($_POST);
+                    $images = $image->selectByField('timbre_id', $insertTimbre);
                 }
             }
 
-            View::renderTemplate('Profil/createEnchere.html', ['timbre_id'=>$insertTimbre, 'usager_id'=>$_SESSION['user_id']]);
+            View::renderTemplate('Profil/createEnchere.html', ['timbre_id'=>$insertTimbre, 'images'=> $images, 'usager_id'=>$_SESSION['user_id']]);
             exit();    
         }
     }
@@ -276,7 +280,6 @@ class Profil extends \Core\Controller
             // insère le film à la base de données
             else
             {
-                // print_r($_POST);
                 $images = $image->updateImage($_POST['imagePrincipale'], $timbre_id);
 
                 $_POST['createur_id'] = $_SESSION['user_id'];
@@ -287,5 +290,75 @@ class Profil extends \Core\Controller
             }
         }
     }
+
+
+    public function deleteTimbreAction()
+    {
+        // echo "<pre>";
+        $id = $this->route_params['id'];
+        
+        $timbre = new Timbre;
+        $timbreSelect = $timbre->selectId($id);
+        
+        if ($timbreSelect)
+        {
+            $enchere = new Enchere;
+            $enchereSelect = $enchere->selectByField('timbre_id', $id);
+            
+            if($enchereSelect) 
+            {
+                $enchereId = $enchereSelect[0]['id'];
+                
+                $offre = new Offre;
+                $offres = $offre->selectByField('enchere_id', $enchereId, 'prix', 'DESC');
+                
+                if($offres) 
+                {
+                    $i = 0; 
+                    foreach($offres as $offreSelect)
+                    {
+                        $delete = $offre->delete($offres[$i]['id']);
+                        $i++;
+                    }
+                }
+                
+                $delete = $enchere->delete($enchereId);
+            }
+            
+            $image = new Image;
+            $images = $image->selectByField('timbre_id', $id);
+            
+            foreach($images as $imageSelect)
+            {
+                $delete = $image->delete($imageSelect['id']);
+            }        
+        }
+        $delete = $timbre->delete($id );
+
+        $timbres = $timbre->selectTimbreParUsager($_SESSION['user_id']);
+        $offre = new Offre;
+        $offres = $offre->selectOffresParUsager($_SESSION['user_id']);
+
+        RequirePage::url('profil/index');
+        exit();   
+    }
+
+    public function deleteOffreAction()
+    {
+        $enchere_id = $this->route_params['id'];
+        
+        $offre = new Offre;
+
+        $offresParEnchere= $offre->selectOffresParUsagerEnchere($_SESSION['user_id'], $enchere_id);
+
+        foreach($offresParEnchere as $offreParEnchere)
+        {
+            $delete = $offre->delete($offreParEnchere['offre_id']);
+        }
+
+        RequirePage::url('profil/index');
+        exit();   
+    }
+
 
 }

@@ -40,11 +40,11 @@
                     <span>Prix plancher :  {{timbre.prix_plancher}} $</span>
                     <span>Date de fin : {{timbre.date_fin}}</span>
                     {% endif %}
-                    <form action="updateTimbre" method="post">
+                    <form action="updateTimbre/{{timbre.timbre_id}}" method="post">
                         <input type="hidden" name="timbre_id" value="{{timbre.timbre_id}}">
                         <button class="btn btn--icon-text "><i class="fa-solid fa-pen"></i>Modifier</button>
                     </form>
-                    <form action="deleteTimbre" method="post">
+                    <form action="deleteTimbre/{{timbre.timbre_id}}" method="post">
                         <input type="hidden" name="timbre_id" value="{{timbre.timbre_id}}">
                         <button class="btn btn--icon-text "><i class="fa-solid fa-trash"></i>Retirer</button>
                     </form>
@@ -71,11 +71,11 @@
                     <span>Mise courante : {{offre.mise_courante}} $</span>
                     <span>Date de fin : {{offre.date_fin}}</span>
                     <a href="{{url_racine}}enchere/show/{{offre.enchere_id}}" class="btn btn--secondaire">Faire une autre mise</a>
-                    <form action="updateTimbre" method="post">
+                    <form action="updateOffre/{{offre.enchere_id}}" method="post">
                         <input type="hidden" name="timbre_id" value="{{offre.timbre_id}}">
                         <button class="btn btn--icon-text "><i class="fa-solid fa-pen"></i>Modifier</button>
                     </form>
-                    <form action="deleteTimbre" method="post">
+                    <form action="deleteOffre/{{offre.enchere_id}}" method="post">
                         <input type="hidden" name="timbre_id" value="{{offre.timbre_id}}">
                         <button class="btn btn--icon-text "><i class="fa-solid fa-trash"></i>Retirer</button>
                     </form>
