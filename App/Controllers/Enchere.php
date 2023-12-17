@@ -22,6 +22,43 @@ use \App\Library\Validation;
  */
 class Enchere extends \Core\Controller
 {
+
+
+    public function indexAction() 
+    {
+        $enchere = new \App\Models\Enchere();
+        $encheres = $enchere->select();
+
+        $image = new Image;
+
+        $i = 0;
+
+        foreach($encheres as $enchereSelect)
+        {
+            $enchereChaque = $enchere->selectId($enchereSelect['id']);
+            $images = $image->selectByField('timbre_id', $enchereSelect['timbre_id'], 'principal', 'DESC');
+
+            // echo "<pre>";
+            // print_r($images);
+            
+            $encheres[$i]['timbre_nom'] = $enchereChaque['timbre_nom'];
+            $encheres[$i]['timbre_nom_2'] = $enchereChaque['timbre_nom_2'];
+            $encheres[$i]['image'] = $images[0]['nom'];
+
+            if($enchereChaque['prix']) $encheres[$i]['prix'] = $enchereChaque['prix'];
+            else $encheres[$i]['prix'] = $encheres[$i]['prix_plancher'];
+
+            $i++;
+        }
+        // print_r($encheres);
+
+        if($_SESSION) $usager_id = $_SESSION['user_id'];
+        else $usager_id = '';
+
+        View::renderTemplate('Enchere/index.html', ['usager_id'=>$usager_id, 'encheres'=>$encheres]);
+
+    }
+
     /**
      * Show the index page
      *
@@ -30,6 +67,9 @@ class Enchere extends \Core\Controller
     public function showAction()
     {
         $errors = '';
+
+        if($_SESSION) $usager_id = $_SESSION['user_id'];
+        else $usager_id = '';
 
         $id = $this->route_params['id'];
         $enchere = new \App\Models\Enchere();
@@ -41,10 +81,6 @@ class Enchere extends \Core\Controller
         $offre = new Offre;
         $selectOffre = $offre->selectOffreParEnchere($selectEnchere['enchere_id']);
 
-        // echo "<pre> <br>";
-        // print_r($selectOffre);
-        // echo "<br>";
-
         if($selectOffre)
         {
             $offreDerniere = $selectOffre[0]['prix'];
@@ -55,16 +91,13 @@ class Enchere extends \Core\Controller
         }
         $nbOffres = $offre->countOffres($selectEnchere['enchere_id']);
         
-        // print_r($offreDerniere);
-
-        View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $selectEnchere, 'images'=>$images, 'offreDerniere'=> $offreDerniere, 'nbOffres'=>$nbOffres,'usager_id'=>$_SESSION['user_id']]);
+        View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $selectEnchere, 'images'=>$images, 'offreDerniere'=> $offreDerniere, 'nbOffres'=>$nbOffres,'usager_id'=>$usager_id]);
     }
 
     public function createOffreAction()
     {
         CheckSession::sessionAuth(FALSE);
         $errors = '';
-        // echo "<pre>";
 
         extract($_POST);
 
@@ -86,7 +119,6 @@ class Enchere extends \Core\Controller
         {
             $offreDerniere = $selectEnchere['prix_plancher'];
         }
-        print_r($offreDerniere);
 
         $nbOffres = $offre->countOffres($selectEnchere['enchere_id']);
 

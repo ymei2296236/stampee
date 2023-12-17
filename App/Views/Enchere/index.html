@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}Votre Compte{% endblock %}
+
+{% block body %}
+<main data-page="catalogue">
+    <aside class="filtres">
+        <div class="filtres__titre-container">
+            <div class="filtres__titre-titre">
+                <i class="fa-solid fa-sliders"></i>
+                <h3>Filtres</h3>
+            </div>
+            <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <form class="filtres__form" action="catalogue.html">
+            <div class="filtres__btns">
+                <button type="submit" class="btn btn--secondaire" aria-label="Appliquer les filtres">
+                    Appliquer les filtres 
+                </button>
+                <button type="reset" class="btn btn--icon-text" aria-label="Effacer tous les filtres">
+                    <i class="fa-solid fa-trash"></i>
+                    Effacer tous les filtres 
+                </button>
+            </div>
+            <fieldset>
+                <legend>Condition</legend>
+                
+                <input type="checkbox" id="condition1" name="condition1" value="parfaite" >
+                <label for="condition1">Parfaite</label>
+                <input type="checkbox" id="condition2" name="condition2" value="excellente" >
+                <label for="condition2">Excellente</label>
+                <input type="checkbox" id="condition3" name="condition3" value="bonne" >
+                <label for="condition3">Bonne</label>
+                <input type="checkbox" id="condition4" name="condition4" value="moyenne" >
+                <label for="condition4">Moyenne</label>
+                <input type="checkbox" id="condition5" name="condition5" value="endommagé" >
+                <label for="condition5">Endommagé</label>
+            </fieldset>
+
+            <fieldset>
+                <label for="pays" class="labelBold">Pays</label>
+                <select name="pays" id="pays">
+                    <option value="">Faire un choix</option>
+                    <option value="canada">Canada</option>
+                    <option value="royaume-uni">Royaume-Uni</option>
+                    <option value="étatsunis">États-Unis</option>
+                    <option value="algérie">Algérie</option>
+                </select>
+            </fieldset>
+
+            <fieldset>
+                <legend>Prix</legend>
+                <input type="checkbox" id="prix1" name="prix1" value="1" >
+                <label for="prix1">1 ¢ - 99 ¢</label>
+                <input type="checkbox" id="prix2" name="prix2" value="2" >
+                <label for="prix2">1,00 $  - 9,99 $</label>
+                <input type="checkbox" id="prix3" name="prix3" value="3" >
+                <label for="prix3">10,00 $  - 24,99 $</label>
+                <input type="checkbox" id="prix4" name="prix4" value="4" >
+                <label for="prix4">25,00 $ - 49,99 $</label>
+                <input type="checkbox" id="prix5" name="prix5" value="5" >
+                <label for="prix5">50 $ et plus</label>
+            </fieldset>
+
+            <fieldset>
+                <legend>Dimension</legend>
+                <input type="checkbox" id="dimension1" name="dimension1" value="rouleau" >
+                <label for="dimension1">Rouleau</label>
+                <input type="checkbox" id="dimension2" name="dimension2" value="carnet" >
+                <label for="dimension2">Carnet</label>
+                <input type="checkbox" id="dimension3" name="dimension3" value="feuillet" >
+                <label for="dimension3">Feuillet</label>
+                <input type="checkbox" id="dimension4" name="dimension4" value="bande" >
+                <label for="dimension4">Bande</label>
+                <input type="checkbox" id="dimension5" name="dimension5" value="simple" >
+                <label for="dimension5">Simple</label>
+            </fieldset>
+
+
+        </form>
+    </aside>
+
+    <div class="liste">
+        <div class="tri">
+            <p class="note">1 à 24 de 74 résultats</p>
+            <form action="catalogue.html">
+                <fieldset class="tri__fieldset">
+                    <label class="labelBold" for="tri">Trier par</label>
+                    <select name="tri" id="tri" >
+                        <option value="1">Enchères en cours</option>
+                        <option value="2">Prix le plus bas</option>
+                        <option value="3">Prix le plus élévé</option>
+                        <option value="4">Nouveautés</option>
+                        <option value="5">Enchères archivées</option>
+                    </select>
+                </fieldset>
+            </form>
+        </div>
+        <div class="liste__contenu">   
+            {% for enchere in encheres %}
+            <div class="item">
+                <a href="{{url_racine}}enchere/show/{{enchere.id}}" class="item__lien">
+                    <div class="item__coups-de-coeur"></div>
+                    <div class="item__contenu">
+                        <div class="item__img"><img src="{{url_racine}}assets/img/jpg/{{ enchere.image }}" alt="Image du timbre"></div>
+                        <p class="item__description">{{enchere.timbre_nom}} {{enchere.timbre_nom_2}}</p>
+                        <div class="prix">
+                            <p class="prix__description">Mise courante</p>
+                            <p class="prix__montant">{{enchere.prix}}<small class="prix_decimal"> $</small></p>
+                        </div>
+                        <span class="btn btn--principal item__btn">Miser</span>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+
+        </div>
+        <div class="pagination"> 
+            <fieldset>
+                <input type="radio" value="1" name="page" id="radio-page1"  />
+                <label for="radio-page1">1</label>
+                <input type="radio" value="2" name="page" id="radio-page2"  />
+                <label for="radio-page2">2</label>
+                <input type="radio" value="3" name="page" id="radio-page3"  />
+                <label for="radio-page3">3</label>
+                <input type="radio" value="4" name="page" id="radio-page4"  />
+                <label for="radio-page4">4</label>
+            </fieldset>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

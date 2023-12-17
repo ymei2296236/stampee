@@ -21,14 +21,17 @@ class Usager extends \Core\Controller
      * @return void
      */
     public function createAction()
-    {     
-        View::renderTemplate('Usager/create.html', ['usager_id'=>$_SESSION['user_id']]);
+    {    
+        session_destroy();
+
+        View::renderTemplate('Usager/create.html');
     }
 
     public function storeAction()
     {
         $validation = new Validation;
         extract($_POST);
+
         $msg=[];        
         $errors='';       
         $usager = new \App\Models\Usager;
@@ -71,7 +74,7 @@ class Usager extends \Core\Controller
 
         if($errors || $msg)
         {
-            View::renderTemplate('Usager/create.html', ['errors'=>$errors, 'msgs'=>$msg, 'usager'=>$_POST['id'], 'alias'=>$_POST['alias'],'usager_id'=>$_SESSION['user_id']]);
+            View::renderTemplate('Usager/create.html', ['errors'=>$errors, 'msgs'=>$msg, 'usager'=>$_POST['id'], 'alias'=>$_POST['alias']]);
             exit();
         }
         else
@@ -104,10 +107,12 @@ class Usager extends \Core\Controller
 
         $validation = new \App\Library\Validation;
         extract($_POST);
+
         $validation->name('Utilisateur')->value($id)->max(50)->required()->pattern('email');
         $validation->name('Mot de passe')->value($password)->required();
 
-        if(!$validation->isSuccess()) {
+        if(!$validation->isSuccess()) 
+        {
             $errors = $validation->displayErrors();
             View::renderTemplate('Usager/login.html', ['errors'=>$errors, 'user'=>$_POST]);
             exit();

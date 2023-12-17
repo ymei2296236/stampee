@@ -11,6 +11,30 @@ class Enchere extends CRUD
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'date_debut', 'date_fin', 'prix_plancher', 'coup_de_coeur', 'timbre_id', 'createur_id'];
 
+
+    public function selectId($value)
+    {
+        $db = static::getDB();
+
+        $sql=
+        "SELECT timbre.nom AS timbre_nom, 
+        timbre.nom_2 AS timbre_nom_2,
+        enchere.id AS enchere_id, 
+        prix_plancher, offre.prix
+        FROM $this->table
+        INNER JOIN timbre 
+        LEFT JOIN offre 
+        ON timbre.id = enchere.timbre_id  
+        AND enchere.id = offre.enchere_id  
+        WHERE enchere.id = '$value'
+        ORDER BY offre.prix DESC
+        ";
+
+        $stmt = $db->query($sql);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     // Valider si l'enchere existe
     public function checkDuplicate($value) 
     {
@@ -26,7 +50,7 @@ class Enchere extends CRUD
         }
     }
 
-    public function selectEnchereParId($enchereId)
+    public function selectEnchereParId($value)
     {
         $db = static::getDB();
 
@@ -35,29 +59,25 @@ class Enchere extends CRUD
         timbre.nom AS timbre_nom, 
         timbre.nom_2 AS timbre_nom_2,
         enchere.id AS enchere_id, 
-        -- image.nom as image_nom, 
-        etat.nom as etat, 
-        usager.id as createur,
-        pays.nom as pays,
+        etat.nom AS etat, 
+        usager.alias AS createur,
+        pays.nom AS pays,
         date_debut, date_fin, prix_plancher, date_emission, tirage, extrait
         FROM $this->table
         INNER JOIN timbre 
-        -- INNER JOIN image 
         INNER JOIN etat 
         INNER JOIN usager 
         INNER JOIN pays 
         ON timbre.id = enchere.timbre_id  
-        -- and timbre.id = image.timbre_id  
         and timbre.etat_id = etat.id  
         and timbre.createur_id = usager.id  
         and timbre.pays_id = pays.id  
-        WHERE enchere.id = '$enchereId'
+        WHERE enchere.id = '$value'
         ";
 
         $stmt = $db->query($sql);
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
-
     }
 
 
