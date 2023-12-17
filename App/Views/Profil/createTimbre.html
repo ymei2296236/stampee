@@ -16,7 +16,6 @@
     </ul>
 
     <form class="formulaire__form" enctype="multipart/form-data" action="storeTimbre" method="post" novalidate>
-        <input type="hidden" name="createur_id" value="{{session.user_id}}"> 
 
         <label for="nom">Nom <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <input type="text" id="nom" name="nom" value="{{timbre.nom}}"></input>  

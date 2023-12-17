@@ -76,10 +76,10 @@ class Profil extends \Core\Controller
         }      
         // echo "<pre>";
         // print_r($offres);
-        View::renderTemplate('Profil/index.html', ['timbres'=>$timbres, 'offres'=>$offres]);
+        View::renderTemplate('Profil/index.html', ['timbres'=>$timbres, 'offres'=>$offres, 'usager_id'=>$_SESSION['user_id']]);
     }
 
-
+    
     public function createTimbreAction()
     {
         CheckSession::sessionAuth(FALSE);
@@ -93,7 +93,7 @@ class Profil extends \Core\Controller
         $pays = new Pays;
         $tousPays = $pays->select('nom');
 
-        View::renderTemplate('Profil/createTimbre.html', ['etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays]);
+        View::renderTemplate('Profil/createTimbre.html', ['etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'usager_id'=>$_SESSION['user_id']]);
     }
 
     public function storeTimbreAction()
@@ -146,13 +146,14 @@ class Profil extends \Core\Controller
             else
                 $errors = '';
 
-            View::renderTemplate('Profil/createTimbre.html', ['errors'=> $errors, 'msg'=> $msg,'etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'timbre'=>$_POST]);
+            View::renderTemplate('Profil/createTimbre.html', ['errors'=> $errors, 'msg'=> $msg,'etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'timbre'=>$_POST, 'usager_id'=>$_SESSION['user_id']]);
         } 
         // sinon
         else
         {
             // insère le film à la table timbre
             $timbre = new Timbre;
+            $_POST['createur_id'] = $_SESSION['user_id'];
             $insertTimbre = $timbre->insert($_POST);
 
             // insère les images à la table image
@@ -178,7 +179,7 @@ class Profil extends \Core\Controller
                 }
             }
 
-            View::renderTemplate('Profil/createEnchere.html', ['timbre_id'=>$insertTimbre]);
+            View::renderTemplate('Profil/createEnchere.html', ['timbre_id'=>$insertTimbre, 'usager_id'=>$_SESSION['user_id']]);
             exit();    
         }
     }
@@ -194,7 +195,7 @@ class Profil extends \Core\Controller
             $images = $image->selectByField('timbre_id', $timbre_id);
 
             
-            View::renderTemplate('Profil/createEnchere.html', ['timbre_id'=>$timbre_id, 'images'=>$images]);
+            View::renderTemplate('Profil/createEnchere.html', ['timbre_id'=>$timbre_id, 'images'=>$images, 'usager_id'=>$_SESSION['user_id']]);
         }
         else
         {
@@ -261,24 +262,28 @@ class Profil extends \Core\Controller
         
         if ($errors || $msg) 
         {
-            View::renderTemplate('Profil/createEnchere.html', ['errors'=> $errors, 'msgs'=>$msg, 'enchere'=>$_POST, 'timbre_id'=>$timbre_id, 'images'=>$images]);
+            View::renderTemplate('Profil/createEnchere.html', ['errors'=> $errors, 'msgs'=>$msg, 'enchere'=>$_POST, 'timbre_id'=>$timbre_id, 'images'=>$images, 'usager_id'=>$_SESSION['user_id']]);
             exit();
         }
         else
         {
+
             $enchere = new Enchere;
             $checkEnchere = $enchere->checkDuplicate($_POST['timbre_id']);
             
             if ($checkEnchere)
             {
-                View::renderTemplate('Profil/createEnchere.html', ['errors'=>$checkEnchere, 'enchere'=>$_POST, 'timbre_id'=>$timbre_id, 'images'=>$images]);
+                View::renderTemplate('Profil/createEnchere.html', ['errors'=>$checkEnchere, 'enchere'=>$_POST, 'timbre_id'=>$timbre_id, 'images'=>$images, 'usager_id'=>$_SESSION['user_id']]);
             }
             // insère le film à la base de données
             else
             {
                 // print_r($_POST);
                 $images = $image->updateImage($_POST['imagePrincipale'], $timbre_id);
+
+                $_POST['createur_id'] = $_SESSION['user_id'];
                 $insertEnchere = $enchere->insert($_POST);
+
                 RequirePage::url('profil/index');
                 exit();    
             }

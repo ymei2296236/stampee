@@ -22,7 +22,7 @@
                 <a href="{{url_racine}}usager/login" aria-label="Se connecter" class="btn btn--secondaire">Se connecter</a>
                 <a href="{{url_racine}}usager/create" aria-label="Devenir membre" class="btn btn--principal">Devenir membre</a>
                 {% else %}
-                <span href="{{url_racine}}profil/index" class="profil">{{session.user_id}}</span>
+                <span href="{{url_racine}}profil/index" class="profil">{{usager_id}}</span>
                 <a href="{{url_racine}}profil/index" aria-label="Votre compte" class="btn btn--principal">Votre compte</a>
                 <a href="{{url_racine}}usager/logout" aria-label="Se déconnecter" class="btn btn--secondaire">Se déconnecter</a>
                 {% endif %}

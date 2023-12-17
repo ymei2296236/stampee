@@ -50,7 +50,6 @@
 
             {% if session.user_id != enchere.createur %}
             <form action="{{url_racine}}enchere/createOffre" method="post" novalidate>
-                <input type="hidden" name="usager_id" value="{{session.user_id}}">
                 <input type="hidden" name="enchere_id" value="{{enchere.enchere_id}}">
                 <fieldset>
                     <label for="prix" class="mise-lable">Votre mise</label>

@@ -20,7 +20,6 @@
     <form class="formulaire__form" action="storeEnchere" method="post" novalidate>
 
         <input type="hidden" name="timbre_id" {% if timbre_id is defined %} value="{{timbre_id}}" {% else %} value="{{enchere.timbre_id}}" {% endif %}>
-        <input type="hidden" name="createur_id" value="{{session.user_id}}">
 
         <label for="date_debut">Date de début <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <input type="date" id="date_debut" name="date_debut" {% if enchere.date_debut %} value="{{enchere.date_debut}}"{% endif %} ></input>  
@@ -32,7 +31,7 @@
         <input type="number" step="0.01" id="prix_plancher" name="prix_plancher" {% if enchere.prix_plancher %} value="{{enchere.prix_plancher}}" {% else %}value="" {% endif %}> </input>  
 
         <fieldset class="radioImg">
-            <span>Choississez image principale <i class="fa-solid fa-star-of-life fa-2xs"></i></span>
+            <span>Choississez une image principale <i class="fa-solid fa-star-of-life fa-2xs"></i></span>
             {% for image in images %}
             <label class="radioImg__label"> 
                 <input type="radio" value="{{ image.nom }}" name="imagePrincipale" class="radioImg__radio"/>

@@ -57,14 +57,14 @@ class Enchere extends \Core\Controller
         
         // print_r($offreDerniere);
 
-        View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $selectEnchere, 'images'=>$images, 'offreDerniere'=> $offreDerniere, 'nbOffres'=>$nbOffres]);
+        View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $selectEnchere, 'images'=>$images, 'offreDerniere'=> $offreDerniere, 'nbOffres'=>$nbOffres,'usager_id'=>$_SESSION['user_id']]);
     }
 
     public function createOffreAction()
     {
         CheckSession::sessionAuth(FALSE);
         $errors = '';
-        echo "<pre>";
+        // echo "<pre>";
 
         extract($_POST);
 
@@ -80,13 +80,14 @@ class Enchere extends \Core\Controller
         
         if($selectOffre)
         {
-            $offreDerniere = $selectOffre;
+            $offreDerniere = $selectOffre[0]['prix'];
         }
         else
         {
             $offreDerniere = $selectEnchere['prix_plancher'];
         }
-        
+        print_r($offreDerniere);
+
         $nbOffres = $offre->countOffres($selectEnchere['enchere_id']);
 
         $validation = new Validation;
@@ -105,16 +106,19 @@ class Enchere extends \Core\Controller
             else
             {
                 $offre = new Offre;
+
+                $_POST['usager_id'] = $_SESSION['user_id'];
                 $insertOffre = $offre->insert($_POST);
         
                 if ($insertOffre) 
                 {
                     $errors = 'Mise réussite.';
+                    $selectOffre = $offre->selectId($insertOffre);
+                    $offreDerniere = $selectOffre['prix'];
                 }
             }
         }
 
-        View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $selectEnchere, 'images'=>$images, 'offreDerniere'=> $offreDerniere, 'nbOffres'=>$nbOffres]);
-
+        View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $selectEnchere, 'images'=>$images, 'offreDerniere'=> $offreDerniere, 'nbOffres'=>$nbOffres, 'usager_id'=>$_SESSION['user_id']]);
     }
 }

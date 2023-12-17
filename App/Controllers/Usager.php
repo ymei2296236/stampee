@@ -22,7 +22,7 @@ class Usager extends \Core\Controller
      */
     public function createAction()
     {     
-        View::renderTemplate('Usager/create.html');
+        View::renderTemplate('Usager/create.html', ['usager_id'=>$_SESSION['user_id']]);
     }
 
     public function storeAction()
@@ -71,7 +71,7 @@ class Usager extends \Core\Controller
 
         if($errors || $msg)
         {
-            View::renderTemplate('Usager/create.html', ['errors'=>$errors, 'msgs'=>$msg, 'usager'=>$_POST['id'], 'alias'=>$_POST['alias']]);
+            View::renderTemplate('Usager/create.html', ['errors'=>$errors, 'msgs'=>$msg, 'usager'=>$_POST['id'], 'alias'=>$_POST['alias'],'usager_id'=>$_SESSION['user_id']]);
             exit();
         }
         else
@@ -83,6 +83,8 @@ class Usager extends \Core\Controller
             
             // $usager = new \App\Models\Usager;
             $insert = $usager->insert($_POST);
+            session_destroy();
+
             $msg[] = 'Félicitations ! Votre compte est prêt. Veuillez vous connecter.';
             View::renderTemplate('Usager/login.html', ['msgs'=>$msg]);
             exit();
