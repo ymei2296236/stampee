@@ -7,6 +7,28 @@
 	color: var(--coul-texte);
 }
 
+.tri {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: var(--espace-3);
+}
+
+.tri__fieldset {
+	flex: 1;
+	display: flex;
+	flex-wrap: nowrap;
+	gap: var(--espace-1);
+	justify-content: flex-start;
+	align-items: center;
+	margin-top: 0;
+	padding: 0;
+}
+
+.tri__fieldset > * {
+	display: inline-block;
+}
+
 .liste__contenu {
 	display: flex;
 	flex-wrap: wrap;

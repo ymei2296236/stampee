@@ -69,11 +69,9 @@ input[type="radio"]:checked + label {
 select {
 	padding: var(--espace-3quarts);
 	border-radius: 2px;
-	border: 1px solid var(--coul-principale);
 	outline: 1px solid transparent;
 	background: var(--coul-arriere-plan);
-	/* text-transform: */
-
+	border: 0.5px solid var(--coul-principale);
 	font-size: var(--texte-sm);
 	color: var(--coul-texte);
 }

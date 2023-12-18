@@ -339,7 +339,19 @@ class Profil extends \Core\Controller
             $images = $image->selectByField('timbre_id', $timbre_id);
             
             foreach($images as $imageSelect)
-                $delete = $image->delete($imageSelect['id']);
+            {
+                define ('SITE_ROOT', realpath(Config::URL_RACINE));
+                $folder = "assets/img/jpg/";
+                $nomImage = $imageSelect['nom'];
+                $imageUrl = SITE_ROOT.$folder.$nomImage;
+                
+                if (file_exists($imageUrl))
+                {
+                    unlink($imageUrl);
+                    $delete = $image->delete($imageSelect['id']);
+                }
+            }
+
         }
         // Supprimer le timbres
         $delete = $timbre->delete($timbre_id );
