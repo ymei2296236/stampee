@@ -1,18 +1,13 @@
 .breadcrumb {
+	flex: 100%;
 	font-family: var(--police-texte);
 	font-size: var(--texte-sm);
 	color: var(--police-texte);
 	padding: var(--espace-2) 0;
-	font-weight: bold;
+	font-weight: normal;
 
-	& .breadcrumb__parent {
-		color: var(--coul-texte);
-		margin: var(--espace-half);
-		margin-left: 0;
-	}
-	& .breadcrumb__child {
-		color: var(--coul-secondaire);
-		margin: var(--espace-half);
+	& .btn {
+		padding: var(--espace-half);
 	}
 }
 

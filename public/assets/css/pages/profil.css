@@ -1,7 +1,7 @@
 [data-page="profil"] {
 	display: flex;
 	flex-direction: column;
-	padding: var(--espace-2);
+	padding: var(--espace-2) var(--espace-10);
 
 	& h1 {
 		text-align: center;
@@ -16,7 +16,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
-		gap: var(--espace-2);
+		gap: var(--espace-10);
 		margin-top: var(--espace-2);
 
 		& > * {
@@ -37,6 +37,7 @@
 
 				& .listeTimbres__timbre {
 					width: 10rem;
+
 					& .listeTimbres__image {
 						height: 10rem;
 						aspect-ratio: 1/1;
@@ -45,6 +46,11 @@
 						margin-bottom: var(--espace-1);
 					}
 				}
+			}
+
+			& .listeTimbres__item:not(:last-child) {
+				padding-bottom: var(--espace-1);
+				border-bottom: 0.5px solid var(--coul-principale);
 			}
 
 			& .listeTimbres__actions {

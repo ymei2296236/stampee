@@ -87,7 +87,7 @@ class Enchere extends \Core\Controller
         $enchere = new \App\Models\Enchere();
         $enchere_id = $this->route_params['id'];
         $enchereSelect = $enchere->selectEnchereParId($enchere_id);
-        
+
         $image = new Image;
         $images = $image->selectByField('timbre_id', $enchereSelect['timbre_id'], 'principal', 'DESC');
         

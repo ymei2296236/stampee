@@ -29,6 +29,10 @@ ul {
 	list-style-type: none;
 }
 
+a {
+	color: var(--coul-texte);
+}
+
 /* mobile */
 
 @media screen and (max-width: 480px) {

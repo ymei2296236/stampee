@@ -3,7 +3,7 @@
 	justify-content: space-between;
 	flex-wrap: wrap;
 	background-color: var(--coul-principale);
-	padding: var(--espace-1half) var(--espace-10) var(--espace-1half)
+	padding: var(--espace-1half) var(--espace-22) var(--espace-1half)
 		var(--espace-4);
 	font-family: var(--police-texte);
 	font-size: var(--texte-sm);

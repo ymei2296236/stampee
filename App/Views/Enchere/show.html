@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}#{{enchere.enchere_id}} {{enchere.timbre_nom}} {% endblock %}
 
 {% block body %}
     <main data-page="enchere">
-  
+        <div class="breadcrumb">
+            <span class="note btn btn--tertiaire"><a href="{{url_racine}}"> Accueil </a></span> / <span class="note btn btn--tertiaire"> <a href="{{url_racine}}enchere/index">Catalogue</a></span> / <span class="note btn btn--tertiaire"> <a href="{{url_racine}}enchere/show/{{enchere.enchere_id}}">{{enchere.timbre_nom}} {{enchere.timbre_nom_2}} </a></span>
+        </div>
         <div class="images">
             <div class="images__thumbnails-container">
                 {% for image in images %}
