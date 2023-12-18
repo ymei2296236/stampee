@@ -12,7 +12,7 @@ class Offre extends CRUD
     protected $fillable = ['id', 'prix', 'enchere_id', 'usager_id'];
 
 
-    public function selectOffreParEnchere($enchereId)
+    public function selectOffresParEnchere($enchereId)
     {
         $db = static::getDB();
     
@@ -76,7 +76,6 @@ class Offre extends CRUD
         WHERE usager.id = '$usagerId'
         AND enchere.id = $enchereId
         ";   
-
 
         $stmt = $db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

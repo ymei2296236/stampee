@@ -11,30 +11,6 @@ class Enchere extends CRUD
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'date_debut', 'date_fin', 'prix_plancher', 'coup_de_coeur', 'timbre_id', 'createur_id'];
 
-
-    public function selectId($value)
-    {
-        $db = static::getDB();
-
-        $sql=
-        "SELECT timbre.nom AS timbre_nom, 
-        timbre.nom_2 AS timbre_nom_2,
-        enchere.id AS enchere_id, 
-        prix_plancher, offre.prix
-        FROM $this->table
-        INNER JOIN timbre 
-        LEFT JOIN offre 
-        ON timbre.id = enchere.timbre_id  
-        AND enchere.id = offre.enchere_id  
-        WHERE enchere.id = '$value'
-        ORDER BY offre.prix DESC
-        ";
-
-        $stmt = $db->query($sql);
-
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
     // Valider si l'enchere existe
     public function checkDuplicate($value) 
     {

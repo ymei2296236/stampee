@@ -28,7 +28,7 @@
             <table>
                 <tr>
                     <th>Mise courante </th>
-                    <td class="mise__prix-courant">{{offreDerniere}} $</td>
+                    <td class="mise__prix-courant">{{prixCourant}} <small class="prix_decimal"> $</small></td>
                 </tr>
                 <tr>
                     <th>Nombres de mises</th>
@@ -49,8 +49,7 @@
             </table>
 
             {% if session.user_id != enchere.createur_id %}
-            <form action="{{url_racine}}enchere/createOffre" method="post" novalidate>
-                <input type="hidden" name="enchere_id" value="{{enchere.enchere_id}}">
+            <form action="{{url_racine}}enchere/createOffre/{{enchere.enchere_id}}" method="post" novalidate>
                 <fieldset>
                     <label for="prix" class="mise-lable">Votre mise</label>
                     <input id="prix" type="number" name="prix">

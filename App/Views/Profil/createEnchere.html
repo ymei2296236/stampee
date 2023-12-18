@@ -17,9 +17,8 @@
     {% endif %}
     </ul>
 
-    <form class="formulaire__form" action="storeEnchere" method="post" novalidate>
-
-        <input type="hidden" name="timbre_id" {% if timbre_id is defined %} value="{{timbre_id}}" {% else %} value="{{enchere.timbre_id}}" {% endif %}>
+    <form class="formulaire__form" action="{{url_racine}}profil/storeEnchere/{{timbre_id}}" method="post" novalidate>
+        <!-- <input type="hidden" name="timbre_id" {% if timbre_id is defined %} value="{{timbre_id}}" {% else %} value="{{enchere.timbre_id}}" {% endif %}> -->
 
         <label for="date_debut">Date de début <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <input type="date" id="date_debut" name="date_debut" {% if enchere.date_debut %} value="{{enchere.date_debut}}"{% endif %} ></input>  
@@ -34,7 +33,7 @@
             <span>Choississez une image principale <i class="fa-solid fa-star-of-life fa-2xs"></i></span>
             {% for image in images %}
             <label class="radioImg__label"> 
-                <input type="radio" value="{{ image.nom }}" name="imagePrincipale" class="radioImg__radio"/>
+                <input type="radio" value="{{ image.nom }}" name="imagePrincipale" class="radioImg__radio" {% if image.nom == enchere.imagePrincipale %} checked {% endif %}/>
                 <img src="{{url_racine}}assets/img/jpg/{{ image.nom }}" alt="Image du timbre {{image.nom}}">
             </label>          
             {% endfor %}
@@ -45,7 +44,7 @@
             Terminer
         </button>
     </form>
-    <a class="btn btn--secondaire" href="index">Annuler</a>
+    <a class="btn btn--secondaire" href="{{url_racine}}profil/index">Annuler</a>
 
 </main>
 

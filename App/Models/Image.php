@@ -11,16 +11,17 @@ class Image extends CRUD
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'timbre_id', 'nom', 'principal', 'supplementaire'];
 
-    public function updateImage($nomImage)
+    public function updateImage($value)
     {
         $db = static::getDB();
     
         $sql = 
         "UPDATE $this->table 
         SET principal = 1
-        WHERE nom = '$nomImage'";    
- 
-    $stmt = $db->query($sql);
+        WHERE nom = '$value'";    
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(":$this->primaryKey", $value);
 
         if($stmt->execute()) return true;
         else return $stmt->errorInfo();
