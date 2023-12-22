@@ -11,7 +11,9 @@ fieldset {
 input[type="text"],
 input[type="number"],
 input[type="password"],
-input[type="date"] {
+input[type="datetime-local"],
+input[type="date"] 
+{
 	padding: var(--espace-half);
 	font-family: var(--police-texte);
 	/* line-height: 150%; */

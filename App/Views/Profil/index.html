@@ -31,23 +31,29 @@
                     
                     {% if timbre.enchere_id <= 0  %}
                     <form action="createEnchere/{{timbre.timbre_id}}" method="post">
-                        <input type="hidden" name="timbre_id" value="{{timbre.timbre_id}}">
-                        <button class="btn btn--principal">Vendre aux enchères</button>
+                        <!-- <input type="hidden" name="timbre_id" value="{{timbre.timbre_id}}"> -->
+                        <button class="btn btn--principal">Vendre</button>
+                    </form>
+                    <form action="editTimbre/{{timbre.timbre_id}}" method="post">
+                        <button class="btn btn--icon-text "><i class="fa-solid fa-pen"></i>Modifier le timbre</button>
+                    </form>
+                    <form action="deleteTimbre/{{timbre.timbre_id}}" method="post">
+                        <button class="btn btn--icon-text "><i class="fa-solid fa-trash"></i>Supprimer le timbre</button>
                     </form>
                     
                     {% else %}
                     <span>Enchère en cours</span>
                     <span>Prix plancher :  {{timbre.prix_plancher}} $</span>
                     <span>Date de fin : {{timbre.date_fin}}</span>
+                    <form action="editEnchere/{{timbre.enchere_id}}" method="post">
+                        <!-- <input type="hidden" name="timbre_id" value="{{timbre.timbre_id}}"> -->
+                        <button class="btn btn--icon-text "><i class="fa-solid fa-pen"></i>Modifier  l'enchère</button>
+                    </form>
+                    <form action="deleteEnchere/{{timbre.enchere_id}}" method="post">
+                        <!-- <input type="hidden" name="timbre_id" value="{{timbre.timbre_id}}"> -->
+                        <button class="btn btn--icon-text "><i class="fa-solid fa-trash"></i>Annuler l'enchère</button>
+                    </form>
                     {% endif %}
-                    <form action="updateTimbre/{{timbre.timbre_id}}" method="post">
-                        <!-- <input type="hidden" name="timbre_id" value="{{timbre.timbre_id}}"> -->
-                        <button class="btn btn--icon-text "><i class="fa-solid fa-pen"></i>Modifier</button>
-                    </form>
-                    <form action="deleteTimbre/{{timbre.timbre_id}}" method="post">
-                        <!-- <input type="hidden" name="timbre_id" value="{{timbre.timbre_id}}"> -->
-                        <button class="btn btn--icon-text "><i class="fa-solid fa-trash"></i>Retirer</button>
-                    </form>
                 </div>
             </div>
             {% endfor %}
@@ -71,14 +77,6 @@
                     <span>Mise courante : {{offre.mise_courante}} $</span>
                     <span>Date de fin : {{offre.date_fin}}</span>
                     <a href="{{url_racine}}enchere/show/{{offre.enchere_id}}" class="btn btn--secondaire">Faire une autre mise</a>
-                    <form action="updateOffre/{{offre.enchere_id}}" method="post">
-                        <!-- <input type="hidden" name="timbre_id" value="{{offre.timbre_id}}"> -->
-                        <button class="btn btn--icon-text "><i class="fa-solid fa-pen"></i>Modifier</button>
-                    </form>
-                    <form action="deleteOffre/{{offre.enchere_id}}" method="post">
-                        <!-- <input type="hidden" name="timbre_id" value="{{offre.timbre_id}}"> -->
-                        <button class="btn btn--icon-text "><i class="fa-solid fa-trash"></i>Retirer</button>
-                    </form>
                 </div>
             </div>
             {% endfor%}

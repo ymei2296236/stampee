@@ -50,6 +50,4 @@ class Config
     // const URL_RACINE = "http://localhost:8000/stampee/public/"; // windows
     // const URL_RACINE = "https://e2296236.webdev.cmaisonneuve.qc.ca/stampee/public/"; // webdev
 
-
-
 }

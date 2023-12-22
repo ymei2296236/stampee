@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Créer une enchère{% endblock %}
+{% block title %}Modifier l'enchère{% endblock %}
 
 {% block body %}
 <main class="formulaire">
-    <h1>Créer une enchère</h1>
-    <span>Étape 2/2 : entrer informations de l'enchère</span>
+    <h1>Modifier l'enchère</h1>
     <ul class="msg-error">
     {% if errors is defined %}
         <li>{{ errors | raw }}</li>
@@ -17,17 +16,15 @@
     {% endif %}
     </ul>
 
-    <form class="formulaire__form" action="{{url_racine}}profil/storeEnchere/{{timbre_id}}" method="post" novalidate>
-        <!-- <input type="hidden" name="timbre_id" {% if timbre_id is defined %} value="{{timbre_id}}" {% else %} value="{{enchere.timbre_id}}" {% endif %}> -->
+    <form class="formulaire__form" action="{{url_racine}}profil/updateEnchere/{{enchere_id}}" method="post" novalidate>
 
         <label for="date_debut">Date de début <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
-        <input type="datetime-local" id="date_debut" name="date_debut" {% if enchere.date_debut %} value="{{enchere.date_debut}}"{% endif %} ></input>  
-
+        <input type="datetime-local" id="date_debut" name="date_debut" value="{{enchere.date_debut}}" ></input>  
         <label for="date_fin">Date de fin <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <input type="datetime-local" id="date_fin" name="date_fin" {% if enchere.date_fin %} value="{{enchere.date_fin}}" {% else %} value="'now'|date('d-m-Y')" {% endif %} ></input>  
 
         <label for="prix_plancher">Prix plancher <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
-        <input type="number" step="0.01" id="prix_plancher" name="prix_plancher" {% if enchere.prix_plancher %} value="{{enchere.prix_plancher}}" {% else %}value="" {% endif %}> </input>  
+        <input type="number" step="0.01" id="prix_plancher" name="prix_plancher" value="{{enchere.prix_plancher}}"> </input>  
 
         <fieldset class="radioImg">
             <span>Choississez une image principale <i class="fa-solid fa-star-of-life fa-2xs"></i></span>
@@ -38,7 +35,6 @@
             </label>          
             {% endfor %}
         </fieldset>
-
 
         <button type="submit" class="btn btn--principal" aria-label="Enregistrer">
             Terminer

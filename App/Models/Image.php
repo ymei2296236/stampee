@@ -9,22 +9,34 @@ class Image extends CRUD
 {
     protected $table = 'image';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'timbre_id', 'nom', 'principal', 'supplementaire'];
+    protected $fillable = ['id', 'timbre_id', 'nom', 'principal'];
 
-    public function updateImage($value)
+    
+    public function updateImage($timbre_id, $imagePrincipale)
     {
         $db = static::getDB();
     
         $sql = 
         "UPDATE $this->table 
-        SET principal = 1
-        WHERE nom = '$value'";    
+        SET principal = 0
+        WHERE timbre_id = '$timbre_id'";
 
         $stmt = $db->prepare($sql);
-        $stmt->bindValue(":$this->primaryKey", $value);
+        
+        if($stmt->execute())
+        {
+            $sql = 
+            "UPDATE $this->table 
+            SET principal = 1
+            WHERE nom = '$imagePrincipale'";    
+        
+            $stmt = $db->query($sql);
 
-        if($stmt->execute()) return true;
+            if($stmt->execute()) return true;
+            else return $stmt->errorInfo();
+        }
         else return $stmt->errorInfo();
+
     }
 }
 

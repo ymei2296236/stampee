@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Créer une enchère{% endblock %}
+{% block title %}Modifier le timbre{% endblock %}
 
 {% block body %}
 <main class="formulaire">
-    <h1>Créer une enchère</h1>
-    <span>Étape 1/2 : entrer informations du timbre</span>
+    <h1>Modifier le timbre</h1>
+
     <ul class="msg-error">
     {% if errors is defined %}
         <li>{{ errors | raw }}</li>
@@ -15,7 +15,7 @@
     {% endif %}
     </ul>
 
-    <form class="formulaire__form" enctype="multipart/form-data" action="createEnchere" method="post" novalidate>
+    <form class="formulaire__form" action="{{url_racine}}profil/updateTimbre/{{timbre.id}}" method="post" novalidate>
 
         <label for="nom">Nom <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <input type="text" id="nom" name="nom" value="{{timbre.nom}}"></input>  
@@ -66,18 +66,13 @@
         
         <label for="extrait">Extrait</label>
         <textarea id="extrait" name="extrait" cols=40 rows=8>{{timbre.extrait}}</textarea>
-        
-        <label for="img" > Téléverser une ou plusieurs images<span> (trois au maximum)</span> <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
-        <input type="file" id="img" name="img[]" multiple/></input> 
 
-        
-
-        <button type="submit" class="btn btn--principal" name="upload" aria-label="Continuer">
+        <button type="submit" class="btn btn--principal" aria-label="Continuer">
             Continuer
         </button>
         
     </form>
-    <a class="btn btn--secondaire" href="index">Annuler</a>
+    <a class="btn btn--secondaire" href="{{url_racine}}profil/index">Annuler</a>
 </main>
 
 {% endblock %}

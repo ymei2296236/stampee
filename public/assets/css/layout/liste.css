@@ -33,11 +33,12 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--espace-1);
-	justify-content: space-between;
+	justify-content: flex-start;
 }
 
 .item {
-	flex: calc(25% - var(--espace-1));
+	/* flex: calc(25% - var(--espace-1)); */
+	width: calc(25% - var(--espace-1));
 	border: 0.5px solid var(--coul-principale);
 	cursor: pointer;
 }

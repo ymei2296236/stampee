@@ -41,7 +41,7 @@
                     <td>{{enchere.date_fin}}</td>
                 </tr>
                 <tr>
-                    <th>État</th>
+                    <th>État du produit</th>
                     <td>{{enchere.etat}}</td>
                 </tr>
                 <tr>
@@ -51,6 +51,7 @@
             </table>
 
             {% if session.user_id != enchere.createur_id %}
+            <!-- <form action="createOffre/{{enchere.enchere_id}}" method="post" novalidate> -->
             <form action="{{url_racine}}enchere/createOffre/{{enchere.enchere_id}}" method="post" novalidate>
                 <fieldset>
                     <label for="prix" class="mise-lable">Votre mise</label>

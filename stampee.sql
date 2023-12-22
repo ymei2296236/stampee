@@ -1,14 +1,21 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.3
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:8889
--- Generation Time: Dec 14, 2023 at 11:11 PM
--- Server version: 5.7.26
--- PHP Version: 7.4.2
+-- Host: 127.0.0.1
+-- Generation Time: Dec 21, 2023 at 08:56 PM
+-- Server version: 10.4.19-MariaDB
+-- PHP Version: 8.0.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `stampee`
@@ -58,9 +65,11 @@ CREATE TABLE `enchere` (
 --
 
 INSERT INTO `enchere` (`id`, `date_debut`, `date_fin`, `prix_plancher`, `coup_de_coeur`, `timbre_id`, `createur_id`) VALUES
-(28, '2023-12-14 00:00:00', '2023-12-17 00:00:00', 11.25, NULL, 50, 'usager2@gmail.com'),
-(29, '2023-12-14 00:00:00', '2023-12-20 00:00:00', 23.4, NULL, 53, 'usager1@gmail.com'),
-(30, '2023-12-14 00:00:00', '2023-12-22 00:00:00', 2, NULL, 54, 'usager2@gmail.com');
+(28, '2023-12-14 00:00:00', '2023-12-17 00:00:00', 13.35, NULL, 50, 'usager2@gmail.com'),
+(48, '2023-12-21 14:00:00', '2023-12-23 14:00:00', 16.5, NULL, 70, 'usager1@gmail.com'),
+(49, '2023-12-22 14:01:00', '2023-12-28 14:01:00', 23, NULL, 53, 'usager1@gmail.com'),
+(50, '2023-12-21 14:04:00', '2023-12-29 14:04:00', 15.9, NULL, 71, 'usager2@gmail.com'),
+(52, '2023-12-24 14:08:00', '2023-12-29 14:08:00', 45, NULL, 72, 'usager3@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -106,26 +115,33 @@ CREATE TABLE `favori` (
 CREATE TABLE `image` (
   `id` int(11) NOT NULL,
   `timbre_id` int(11) NOT NULL,
-  `nom` varchar(225) NOT NULL
+  `nom` varchar(225) NOT NULL,
+  `principal` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `image`
 --
 
-INSERT INTO `image` (`id`, `timbre_id`, `nom`) VALUES
-(32, 50, 'Willie O’Ree _20231209212412_1805702381.jpg'),
-(33, 50, 'Willie O’Ree _20231209212412_286785568.jpg'),
-(34, 50, 'Willie O’Ree _20231209212412_1254081298.jpg'),
-(36, 53, 'Dirigeants autochtones _20231210214511_1403176022.jpg'),
-(37, 53, 'Dirigeants autochtones _20231210214511_1979419090.jpg'),
-(38, 53, 'Dirigeants autochtones _20231210214511_707379733.jpg'),
-(39, 54, 'Fondation communautaire _20231211195907_461085222.jpg'),
-(40, 54, 'Fondation communautaire _20231211195907_2035619749.jpg'),
-(41, 54, 'Fondation communautaire _20231211195907_600925195.jpg'),
-(42, 55, 'Renoncule_20231211200608_1899987206.jpg'),
-(43, 55, 'Renoncule_20231211200608_1890416677.jpg'),
-(44, 55, 'Renoncule_20231211200608_1070822799.jpg');
+INSERT INTO `image` (`id`, `timbre_id`, `nom`, `principal`) VALUES
+(32, 50, 'Willie O’Ree _20231209212412_1805702381.jpg', 1),
+(33, 50, 'Willie O’Ree _20231209212412_286785568.jpg', 0),
+(34, 50, 'Willie O’Ree _20231209212412_1254081298.jpg', 0),
+(36, 53, 'Dirigeants autochtones _20231210214511_1403176022.jpg', 1),
+(37, 53, 'Dirigeants autochtones _20231210214511_1979419090.jpg', 0),
+(38, 53, 'Dirigeants autochtones _20231210214511_707379733.jpg', 0),
+(42, 55, 'Renoncule_20231211200608_1899987206.jpg', 1),
+(43, 55, 'Renoncule_20231211200608_1890416677.jpg', 0),
+(44, 55, 'Renoncule_20231211200608_1070822799.jpg', 0),
+(53, 65, 'test_20231221193102_1128919082.jpg', 1),
+(58, 70, 'Oiseaux_des_Fêtes_–_Geai_bleu_20231221200030_487147225.jpg', 1),
+(59, 70, 'Oiseaux_des_Fêtes_–_Geai_bleu_20231221200030_836001814.jpg', 0),
+(60, 70, 'Oiseaux_des_Fêtes_–_Geai_bleu_20231221200030_1256942602.jpg', 0),
+(61, 71, 'Pochette_trimestrielle_du_collectionneur_20231221200426_780436851.jpg', 1),
+(62, 71, 'Pochette_trimestrielle_du_collectionneur_20231221200426_941671026.jpg', 0),
+(63, 72, 'Calla__20231221200845_1870357675.jpg', 0),
+(64, 72, 'Calla__20231221200845_481147538.jpg', 0),
+(65, 72, 'Calla__20231221200845_2087263620.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -145,9 +161,9 @@ CREATE TABLE `offre` (
 --
 
 INSERT INTO `offre` (`id`, `prix`, `usager_id`, `enchere_id`) VALUES
-(1, 22, 'usager1@gmail.com', 29),
-(2, 33, 'usager1@gmail.com', 29),
-(3, 33.1, 'usager2@gmail.com', 29);
+(13, 17, 'usager3@gmail.com', 48),
+(14, 18, 'usager3@gmail.com', 48),
+(15, 16, 'usager3@gmail.com', 50);
 
 -- --------------------------------------------------------
 
@@ -204,12 +220,12 @@ INSERT INTO `privilege` (`id`, `nom`) VALUES
 
 CREATE TABLE `timbre` (
   `id` int(11) NOT NULL,
-  `nom` varchar(100) NOT NULL,
+  `nom` varchar(45) NOT NULL,
   `nom_2` varchar(100) DEFAULT NULL,
   `date_emission` date DEFAULT NULL,
   `couleur` tinyint(1) DEFAULT NULL,
   `tirage` int(11) DEFAULT NULL,
-  `extrait` text,
+  `extrait` text DEFAULT NULL,
   `certification` tinyint(1) DEFAULT NULL,
   `etat_id` int(11) NOT NULL,
   `dimension_id` int(11) NOT NULL,
@@ -222,11 +238,13 @@ CREATE TABLE `timbre` (
 --
 
 INSERT INTO `timbre` (`id`, `nom`, `nom_2`, `date_emission`, `couleur`, `tirage`, `extrait`, `certification`, `etat_id`, `dimension_id`, `pays_id`, `createur_id`) VALUES
-(50, 'Willie O’Ree ', 'Carnet de 6 timbres PermanentsMC au tarif du régime intérieur', '2022-06-21', 1, 100000, 'Célébrez Jose Kusugak, activiste inuit, linguiste et communicateur, avec ce carnet de 6 timbres PermanentsMC au tarif du régime intérieur.</p>                 Le recto du carnet met en vedette un agrandissement du timbre. L’intérieur du livret présente une photo d’enfance de Jose (à droite) avec d’autres membres de sa famille, vers 1955.', 1, 1, 3, 1, 'usager2@gmail.com'),
-(53, 'Dirigeants autochtones ', 'Jose Kusugak : Carnet de 6 timbres Permanents au tarif du régime intérieur', '1998-02-04', 1, 2000, 'Célébrez Jose Kusugak, activiste inuit, linguiste et communicateur, avec ce carnet de 6 timbres PermanentsMC au tarif du régime intérieur.', 1, 3, 4, 2, 'usager1@gmail.com'),
-(54, 'Fondation communautaire ', 'Don de 1 $ par carnet de 10 timbres Permanents au tarif du régime intérieur', '2017-01-01', 1, 1500, 'Notre timbre-poste philanthropique annuel est arrivé. Le dollar supplémentaire que vous déboursez à l’achat du carnet de 10 timbres est versé à la Fondation communautaire, laquelle appuie des organismes sans but lucratif locaux et nationaux qui créent des espaces où les jeunes peuvent s’épanouir.', 1, 2, 5, 5, 'usager2@gmail.com'),
-(55, 'Renoncule', 'Timbres Permanents au tarif du régime intérieur – carnet de 10', '2006-11-07', 1, 1500, 'L’émission consacrée aux fleurs de cette année, qui comporte 2 timbres, met en vedette la Ranunculus asiaticus. Toujours très populaires, ces vignettes sont souvent utilisées pour les mariages, notamment sur les faire-part. Elles sont également fort appréciées des passionnés de jardinage. Ajoutez ce carnet de 10 timbres PermanentsMC au tarif du régime intérieur à votre collection ou offrez-le en cadeau.', 1, 3, 3, 4, 'usager3@gmail.com'),
-(56, 'Oiseaux des Fêtes – Geai bleu', 'Carnet de 6 timbres au tarif des envois à destination des États-Unis', '2013-10-11', NULL, 12000, '', 1, 1, 2, 6, 'usager1@gmail.com');
+(50, 'Willie O’Ree ', 'Carnet de 6 timbres PermanentsMC au tarif du régime intérieur', '2022-06-21', 1, 100000, 'Célébrez Jose Kusugak, activiste inuit, linguiste et communicateur, avec ce carnet de 6 timbres PermanentsMC au tarif du régime intérieur.</p>                 Le recto du carnet met en vedette un agrandissement du timbre. L’intérieur du livret présente une photo d’enfance de Jose (à droite) avec d’autres membres de sa famille, vers 1955.', 1, 3, 3, 1, 'usager2@gmail.com'),
+(53, 'Dirigeants autochtones ', 'Jose Kusugak : Carnet de 6 timbres Permanents au tarif du régime intérieur', '1998-02-04', 1, 2000, 'Célébrez Jose Kusugak, activiste inuit, linguiste et communicateur, avec ce carnet de 6 timbres PermanentsMC au tarif du régime intérieur.', NULL, 1, 4, 2, 'usager1@gmail.com'),
+(55, 'Renoncule', 'Timbres Permanents au tarif du régime intérieur – carnet de 10', '2006-11-07', 1, 1500, 'L’émission consacrée aux fleurs de cette année, qui comporte 2 timbres, met en vedette la Ranunculus asiaticus. Toujours très populaires, ces vignettes sont souvent utilisées pour les mariages, notamment sur les faire-part. Elles sont également fort appréciées des passionnés de jardinage. Ajoutez ce carnet de 10 timbres PermanentsMC au tarif du régime intérieur à votre collection ou offrez-le en cadeau.', 1, 1, 3, 4, 'usager3@gmail.com'),
+(65, 'test', '', '2001-01-01', NULL, 0, '', NULL, 1, 2, 1, 'usager2@gmail.com'),
+(70, 'Oiseaux des Fêtes – Geai bleu', 'Carnet de 6 timbres au tarif des envois à destination des États-Unis', '2001-01-01', 1, 0, 'Depuis 1964, Postes Canada émet des timbres des Fêtes chaque année. Joignez-vous aux célébrations des Fêtes avec ce carnet de 6 timbres au tarif des envois à destination des États-Unis de notre émission Oiseaux des Fêtes mettant en vedette le geai bleu.', 1, 2, 1, 1, 'usager1@gmail.com'),
+(71, 'Pochette trimestrielle du collectionneur', ' janvier – mars 2022', '2004-10-20', NULL, 7000, 'Cette pochette spéciale contient une sélection de timbres et de blocs-feuillets des émissions du trimestre. À l’intérieur, vous trouverez des produits philatéliques des émissions Eleanor Collins, Jubilé de platine et Calla. Cette pièce-souvenir unique commémore des moments historiques, des individus et la riche diversité du Canada.', NULL, 3, 3, 8, 'usager2@gmail.com'),
+(72, 'Calla ', 'Bloc-feuillet avec surcharge', '2010-07-10', 1, 500, 'Ce bloc-feuillet avec surcharge spécial mettant en vedette les 2 timbres de l’émission florale de 2022 consacrée à la calla est lancé en prévision de l’exposition philatélique internationale CAPEX 22, qui aura lieu à Toronto du 9 au 12 juin 2022. L’image qui l’orne est composée d’une calla blanche fermée et d’une calla rose ouverte. Le logo de CAPEX 22 figure dans le coin inférieur gauche.', 1, 2, 3, 4, 'usager3@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -249,8 +267,7 @@ INSERT INTO `usager` (`id`, `password`, `alias`, `privilege_id`) VALUES
 ('usager1@gmail.com', '$2y$10$66ZIcE1YkeDrIyZXnGXO4ugUTxytr8gwt5yevRtGv2wJ.hOlo2hj6', 'Usager1', 2),
 ('usager2@gmail.com', '$2y$10$061qGoSnAE7TfJ8APTpNrOEdQPuVyX5IfvjSQifv/zfC/VOyRT1HW', 'Usager2', 2),
 ('usager3@gmail.com', '$2y$10$hS.OYmgQdD1xyOTwYFwLg.dlQkWLi1fddX8rHVXfUlTTCutkipQmq', 'Usager3', 2),
-('usager8@gmail.com', '$2y$10$X6.GwwyqPYpoImw76rMI4eoVxZ.u2Vk3X1vnojuDm2KhzkxGX6HrW', 'Usager8', 2),
-('usager9@gmail.com', '$2y$10$SSrxxd7AbpPcwjBEm/ZocuB8yccG4ZuDrYqEA.ZUrJMngTxbTWPT2', 'Usager9', 2);
+('usager6@gmail.com', '$2y$10$iWrzJ1NBIEnFjbWPRjvRl.sxZjQ8OZe4vKxyxbhPXeMYLjZrRl48G', 'Usager6', 2);
 
 --
 -- Indexes for dumped tables
@@ -315,10 +332,10 @@ ALTER TABLE `privilege`
 --
 ALTER TABLE `timbre`
   ADD PRIMARY KEY (`id`,`createur_id`),
-  ADD KEY `fk_timbre_condition1_idx` (`etat_id`),
   ADD KEY `fk_timbre_dimension1_idx` (`dimension_id`),
   ADD KEY `fk_timbre_pays1_idx` (`pays_id`),
-  ADD KEY `fk_timbre_usager1_idx` (`createur_id`);
+  ADD KEY `fk_timbre_usager1_idx` (`createur_id`),
+  ADD KEY `fk_timbre_condition1_idx` (`etat_id`);
 
 --
 -- Indexes for table `usager`
@@ -342,7 +359,7 @@ ALTER TABLE `dimension`
 -- AUTO_INCREMENT for table `enchere`
 --
 ALTER TABLE `enchere`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `etat`
@@ -354,13 +371,13 @@ ALTER TABLE `etat`
 -- AUTO_INCREMENT for table `image`
 --
 ALTER TABLE `image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `offre`
 --
 ALTER TABLE `offre`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `pays`
@@ -378,7 +395,7 @@ ALTER TABLE `privilege`
 -- AUTO_INCREMENT for table `timbre`
 --
 ALTER TABLE `timbre`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- Constraints for dumped tables
@@ -424,3 +441,8 @@ ALTER TABLE `timbre`
 --
 ALTER TABLE `usager`
   ADD CONSTRAINT `fk_usager_privilege1` FOREIGN KEY (`privilege_id`) REFERENCES `privilege` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

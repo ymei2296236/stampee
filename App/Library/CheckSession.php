@@ -16,7 +16,6 @@ class CheckSession
             {
                 RequirePage::url('index.php');
                 exit();
-
             }
             else
             {
@@ -37,6 +36,20 @@ class CheckSession
             }
         }
     }
+
+    static public function usagerAuth($createur_id, $usager_id)
+    {
+        if ($createur_id == $usager_id)
+        {
+            return true;
+        }
+        else
+        {
+            RequirePage::url('profil/index');
+            exit(); 
+        }
+    }
+
 }
 
 ?>

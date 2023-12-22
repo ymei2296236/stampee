@@ -101,14 +101,15 @@
 
 			& th {
 				color: var(--coul-secondaire);
-				padding-top: var(--espace-half);
-				padding-right: var(--espace-1);
-				padding-bottom: var(--espace-half);
+				height: var(--espace-2);
+				padding-right: var(--espace-1half);
+				vertical-align: middle;
 			}
 
 			& td {
 				min-width: 10rem;
 				vertical-align: middle;
+				height: var(--espace-2);
 			}
 			& .mise__prix-courant {
 				font-family: var(--police-titre);

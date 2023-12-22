@@ -67,7 +67,7 @@ class Offre extends CRUD
         $db = static::getDB();
     
         $sql = 
-        "SELECT offre.id AS offre_id
+        "SELECT offre.id AS offre_id, usager_id
         FROM $this->table 
         INNER JOIN usager 
         LEFT JOIN enchere 

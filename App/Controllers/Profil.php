@@ -42,7 +42,7 @@ class Profil extends \Core\Controller
         
         foreach($timbres as $timbre)
         {
-            $images = $image->selectByField('timbre_id', $timbre['timbre_id'], 'principal', 'DESC');
+            $images = $image->selectByField('timbre_id', $timbre['timbre_id'], 'principal');
 
             if($images)
                 $timbres[$i]['image'] = $images[0]['nom'];
@@ -67,16 +67,18 @@ class Profil extends \Core\Controller
             $offres[$i]['timbre_nom'] = $enchereSelect['timbre_nom'];
             $offres[$i]['date_fin'] = $enchereSelect['date_fin'];
 
-            $images = $image->selectByField('timbre_id', $enchereSelect['timbre_id'], 'principal', 'DESC');
+            $images = $image->selectByField('timbre_id', $enchereSelect['timbre_id'], 'principal');
+
             $offres[$i]['image'] = $images[0]['nom'];
 
             $offresToutes = $offre->selectOffresParEnchere($offreSingle['enchere_id']);
             $offreDerniere = $offresToutes[0];
             $offres[$i]['mise_courante'] = $offreDerniere['prix'];
-            $offres[$i]['offre_id'] = $offreDerniere['offre_id'];
+            // $offres[$i]['offre_id'] = $offreDerniere['offre_id'];
             
             $i++;
-        }      
+        }    
+
         View::renderTemplate('Profil/index.html', ['timbres'=>$timbres, 'offres'=>$offres, 'usager_id'=>$_SESSION['user_id']]);
     }
 
@@ -104,120 +106,116 @@ class Profil extends \Core\Controller
     /**
      * Insérer le timbre au DB
      */
-    public function storeTimbreAction()
-    {
-        CheckSession::sessionAuth(FALSE);
-
-        extract($_POST);
-
-        $etat = new Etat;
-        $etats = $etat->select();
-
-        $dimension = new Dimension;
-        $dimensions = $dimension->select();
-
-        $pays = new Pays;
-        $tousPays = $pays->select('nom');
-
-        // Valider les champs
-        $validation = new Validation;
-        $validation->name('Nom')->value($nom)->max(100)->min(2);
-        $validation->name('Description')->value($nom_2)->max(100);
-        $validation->name('État')->value($etat_id)->required();
-        $validation->name('Dimension')->value($dimension_id)->required();
-        $validation->name('Pays')->value($pays_id)->required();
-        $validation->name('Image')->value($_FILES['img']['name'][0])->required();
-
-        // Valider les images
-        $msg = '';
-        if (!empty($_FILES['img']['name'][0])) 
-        {
-            $img = $_FILES['img'];
-            $img_desc = UploadFiles::reArrayFiles($img);
-            
-            foreach($img_desc as $val)
-            {
-                $checkImg = getimagesize($val["tmp_name"]);
-                
-                if($checkImg == false)  
-                    $msg = "Le fichier téléversé n'est pas une image.";
-            
-            // if($val["size"]> 120000)
-            // $msg = "Le fichier téléversé dépasse la taille maximale de 120ko.";
-            }
-        }
-
-        // Si'y a des erreurs
-        if(!$validation->isSuccess() || $msg) 
-        {
-            if (!$validation->isSuccess()) 
-                $errors = $validation->displayErrors();
-            else
-                $errors = '';
-
-            View::renderTemplate('Profil/createTimbre.html', ['errors'=> $errors, 'msg'=> $msg,'etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'timbre'=>$_POST, 'usager_id'=>$_SESSION['user_id']]);
-        } 
-        // sinon
-        else
-        {
-            // insère le film à la table timbre
-            $timbre = new Timbre;
-            $_POST['createur_id'] = $_SESSION['user_id'];
-            $insertTimbre = $timbre->insert($_POST);
-
-            // insère les images à la table image
-            if (!empty($_FILES['img']['name'][0])) 
-            {
-                $img = $_FILES['img'];
-                $img_desc = UploadFiles::reArrayFiles($img);
-
-                $name = str_replace(' ', '_', $_POST['nom']);
-                define ('SITE_ROOT', realpath(Config::URL_RACINE));
-                $folder = "assets/img/jpg/";
-                $_POST['timbre_id'] = $insertTimbre; 
-  
-                foreach($img_desc as $val)
-                {
-                    $newname = $name."_".date('YmdHis',time())."_".mt_rand().".jpg";
-                    
-                    move_uploaded_file($val['tmp_name'], SITE_ROOT.$folder.$newname);
-                    
-                    $_POST['nom'] = $newname;
-                    
-                    $image = new Image;
-                    $insertImage = $image->insert($_POST);
-                    $images = $image->selectByField('timbre_id', $insertTimbre);
-                }
-            }
-
-            View::renderTemplate('Profil/createEnchere.html', ['timbre_id'=>$insertTimbre, 'images'=> $images, 'usager_id'=>$_SESSION['user_id']]);
-            exit();    
-        }
-    }
-
-
-    /**
-     * Créer une enchère
-     */
     public function createEnchereAction()
     {
         CheckSession::sessionAuth(FALSE);
 
-        if(isset($_POST['timbre_id']))
+        // Placer un timbre aux enchères après la création du timbre
+        if ($_POST)
         {
-            $image = new Image;
-            // $timbre_id = $_POST['timbre_id'];
+            extract($_POST);
+
+            $etat = new Etat;
+            $etats = $etat->select();
+
+            $dimension = new Dimension;
+            $dimensions = $dimension->select();
+
+            $pays = new Pays;
+            $tousPays = $pays->select('nom');
+
+            // Valider les champs
+            $validation = new Validation;
+            $validation->name('Nom')->value($nom)->max(45)->min(2);
+            $validation->name('Description')->value($nom_2)->max(100);
+            $validation->name('État')->value($etat_id)->required();
+            $validation->name('Dimension')->value($dimension_id)->required();
+            $validation->name('Pays')->value($pays_id)->required();
+            $validation->name('Image')->value($_FILES['img']['name'][0])->required();
+
+            // Valider les images
+            $msg = '';
+            if (!empty($_FILES['img']['name'][0])) 
+            {
+                $img = $_FILES['img'];
+                $img_desc = UploadFiles::reArrayFiles($img);
+                
+                foreach($img_desc as $val)
+                {
+                    $checkImg = getimagesize($val["tmp_name"]);
+                    
+                    if($checkImg == false)  
+                        $msg = "Le fichier téléversé n'est pas une image.";
+                
+                // if($val["size"]> 120000)
+                // $msg = "Le fichier téléversé dépasse la taille maximale de 120ko.";
+                }
+            }
+
+            // Si'y a des erreurs
+            if(!$validation->isSuccess() || $msg) 
+            {
+                if (!$validation->isSuccess()) 
+                    $errors = $validation->displayErrors();
+                else
+                    $errors = '';
+
+                View::renderTemplate('Profil/createTimbre.html', ['errors'=> $errors, 'msg'=> $msg,'etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'timbre'=>$_POST, 'usager_id'=>$_SESSION['user_id']]);
+            } 
+            // sinon
+            else
+            {
+                // insère le timbre à la DB
+                $timbre = new Timbre;
+                $_POST['createur_id'] = $_SESSION['user_id'];
+                $insertTimbre = $timbre->insert($_POST);
+
+                // insère les images à la table image
+                if (!empty($_FILES['img']['name'][0])) 
+                {
+                    $img = $_FILES['img'];
+                    $img_desc = UploadFiles::reArrayFiles($img);
+
+                    $name = str_replace(' ', '_', $_POST['nom']);
+
+                    $realpath = realpath(Config::URL_RACINE); 
+                    $folder = "assets/img/jpg/";
+                    $_POST['timbre_id'] = $insertTimbre; 
+    
+                    foreach($img_desc as $val)
+                    {
+                        $newname = $name."_".date('YmdHis',time())."_".mt_rand().".jpg";
+                        
+                        move_uploaded_file($val['tmp_name'], $realpath.$folder.$newname);
+                        
+                        $_POST['nom'] = $newname;
+                        
+                        $image = new Image;
+                        $insertImage = $image->insert($_POST);
+                        $images = $image->selectByField('timbre_id', $insertTimbre);
+                    }
+                }
+
+                View::renderTemplate('Profil/createEnchere.html', ['timbre_id'=>$insertTimbre, 'images'=> $images, 'usager_id'=>$_SESSION['user_id']]);
+                exit();    
+            }
+        }
+        // Placer un timbre existant aux enchères
+        else
+        {
             $timbre_id = $this->route_params['id'];
 
-            print_r($timbre_id);
+            $timbre = new Timbre;
+            $timbreSelect = $timbre->selectId($timbre_id);
+
+            if(!$timbreSelect) RequirePage::url('profil/index');
+    
+            CheckSession::usagerAuth($timbreSelect['createur_id'], $_SESSION['user_id']);
+    
+            $image = new Image;
             $images = $image->selectByField('timbre_id', $timbre_id);
             
             View::renderTemplate('Profil/createEnchere.html', ['timbre_id'=>$timbre_id, 'images'=>$images, 'usager_id'=>$_SESSION['user_id']]);
-        }
-        else
-        {
-            RequirePage::url('profil/index');
-            exit();    
         }
     }
 
@@ -230,12 +228,19 @@ class Profil extends \Core\Controller
         CheckSession::sessionAuth(FALSE);
         
         extract($_POST);
-        
-        $image = new Image;
+
         $timbre_id = $this->route_params['id'];
+
+        $timbre = new Timbre;
+        $timbreSelect = $timbre->selectId($timbre_id);
+
+        if(!$timbreSelect) RequirePage::url('profil/index');
+
+        CheckSession::usagerAuth($timbreSelect['createur_id'], $_SESSION['user_id']);
+
+        $image = new Image;
         $images = $image->selectByField('timbre_id', $timbre_id);
 
-        // Valider les champs
         $validation = new Validation;
         $msg=[];
         $errors = '';
@@ -285,7 +290,7 @@ class Profil extends \Core\Controller
             // insère le film à la base de données
             else
             {
-                $images = $image->updateImage($_POST['imagePrincipale'], $timbre_id);
+                $images = $image->updateImage($timbre_id, $_POST['imagePrincipale']);
 
                 $_POST['createur_id'] = $_SESSION['user_id'];
                 $_POST['timbre_id'] = $timbre_id;
@@ -295,6 +300,7 @@ class Profil extends \Core\Controller
                 exit();    
             }
         }
+        
     }
 
 
@@ -303,10 +309,18 @@ class Profil extends \Core\Controller
      */
     public function deleteTimbreAction()
     {
-        $timbre = new Timbre;
+        CheckSession::sessionAuth(FALSE);
+
         $timbre_id = $this->route_params['id'];
+
+        $timbre = new Timbre;
         $timbreSelect = $timbre->selectId($timbre_id);
-        
+
+        if(!$timbreSelect) RequirePage::url('profil/index');
+
+
+        CheckSession::usagerAuth($timbreSelect['createur_id'], $_SESSION['user_id']);
+
         if ($timbreSelect)
         {
             $enchere = new Enchere;
@@ -340,10 +354,10 @@ class Profil extends \Core\Controller
             
             foreach($images as $imageSelect)
             {
-                define ('SITE_ROOT', realpath(Config::URL_RACINE));
+                $realpath = realpath(Config::URL_RACINE); 
                 $folder = "assets/img/jpg/";
                 $nomImage = $imageSelect['nom'];
-                $imageUrl = SITE_ROOT.$folder.$nomImage;
+                $imageUrl = $realpath.$folder.$nomImage;
                 
                 if (file_exists($imageUrl))
                 {
@@ -351,7 +365,6 @@ class Profil extends \Core\Controller
                     $delete = $image->delete($imageSelect['id']);
                 }
             }
-
         }
         // Supprimer le timbres
         $delete = $timbre->delete($timbre_id );
@@ -360,16 +373,63 @@ class Profil extends \Core\Controller
         exit();   
     }
 
+    /**
+     *  Supprimer une enchère et toutes ses offres (si'l y en a) à la fois 
+    */
+    public function deleteEnchereAction()
+    {
+        CheckSession::sessionAuth(FALSE);
+
+        $enchere = new Enchere;
+        $enchereId = $this->route_params['id'];
+        $enchereSelect = $enchere->selectId($enchereId);
+
+        if(!$enchereSelect) RequirePage::url('profil/index');
+        
+        CheckSession::usagerAuth($enchereSelect['createur_id'], $_SESSION['user_id']);
+        
+        if($enchereSelect) 
+        {
+            $enchereId = $enchereSelect['id'];
+            
+            // Supprimer toutes les offres de l'enchère 
+            $offre = new Offre;
+            $offres = $offre->selectByField('enchere_id', $enchereId, 'prix', 'DESC');
+            
+            if($offres) 
+            {
+                $i = 0; 
+
+                foreach($offres as $offreSelect)
+                {
+                    $delete = $offre->delete($offres[$i]['id']);
+                    $i++;
+                }
+            }
+            // Supprimer l'enchère du timbres
+            $delete = $enchere->delete($enchereId);
+        }
+
+        RequirePage::url('profil/index');
+        exit();   
+    }
 
     /**
      * Supprimer toutes les offres qu'un utilisateur a placé sur une enchère
      */
     public function deleteOffreAction()
     {
+        CheckSession::sessionAuth(FALSE);
+
         $offre = new Offre;
         $enchere_id = $this->route_params['id'];
         $offresParEnchere= $offre->selectOffresParUsagerEnchere($_SESSION['user_id'], $enchere_id);
 
+        if(!$offresParEnchere) RequirePage::url('profil/index');
+
+
+        CheckSession::usagerAuth($offresParEnchere[0]['usager_id'], $_SESSION['user_id']);
+        
         foreach($offresParEnchere as $offreParEnchere)
             $delete = $offre->delete($offreParEnchere['offre_id']);
 
@@ -378,4 +438,196 @@ class Profil extends \Core\Controller
     }
 
 
+    public function editEnchereAction()
+    {
+        CheckSession::sessionAuth(FALSE);
+
+        $enchere = new Enchere;        
+        $enchere_id = $this->route_params['id'];
+        $enchereSelect = $enchere->selectId($enchere_id);
+
+        if(!$enchereSelect) RequirePage::url('profil/index');
+
+        CheckSession::usagerAuth($enchereSelect['createur_id'], $_SESSION['user_id']);
+
+        $image = new Image;
+        $timbre_id = $enchereSelect['timbre_id'];
+        $images = $image->selectByField('timbre_id', $timbre_id, 'principal');
+        $enchereSelect['imagePrincipale']= $images[0]['nom'];
+
+        
+        View::renderTemplate('Profil/editEnchere.html', ['enchere'=>$enchereSelect, 'enchere_id'=> $enchere_id,'images'=>$images]);
+        
+    }
+    
+    
+    public function updateEnchereAction()
+    {
+        CheckSession::sessionAuth(FALSE);
+        
+        extract($_POST);
+        
+        $enchere_id = $this->route_params['id'];
+        
+        $enchere = new Enchere;
+        $enchereSelect = $enchere->selectId($enchere_id);
+
+        if(!$enchereSelect) RequirePage::url('profil/index');
+
+        
+        CheckSession::usagerAuth($enchereSelect['createur_id'], $_SESSION['user_id']);
+        
+        $timbre_id = $enchereSelect['timbre_id'];
+        $image = new Image;
+        $images = $image->selectByField('timbre_id', $timbre_id, 'principal');
+        $enchereSelect['imagePrincipale']= $images[0]['nom'];
+        
+        // Valider les champs
+        $validation = new Validation;
+        $msg=[];
+        $errors = '';
+        
+        $validation->name('Date de debut')->value($enchereSelect['date_debut'])->required();
+        $validation->name('Date de fin')->value($date_fin)->required();
+        
+        if(!$validation->isSuccess()) 
+        $errors = $validation->displayErrors();
+    else
+    if($date_fin != '' && $enchereSelect['date_debut'] >= $date_fin) 
+    $msg[]= 'La date de fin ne peut pas être antérieure à la date de début';
+
+
+    $validation->name('Prix plancher')->value($prix_plancher)->required();
+
+        if(!$validation->isSuccess()) 
+            $errors = $validation->displayErrors();
+
+
+        if(!isset($_POST['imagePrincipale']))
+            $msg[] = 'Vous devez sélectionner une image principale';
+
+            
+        if ($errors || $msg) 
+        {
+            View::renderTemplate('Profil/editEnchere.html', ['errors'=> $errors, 'msgs'=>$msg, 'enchere'=>$_POST, 'enchere_id'=> $enchere_id,'timbre_id'=>$timbre_id, 'images'=>$images, 'usager_id'=>$_SESSION['user_id']]);
+            exit();
+        }
+        else
+        {
+            $checkEnchere = $enchere->checkDuplicate($timbre_id);
+
+            if ($checkEnchere)
+            {
+                $updateImages = $image->updateImage($timbre_id, $_POST['imagePrincipale']);   
+
+                $_POST['id'] = $enchere_id;
+ 
+                $updateEnchere = $enchere->update($_POST);
+
+                RequirePage::url('profil/index');
+                exit();   
+            }
+        }
+
+    }
+
+    public function editTimbreAction()
+    {
+        CheckSession::sessionAuth(FALSE);
+        
+        $timbre = new Timbre;        
+        $timbre_id = $this->route_params['id'];
+        $timbreSelect = $timbre->selectId($timbre_id);
+
+        if(!$timbreSelect) RequirePage::url('profil/index');
+
+        CheckSession::usagerAuth($timbreSelect['createur_id'], $_SESSION['user_id']);
+
+        $etat = new Etat;
+        $etats = $etat->select();
+
+        $dimension = new Dimension;
+        $dimensions = $dimension->select();
+
+        $pays = new Pays;
+        $tousPays = $pays->select('nom');
+
+        View::renderTemplate('Profil/editTimbre.html', ['etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'timbre'=>$timbreSelect, 'usager_id'=>$_SESSION['user_id']]);
+    }
+    
+    public function updateTimbreAction()
+    {
+        CheckSession::sessionAuth(FALSE);
+
+        $timbre = new Timbre;        
+        $timbre_id = $this->route_params['id'];
+        $timbreSelect = $timbre->selectId($timbre_id);
+
+        if(!$timbreSelect) RequirePage::url('profil/index');
+        
+        CheckSession::usagerAuth($timbreSelect['createur_id'], $_SESSION['user_id']);
+
+        extract($_POST);
+
+        $etat = new Etat;
+        $etats = $etat->select();
+
+        $dimension = new Dimension;
+        $dimensions = $dimension->select();
+
+        $pays = new Pays;
+        $tousPays = $pays->select('nom');
+
+        // Valider les champs
+        $validation = new Validation;
+        $validation->name('Nom')->value($nom)->max(45)->min(2);
+        $validation->name('Description')->value($nom_2)->max(100);
+        $validation->name('État')->value($etat_id)->required();
+        $validation->name('Dimension')->value($dimension_id)->required();
+        $validation->name('Pays')->value($pays_id)->required();
+       
+        // Si'y a des erreurs
+        if(!$validation->isSuccess()) 
+        {
+            if (!$validation->isSuccess()) 
+                $errors = $validation->displayErrors();
+            else
+                $errors = '';
+
+            View::renderTemplate('Profil/editTimbre.html', ['errors'=> $errors, 'etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'timbre'=>$_POST, 'usager_id'=>$_SESSION['user_id']]);
+        } 
+        // sinon
+        else
+        {             
+            // insère le timbre à la DB
+            $timbre = new Timbre;
+            $_POST['id'] = $timbre_id;
+            $updateTimbre = $timbre->update($_POST);
+
+            View::renderTemplate('Profil/editImage.html', ['timbre_id'=>$timbre_id, 'usager_id'=>$_SESSION['user_id']]);
+            exit();    
+        }
+    }
+
+    public function editImageAction()
+    {
+        CheckSession::sessionAuth(FALSE);
+
+        $timbre = new Timbre;        
+        $timbre_id = $this->route_params['id'];
+        $timbreSelect = $timbre->selectId($timbre_id);
+
+        if(!$timbreSelect) RequirePage::url('profil/index');
+        
+        CheckSession::usagerAuth($timbreSelect['createur_id'], $_SESSION['user_id']);
+
+        
+        $image = new Image;
+        $images = $image->selectByField('timbre_id', $timbre_id, 'principal');
+        // $images = $image->selectByField('timbre_id', $timbre_id);
+
+        // print_r($timbreSelect);
+        View::renderTemplate('Profil/editImage.html', ['timbre'=>$timbreSelect, 'images'=>$images, 'usager_id'=>$_SESSION['user_id']]);
+        exit();    
+    }
 }

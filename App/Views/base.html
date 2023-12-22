@@ -14,7 +14,7 @@
 <body>
     <header>
         <div class="top-bar">
-            <span class="logo"><img src="{{url_racine}}assets/img/svg/logo.svg" alt="logo du site"></span>
+            <span class="logo"><a href="{{url_racine}}"><img src="{{url_racine}}assets/img/svg/logo.svg" alt="logo du site"></a></span>
             <div>
                 <a href="#" class="lien">English</a>
                 {% if guest %}
@@ -22,7 +22,7 @@
                 <a href="{{url_racine}}usager/login" aria-label="Se connecter" class="btn btn--secondaire">Se connecter</a>
                 <a href="{{url_racine}}usager/create" aria-label="Devenir membre" class="btn btn--principal">Devenir membre</a>
                 {% else %}
-                <span href="{{url_racine}}profil/index" class="profil">{{usager_id}}</span>
+                <span href="{{url_racine}}profil/index" class="profil">{% if session.user_id %}{{session.user_id}} {% endif %}</span>
                 <a href="{{url_racine}}profil/index" aria-label="Votre compte" class="btn btn--principal">Votre compte</a>
                 <a href="{{url_racine}}usager/logout" aria-label="Se déconnecter" class="btn btn--secondaire">Se déconnecter</a>
                 {% endif %}

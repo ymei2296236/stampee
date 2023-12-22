@@ -43,7 +43,7 @@ class Enchere extends \Core\Controller
             $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
             $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
 
-            $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal', 'DESC');
+            $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal');
             $encheres[$i]['image'] = $images[0]['nom'];
 
             $offre = new Offre;
@@ -61,12 +61,13 @@ class Enchere extends \Core\Controller
             $i++;
         }
 
-        if($_SESSION) 
-            $usager_id = $_SESSION['user_id'];
-        else 
-            $usager_id = '';
+        // if($_SESSION) 
+        //     $usager_id = $_SESSION['user_id'];
+        // else 
+        //     $usager_id = '';
 
-        View::renderTemplate('Enchere/index.html', ['usager_id'=>$usager_id, 'encheres'=>$encheres]);
+        View::renderTemplate('Enchere/index.html', ['encheres'=>$encheres]);
+        exit();
     }
 
 
@@ -78,18 +79,16 @@ class Enchere extends \Core\Controller
     public function showAction()
     {
         $errors = '';
-
-        if($_SESSION) 
-            $usager_id = $_SESSION['user_id'];
-        else 
-            $usager_id = '';
         
         $enchere = new \App\Models\Enchere();
         $enchere_id = $this->route_params['id'];
         $enchereSelect = $enchere->selectEnchereParId($enchere_id);
 
+        if(!$enchereSelect) RequirePage::url('enchere/index');
+
+
         $image = new Image;
-        $images = $image->selectByField('timbre_id', $enchereSelect['timbre_id'], 'principal', 'DESC');
+        $images = $image->selectByField('timbre_id', $enchereSelect['timbre_id'], 'principal');
         
         $offre = new Offre;
         $offres = $offre->selectOffresParEnchere($enchereSelect['enchere_id']);
@@ -101,7 +100,10 @@ class Enchere extends \Core\Controller
 
         $nbOffres = $offre->countOffres($enchereSelect['enchere_id']);
         
-        View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $enchereSelect, 'images'=>$images, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres,'usager_id'=>$usager_id]);
+        View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $enchereSelect, 'images'=>$images, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres]);
+
+        exit();
+
     }
 
 
@@ -117,47 +119,61 @@ class Enchere extends \Core\Controller
         $enchere = new \App\Models\Enchere();
         $enchere_id = $this->route_params['id'];
         $enchereSelect = $enchere->selectEnchereParId($enchere_id);
-        
-        $image = new Image;
-        $images = $image->selectByField('timbre_id', $enchereSelect['timbre_id'], 'principal', 'DESC');
-        
-        $offre = new Offre;
-        $offres = $offre->selectOffresParEnchere($enchereSelect['enchere_id']);
-        $nbOffres = $offre->countOffres($enchereSelect['enchere_id']);
-        
-        if($offres) 
-            $prixCourant = $offres[0]['prix'];
-        else
-            $prixCourant = $enchereSelect['prix_plancher'];
 
-        $errors = '';
-        $validation = new Validation;
-        $validation->name('Votre mise')->value($prix)->required();
-
-        if(!$validation->isSuccess()) 
+        if(!$enchereSelect) RequirePage::url('enchere/index');
+        
+        if ($enchereSelect['createur_id'] != $_SESSION['user_id'])
         {
-            $errors = $validation->displayErrors();
-        } 
-        else{
+            $image = new Image;
+            $images = $image->selectByField('timbre_id', $enchereSelect['timbre_id'], 'principal');
+            
+            $offre = new Offre;
+            $offres = $offre->selectOffresParEnchere($enchereSelect['enchere_id']);
+            $nbOffres = $offre->countOffres($enchereSelect['enchere_id']);
 
-            if($prix <= $prixCourant)
+            if($offres) 
+                $prixCourant = $offres[0]['prix'];
+            else
+                $prixCourant = $enchereSelect['prix_plancher'];
+
+            $errors = '';
+            $validation = new Validation;
+            $validation->name('Votre mise')->value($prix)->required();
+
+            if(!$validation->isSuccess()) 
             {
-                $errors = 'Votre mise doit être plus grande que la mise courante '. $prixCourant .' $.';
-            }
+                $errors = $validation->displayErrors();
+            } 
             else
             {
-                $_POST['usager_id'] = $_SESSION['user_id'];
-                $_POST['enchere_id'] = $enchere_id;
-                $insertOffre = $offre->insert($_POST);
-        
-                if ($insertOffre) 
+                if($prix <= $prixCourant)
                 {
-                    $errors = 'Mise réussite.';
-                    $offreSelect = $offre->selectId($insertOffre);
-                    $prixCourant = $offreSelect['prix'];
+                    $errors = 'Votre mise doit être plus grande que la mise courante '. $prixCourant .' $.';
+                }
+                else
+                {
+                    $_POST['usager_id'] = $_SESSION['user_id'];
+                    $_POST['enchere_id'] = $enchere_id;
+                    $insertOffre = $offre->insert($_POST);
+            
+                    if ($insertOffre) 
+                    {
+                        $errors = 'Mise réussite.';
+                        $offreSelect = $offre->selectId($insertOffre);
+                        $prixCourant = $offreSelect['prix'];
+                        $nbOffres = $offre->countOffres($enchereSelect['enchere_id']);
+
+                    }
                 }
             }
+            View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $enchereSelect, 'images'=>$images, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres]);
         }
-        View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $enchereSelect, 'images'=>$images, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres, 'usager_id'=>$_SESSION['user_id']]);
+        else
+        {
+            $encheres = $enchere->select();
+
+            RequirePage::url('enchere/index');
+        }
     }
+
 }

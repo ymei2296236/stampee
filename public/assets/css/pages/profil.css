@@ -32,14 +32,14 @@
 
 			& .listeTimbres__item {
 				display: flex;
-				align-items: center;
+				align-items: flex-start;
 				gap: var(--espace-2);
 
 				& .listeTimbres__timbre {
-					width: 10rem;
+					width: 8rem;
 
 					& .listeTimbres__image {
-						height: 10rem;
+						height: 8rem;
 						aspect-ratio: 1/1;
 						background-color: var(--coul-neutre);
 						padding: var(--espace-half);

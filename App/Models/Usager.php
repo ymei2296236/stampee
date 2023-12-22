@@ -48,6 +48,10 @@ class Usager extends CRUD
                 $_SESSION['privilege'] = $info_user['privilege_id'];
                 $_SESSION['fingerPrint'] = md5($_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']);
 
+                // print_r($_SESSION);
+                // die();
+                // return true;
+
                 RequirePage::url('index.php');
                 exit();
             }

@@ -1,6 +1,12 @@
 <?php
+use \Core\View;
+use \App\Library\RequirePage;
+
 
 session_start();
+$_SESSION['url'] = $_SERVER['REQUEST_URI']; 
+
+
 
 /**
  * Front controller

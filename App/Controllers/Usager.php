@@ -84,7 +84,6 @@ class Usager extends \Core\Controller
             $passwordSalt = $_POST['password'].$salt;
             $_POST['password'] = password_hash($passwordSalt, PASSWORD_BCRYPT, $options);
             
-            // $usager = new \App\Models\Usager;
             $insert = $usager->insert($_POST);
             session_destroy();
 

@@ -35,7 +35,7 @@ abstract class CRUD extends \Core\Model
         else View::renderTemplate('404.html');
     }
 
-    public function selectByField($column, $value, $field='id', $order='ASC')
+    public function selectByField($column, $value, $field='id', $order='DESC')
     {
         $db = static::getDB();
 
@@ -84,24 +84,29 @@ abstract class CRUD extends \Core\Model
     { 
         $db = static::getDB();
 
+        $data_keys = array_fill_keys($this->fillable, '');
+        $data = array_intersect_key($data, $data_keys);
+        
         $queryField = null;
-
+        
         foreach($data as $key=>$value)
         {
             $queryField .="$key =:$key, ";
         }
+
         $queryField = rtrim($queryField, ", ");
         
         $sql = "UPDATE $this->table SET $queryField WHERE $this->primaryKey = :$this->primaryKey";
 
         $stmt = $db->prepare($sql);
-
+        
         foreach($data as $key => $value)
         {
             $stmt->bindValue(":$key", $value);
         }
-        
+
         if($stmt->execute()) return true;
         else return $stmt->errorInfo();
+
     }
 }
