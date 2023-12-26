@@ -6,16 +6,20 @@
 <main class="formulaire">
     <h1>Créer une enchère</h1>
     <span>Étape 1/2 : entrer informations du timbre</span>
-    <ul class="msg-error">
-    {% if errors is defined %}
-        <li>{{ errors | raw }}</li>
-    {% endif %}
-    {% if msg %}
-        <li>{{ msg }}</li>
-    {% endif %}
-    </ul>
 
-    <form class="formulaire__form" enctype="multipart/form-data" action="createEnchere" method="post" novalidate>
+    {% if msg %}
+    <span class="msg-succes">
+        {{ msg }}
+    </span>
+    {% endif %}
+
+    {% if errors is defined %}
+    <ul class="msg-error">
+        {{ errors | raw }}
+    </ul>
+    {% endif %}
+
+    <form class="formulaire__form" enctype="multipart/form-data" action="store" method="post" novalidate>
 
         <label for="nom">Nom <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <input type="text" id="nom" name="nom" value="{{timbre.nom}}"></input>  
@@ -77,7 +81,7 @@
         </button>
         
     </form>
-    <a class="btn btn--secondaire" href="index">Annuler</a>
+    <a class="btn btn--secondaire" href="{{url_racine}}profil/index">Annuler</a>
 </main>
 
 {% endblock %}

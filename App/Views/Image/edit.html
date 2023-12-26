@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Changer les images{% endblock %}
+
+{% block body %}
+<main class="formulaire">
+    <h1>Changer les images</h1>
+    
+    <div class="radioImg radioImg--attention">
+        <span>Attention: vous allez remplacer toutes ces images. Si ce n'est pas voulu, cliquez sur Annuler pour sortir.</span>
+        {% for image in images %}
+        <img src="{{url_racine}}assets/img/jpg/{{ image.nom }}" alt="Image du timbre {{image.nom}}">
+        {% endfor %}
+    </div>
+    
+    <form class="formulaire__form" enctype="multipart/form-data" action="{{url_racine}}image/update/{{timbre_id}}" method="post" novalidate>  
+        <label for="img" > Téléverser une ou plusieurs images<span> (trois au maximum)</span> <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
+        <input type="file" id="img" name="img[]" multiple/></input> 
+        <ul class="msg-error">
+        {% if errors is defined %}
+            <li>{{ errors | raw }}</li>
+        {% endif %}
+        {% if msg %}
+            <li>{{ msg }}</li>
+        {% endif %}
+        </ul>
+        <button type="submit" class="btn btn--principal" name="upload" aria-label="Continuer">
+            Confirmer
+        </button>
+    </form>
+    <a class="btn btn--secondaire" href="{{url_racine}}profil/index">Annuler</a>
+</main>
+
+{% endblock %}

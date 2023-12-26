@@ -5,16 +5,18 @@
 {% block body %}
 <main class="formulaire">
     <h1>Créer un profil</h1>
-    <ul class="msg-error">
+
+    {% if msg %}
+    <span class="msg-succes">
+        {{ msg }}
+    </span>
+    {% endif %}
+
     {% if errors is defined %}
-        <li>{{ errors | raw }}</li>
-    {% endif %}
-    {% if msgs %}
-        {% for msg in msgs %}
-        <li>{{ msg }}</li> 
-        {% endfor %}
-    {% endif %}
+    <ul class="msg-error">
+        {{ errors | raw }}
     </ul>
+    {% endif %}
     
     <form class="formulaire__form" action="store" method="post" novalidate>
         <label for="id">Utilisateur</label>

@@ -3,8 +3,7 @@
 namespace App\Controllers;
 
 use \Core\View;
-use \App\Library\RequirePage;
-use \App\Library\CheckSession;
+use \App\Library\Apps;
 use \App\Library\Validation;
 
 /**
@@ -32,52 +31,27 @@ class Usager extends \Core\Controller
         $validation = new Validation;
         extract($_POST);
 
-        $msg=[];        
         $errors='';       
         $usager = new \App\Models\Usager;
- 
-        // echo "<pre>";
+
         
         $validation->name('Utilisateur')->value($id)->max(50)->required()->pattern('email');
+        $checkUser = $usager->checkDuplicate('id', $id);
+        if ($checkUser) 
+            $errors .= '<li>'.$checkUser.'</li>';
         
-        if(!$validation->isSuccess()) 
-        {
-            $errors = $validation->displayErrors();
-        }
-        else
-        {
-            if($id) 
-            {
-                $checkUser = $usager->checkDuplicate('id', $id);
-                if ($checkUser) $msg[] = $checkUser;
-            }
-        }
-
         $validation->name('Mot de passe')->value($password)->max(20)->min(5);
-
-        if(!$validation->isSuccess()) 
-        {
-            $errors = $validation->displayErrors();
-        }
         
         $validation->name('Alias')->value($alias)->required();
+        $checkAlias = $usager->checkDuplicate('alias', $_POST['alias']);
+        if ($checkAlias) 
+            $errors .= '<li>'.$checkAlias.'</li>';
 
+        
         if(!$validation->isSuccess()) 
-        {
-            $errors = $validation->displayErrors();
-        }
-        else
-        {
-            $checkAlias = $usager->checkDuplicate('alias', $_POST['alias']);
-            if ($checkAlias) $msg[] = $checkAlias;
-        }
+            $errors .= $validation->displayErrors();
 
-        if($errors || $msg)
-        {
-            View::renderTemplate('Usager/create.html', ['errors'=>$errors, 'msgs'=>$msg, 'usager'=>$_POST['id'], 'alias'=>$_POST['alias']]);
-            exit();
-        }
-        else
+        if(!$errors)
         {
             $options = ['cost' => 10];
             $salt = "!dL$*u";
@@ -87,22 +61,25 @@ class Usager extends \Core\Controller
             $insert = $usager->insert($_POST);
             session_destroy();
 
-            $msg[] = 'Félicitations ! Votre compte est prêt. Veuillez vous connecter.';
-            View::renderTemplate('Usager/login.html', ['msgs'=>$msg]);
+            $msg = 'Félicitations ! Votre compte est prêt. Veuillez vous connecter.';
+            
+            View::renderTemplate('Usager/login.html', ['msg'=>$msg]);
             exit();
         }
+        View::renderTemplate('Usager/create.html', ['errors'=>$errors, 'usager'=>$_POST['id'], 'alias'=>$_POST['alias']]);
+        exit();
     }
 
     public function loginAction()
     { 
-        CheckSession::sessionAuth(TRUE);
+        Apps::sessionAuth(TRUE);
 
         View::renderTemplate('Usager/login.html');
     }
 
     public function authAction()
     {
-        CheckSession::sessionAuth(TRUE);
+        Apps::sessionAuth(TRUE);
 
         $validation = new \App\Library\Validation;
         extract($_POST);
@@ -128,7 +105,7 @@ class Usager extends \Core\Controller
     public function logoutAction()
     {
         session_destroy();
-        RequirePage::url('index.php');
+        Apps::url('index.php');
         exit();    
     }
 }

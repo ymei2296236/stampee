@@ -57,11 +57,19 @@
                     <label for="prix" class="mise-lable">Votre mise</label>
                     <input id="prix" type="number" name="prix">
                 </fieldset>
+
+                {% if msg %}
+                <span class="msg-succes">
+                    {{ msg }}
+                </span>
+                {% endif %}
+            
+                {% if errors is defined %}
                 <ul class="msg-error">
-                    {% if errors is defined %}
-                        <li>{{ errors | raw }}</li>
-                    {% endif %}
+                    {{ errors | raw }}
                 </ul>
+                {% endif %}
+                
                 <button type="submit" aria-label="Miser" class="btn btn--principal item__btn">Miser</button>
             </form>
             {% endif %}

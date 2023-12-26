@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use PDO;
-use \App\Library\RequirePage;
+use \App\Library\Apps;
 
 
 class Usager extends CRUD 
@@ -48,11 +48,7 @@ class Usager extends CRUD
                 $_SESSION['privilege'] = $info_user['privilege_id'];
                 $_SESSION['fingerPrint'] = md5($_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']);
 
-                // print_r($_SESSION);
-                // die();
-                // return true;
-
-                RequirePage::url('index.php');
+                Apps::url('index.php');
                 exit();
             }
             else

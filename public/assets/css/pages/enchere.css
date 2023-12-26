@@ -73,6 +73,7 @@
 
 			& fieldset {
 				padding: 0;
+				margin-bottom: var(--espace-1);
 			}
 
 			& input {
@@ -86,10 +87,6 @@
 
 		& .mise__info {
 			color: var(--coul-secondaire);
-		}
-
-		& span {
-			color: var(--coul-texte);
 		}
 
 		& table {

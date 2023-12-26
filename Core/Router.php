@@ -128,14 +128,15 @@ class Router
                     // View::renderTemplate('404.html', ['error'=>404]);
 
                 }
+                
             } else {
                 throw new \Exception("Controller class $controller not found");
                 // View::renderTemplate('404.html', ['error'=>404]);
 
             }
         } else {
-            // throw new \Exception('No route matched.', 404);
-            View::renderTemplate('404.html', ['error'=>404]);
+            throw new \Exception('No route matched.', 404);
+            // View::renderTemplate('404.html', ['error'=>404]);
         }
     }
 

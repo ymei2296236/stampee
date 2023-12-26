@@ -6,7 +6,7 @@
 <main data-page="profil">
     <h1>Votre compte</h1>
     <div class="actions">
-        <a href="createTimbre" aria-label="Ajouter un timbre" class="btn btn--principal">Vendre un nouveau timbre</a>
+        <a href="{{url_racine}}timbre/create" aria-label="Ajouter un timbre" class="btn btn--principal">Vendre un nouveau timbre</a>
     </div>
     <div class="col">
         <div class="listeTimbres__liste">
@@ -30,14 +30,14 @@
                 <div class="listeTimbres__actions">
                     
                     {% if timbre.enchere_id <= 0  %}
-                    <form action="createEnchere/{{timbre.timbre_id}}" method="post">
+                    <form action="{{url_racine}}enchere/create/{{timbre.timbre_id}}" method="post">
                         <!-- <input type="hidden" name="timbre_id" value="{{timbre.timbre_id}}"> -->
                         <button class="btn btn--principal">Vendre</button>
                     </form>
-                    <form action="editTimbre/{{timbre.timbre_id}}" method="post">
+                    <form action="{{url_racine}}timbre/edit/{{timbre.timbre_id}}" method="post">
                         <button class="btn btn--icon-text "><i class="fa-solid fa-pen"></i>Modifier le timbre</button>
                     </form>
-                    <form action="deleteTimbre/{{timbre.timbre_id}}" method="post">
+                    <form action="{{url_racine}}timbre/delete/{{timbre.timbre_id}}" method="post">
                         <button class="btn btn--icon-text "><i class="fa-solid fa-trash"></i>Supprimer le timbre</button>
                     </form>
                     
@@ -45,11 +45,11 @@
                     <span>Enchère en cours</span>
                     <span>Prix plancher :  {{timbre.prix_plancher}} $</span>
                     <span>Date de fin : {{timbre.date_fin}}</span>
-                    <form action="editEnchere/{{timbre.enchere_id}}" method="post">
+                    <form action="{{url_racine}}enchere/edit/{{timbre.enchere_id}}" method="post">
                         <!-- <input type="hidden" name="timbre_id" value="{{timbre.timbre_id}}"> -->
                         <button class="btn btn--icon-text "><i class="fa-solid fa-pen"></i>Modifier  l'enchère</button>
                     </form>
-                    <form action="deleteEnchere/{{timbre.enchere_id}}" method="post">
+                    <form action="{{url_racine}}enchere/delete/{{timbre.enchere_id}}" method="post">
                         <!-- <input type="hidden" name="timbre_id" value="{{timbre.timbre_id}}"> -->
                         <button class="btn btn--icon-text "><i class="fa-solid fa-trash"></i>Annuler l'enchère</button>
                     </form>

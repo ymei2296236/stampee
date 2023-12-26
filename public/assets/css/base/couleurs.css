@@ -8,6 +8,7 @@
 	--coul-texte-clair: #ffffff;
 	--coul-texte-accent: var(--coul-accent);
 	--coul-texte-erreur: #d81818;
+	--coul-texte-succes: #19760d;
 
 	--coul-arriere-plan: var(--coul-texte-clair);
 }

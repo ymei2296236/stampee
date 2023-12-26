@@ -6,16 +6,19 @@
 <main class="formulaire">
     <h1>Modifier le timbre</h1>
 
-    <ul class="msg-error">
-    {% if errors is defined %}
-        <li>{{ errors | raw }}</li>
-    {% endif %}
     {% if msg %}
-        <li>{{ msg }}</li>
+    <span class="msg-succes">
+        {{ msg }}
+    </span>
     {% endif %}
-    </ul>
 
-    <form class="formulaire__form" action="{{url_racine}}profil/updateTimbre/{{timbre.id}}" method="post" novalidate>
+    {% if errors is defined %}
+    <ul class="msg-error">
+        {{ errors | raw }}
+    </ul>
+    {% endif %}
+    
+    <form class="formulaire__form" action="{{url_racine}}image/edit/{{timbre.id}}" method="post" novalidate>
 
         <label for="nom">Nom <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <input type="text" id="nom" name="nom" value="{{timbre.nom}}"></input>  

@@ -2,9 +2,9 @@
 namespace App\Library;
 
 use \Core\View;
-use \App\Library\RequirePage;
+use \App\Config;
 
-class CheckSession 
+class Apps
 {
     // valide la session
     static public function sessionAuth($status)
@@ -14,7 +14,7 @@ class CheckSession
         {
             if(isset($_SESSION['fingerPrint']) && $_SESSION['fingerPrint'] === md5($_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']))
             {
-                RequirePage::url('index.php');
+                Apps::url('index.php');
                 exit();
             }
             else
@@ -31,7 +31,7 @@ class CheckSession
             }
             else
             {
-                RequirePage::url('usager/login');
+                Apps::url('usager/login');
                 exit();
             }
         }
@@ -45,10 +45,51 @@ class CheckSession
         }
         else
         {
-            RequirePage::url('profil/index');
+            Apps::url('profil/index');
             exit(); 
         }
     }
+
+    static public function idCheck($condition)
+    {
+        if($condition)
+        {
+            return true;
+        } 
+        else
+        {
+            Apps::url('enchere/index');
+            exit();
+        }
+    }
+
+    static public function reArrayFiles($file)
+    {
+        $file_ary = array();
+        $file_count = count($file['name']);
+        $file_key = array_keys($file);
+        
+        for($i=0;$i<$file_count;$i++)
+        {
+            foreach($file_key as $val)
+            {
+                $file_ary[$i][$val] = $file[$val][$i];
+            }
+        }
+        return $file_ary;
+    }
+
+    static public function library($library) 
+    {
+        return require_once('library/'.$library.'.php');
+    }
+
+    static public function url($url)
+    {
+        header('location:'. Config::URL_RACINE.$url);
+        exit();
+    }
+
 
 }
 
