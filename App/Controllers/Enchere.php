@@ -9,8 +9,8 @@ use \App\Models\Offre;
 use \App\Models\Timbre;
 use \App\Models\Image;
 use \App\Models\Etat;
-use \App\Models\Dimension;
 use \App\Models\Pays;
+use \App\Models\Dimension;
 use \App\Library\Apps;
 use \App\Library\Validation;
 
@@ -26,6 +26,15 @@ class Enchere extends \Core\Controller
      */
     public function indexAction() 
     {
+        $etat = new Etat;
+        $etats = $etat->select();
+
+        $pays = new Pays;
+        $paysTous = $pays->select();
+
+        $dimension = new Dimension;
+        $dimensions = $dimension->select();
+
         $enchere = new \App\Models\Enchere;
         $encheres = $enchere->select();
 
@@ -59,7 +68,7 @@ class Enchere extends \Core\Controller
             $i++;
         }
 
-        View::renderTemplate('Enchere/index.html', ['encheres'=>$encheres]);
+        View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'encheres'=>$encheres]);
         exit();
     }
 
@@ -407,6 +416,96 @@ class Enchere extends \Core\Controller
     }
 
 
+    public function selectAction()
+    {
+        
+        $etat = new Etat;
+        $etats = $etat->select();
+
+        $pays = new Pays;
+        $paysTous = $pays->select();
+
+        $dimension = new Dimension;
+        $dimensions = $dimension->select();
+
+        $enchere = new \App\Models\Enchere;
+        // $encheres = $enchere->select();
+
+        // print_r($encheres);
+        $encheres = [];
+        $msg = '';
+
+        // if($_POST['pays']) $encheresSelect = $enchere->selecEnchereParPays($_POST['pays']);
+        
+        // foreach($encheresSelect as $enchereSelect)
+        // {
+        //     $encheres[] = $enchere->selectId($enchereSelect['id']);
+        // }
+
+        // if($_POST['etat'])
+        // {
+        //     foreach ($_POST['etat'] as $etat)
+        //     // die();
+        // $encheres[] = $enchere->selecEnchereParEtat($etat);
+        // }
+    
+    // print_r($_POST);
+    
+    if($_POST['pays'] == '') unset($_POST['pays']);
+
+        if($_POST)
+        {
+
+            $encheresSelect = $enchere->selecEnchereParFiltre($_POST);
+
+            foreach($encheresSelect as $enchereSelect)
+            {
+                $encheres[] = $enchere->selectId($enchereSelect['id']);
+            }
+        
+            
+            if(!$encheres)
+            $msg = 'non trouve.';
+
+            // echo '<pre>';
+            // print_r($encheresSelect);
+                    // die();
+
+            $i = 0;
+                    
+            foreach($encheres as $enchereChaque)
+            {
+                $timbre = new Timbre;
+                $enchereSelect = $enchere->selectId($enchereChaque['id']);
+                $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
+                $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
+                $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
+                
+                $image = new Image;
+                $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal');
+                $encheres[$i]['image'] = $images[0]['nom'];
+
+                $offre = new Offre;
+                $offresToutes = $offre->selectOffresParEnchere($enchereChaque['id']);
+
+                if ($offresToutes)
+                {
+                    $offreDerniere = $offresToutes[0];
+                    $encheres[$i]['mise_courante'] = $offreDerniere['prix'];
+                }
+                else 
+                {
+                    $encheres[$i]['mise_courante'] = $encheres[$i]['prix_plancher'];
+                }
+                $i++;
+            }
+                    View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'msg'=>$msg, 'encheres'=>$encheres]);
+                    exit();
+
+        }     
+        Apps::url('Enchere/index');
+        exit();
+    }
 
 
 }

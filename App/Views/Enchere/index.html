@@ -13,7 +13,7 @@
             </div>
             <i class="fa-solid fa-chevron-left"></i>
         </div>
-        <form class="filtres__form" action="catalogue.html">
+        <form class="filtres__form" action="select" method="post">
             <div class="filtres__btns">
                 <button type="submit" class="btn btn--principal" aria-label="Appliquer les filtres">
                     Appliquer les filtres 
@@ -25,27 +25,19 @@
             </div>
             <fieldset>
                 <legend>Condition</legend>
-                
-                <input type="checkbox" id="condition1" name="condition1" value="parfaite" >
-                <label for="condition1">Parfaite</label>
-                <input type="checkbox" id="condition2" name="condition2" value="excellente" >
-                <label for="condition2">Excellente</label>
-                <input type="checkbox" id="condition3" name="condition3" value="bonne" >
-                <label for="condition3">Bonne</label>
-                <input type="checkbox" id="condition4" name="condition4" value="moyenne" >
-                <label for="condition4">Moyenne</label>
-                <input type="checkbox" id="condition5" name="condition5" value="endommagé" >
-                <label for="condition5">Endommagé</label>
+                {% for etat in etats %}
+                <input type="checkbox" id="etat{{loop.index}}" name="etat[]" value="{{ etat.nom }}" >
+                <label for="etat{{loop.index}}">{{ etat.nom }}</label>
+                {% endfor %}
             </fieldset>
 
             <fieldset>
                 <label for="pays" class="labelBold">Pays</label>
                 <select name="pays" id="pays">
                     <option value="">Faire un choix</option>
-                    <option value="canada">Canada</option>
-                    <option value="royaume-uni">Royaume-Uni</option>
-                    <option value="étatsunis">États-Unis</option>
-                    <option value="algérie">Algérie</option>
+                    {% for pays in paysTous %}
+                    <option value="{{ pays.nom }}">{{ pays.nom }}</option>
+                    {% endfor %}
                 </select>
             </fieldset>
 
@@ -65,16 +57,11 @@
 
             <fieldset>
                 <legend>Dimension</legend>
-                <input type="checkbox" id="dimension1" name="dimension1" value="rouleau" >
-                <label for="dimension1">Rouleau</label>
-                <input type="checkbox" id="dimension2" name="dimension2" value="carnet" >
-                <label for="dimension2">Carnet</label>
-                <input type="checkbox" id="dimension3" name="dimension3" value="feuillet" >
-                <label for="dimension3">Feuillet</label>
-                <input type="checkbox" id="dimension4" name="dimension4" value="bande" >
-                <label for="dimension4">Bande</label>
-                <input type="checkbox" id="dimension5" name="dimension5" value="simple" >
-                <label for="dimension5">Simple</label>
+                {% for dimension in dimensions %}
+                <input type="checkbox" id="dimension{{loop.index}}" name="dimension[]" value="{{ dimension.nom }}" >
+                <label for="dimension{{loop.index}}">{{ dimension.nom }}</label>
+                {% endfor %}
+
             </fieldset>
 
 
@@ -83,7 +70,13 @@
 
     <div class="liste">
         <div class="tri">
+
             <p class="note">1 à 24 de 74 résultats</p>
+            {% if msg %}
+            <span class="msg-succes">
+                {{ msg }}
+            </span>
+            {% endif %}
             <form action="catalogue.html">
                 <fieldset class="tri__fieldset">
                     <label class="labelBold" for="tri">Trier par</label>
