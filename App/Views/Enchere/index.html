@@ -18,16 +18,13 @@
                 <button type="submit" class="btn btn--principal" aria-label="Appliquer les filtres">
                     Appliquer les filtres 
                 </button>
-                <button type="reset" class="btn btn--icon-text" aria-label="Effacer tous les filtres">
-                    <i class="fa-solid fa-trash"></i>
-                    Effacer tous les filtres 
-                </button>
+                <a href="{{url_racine}}enchere/index" class="btn btn--icon-text" > <i class="fa-solid fa-trash"></i>Effacer tous les filtres</a>
             </div>
             <fieldset>
                 <legend>Condition</legend>
                 {% for etat in etats %}
-                <input type="checkbox" id="etat{{loop.index}}" name="etat[]" value="{{ etat.nom }}" >
-                <label for="etat{{loop.index}}">{{ etat.nom }}</label>
+                <input type="checkbox" id="etat{{etat.id}}" name="etat[]" value="{{ etat.nom }}" {% if etat.nom in filtres.etat %} checked {% endif %}>
+                <label for="etat{{etat.id}}">{{ etat.nom }}</label>
                 {% endfor %}
             </fieldset>
 
@@ -36,29 +33,29 @@
                 <select name="pays" id="pays">
                     <option value="">Faire un choix</option>
                     {% for pays in paysTous %}
-                    <option value="{{ pays.nom }}">{{ pays.nom }}</option>
+                    <option value="{{ pays.nom }}" {% if pays.nom in filtres.pays %} selected {% endif %}>{{ pays.nom }}</option>
                     {% endfor %}
                 </select>
             </fieldset>
 
             <fieldset>
                 <legend>Prix</legend>
-                <input type="checkbox" id="prix1" name="prix[1]" value=">=0.01 and <=0.99" >
+                <input type="checkbox" id="prix1" name="prix[]" value=">=0.01 and <=0.99" {% if ">=0.01 and <=0.99" in filtres.prix %} checked {% endif %}>
                 <label for="prix1">1 ¢ - 99 ¢</label>
-                <input type="checkbox" id="prix2" name="prix[2]" value=">=1 and <=9.99" >
+                <input type="checkbox" id="prix2" name="prix[]" value=">=1 and <=9.99"  {% if ">=1 and <=9.99" in filtres.prix %} checked {% endif %}>
                 <label for="prix2">1,00 $  - 9,99 $</label>
-                <input type="checkbox" id="prix3" name="prix[3]" value=">=10 and <=24.99" >
+                <input type="checkbox" id="prix3" name="prix[]" value=">=10 and <=24.99"  {% if ">=10 and <=24.99" in filtres.prix %} checked {% endif %}>
                 <label for="prix3">10,00 $  - 24,99 $</label>
-                <input type="checkbox" id="prix4" name="prix[4]" value=">=25 and <=49.99" >
+                <input type="checkbox" id="prix4" name="prix[]" value=">=25 and <=49.99"  {% if ">=25 and <=49.99" in filtres.prix %} checked {% endif %}>
                 <label for="prix4">25,00 $ - 49,99 $</label>
-                <input type="checkbox" id="prix5" name="prix[5]" value=">=50" >
+                <input type="checkbox" id="prix5" name="prix[]" value=">=50" {% if ">=50" in filtres.prix %} checked {% endif %}>
                 <label for="prix5">50 $ et plus</label>
             </fieldset>
 
             <fieldset>
                 <legend>Dimension</legend>
                 {% for dimension in dimensions %}
-                <input type="checkbox" id="dimension{{loop.index}}" name="dimension[]" value="{{ dimension.nom }}" >
+                <input type="checkbox" id="dimension{{loop.index}}" name="dimension[]" value="{{ dimension.nom }}" {% if dimension.nom in filtres.dimension %} checked {% endif %}>
                 <label for="dimension{{loop.index}}">{{ dimension.nom }}</label>
                 {% endfor %}
 

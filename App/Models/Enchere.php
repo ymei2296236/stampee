@@ -169,32 +169,6 @@ class Enchere extends CRUD
             $queryField = str_replace('prix.nom = :prix', $queryPrix, $queryField);
         }
     
-        if(!isset($data['etat']) && !isset($data['dimension']) && !isset($data['pays']))
-        {
-            $join = 'LEFT OUTER JOIN offre';
-        }
-        else 
-            $join = ' RIGHT JOIN offre';
-            $join = ' LEFT JOIN offre';
-
-
-
-        // $sql=
-        // "SELECT enchere.id FROM $this->table 
-        //     JOIN timbre 
-        //     ON timbre.id = enchere.timbre_id
-        //     INNER JOIN etat 
-        //     ON timbre.etat_id = etat.id
-        //     INNER JOIN pays 
-        //     ON timbre.pays_id = pays.id
-        //     INNER JOIN dimension 
-        //     ON timbre.dimension_id = dimension.id
-        //     $join 
-        //     ON offre.enchere_id = enchere.id
-        //     WHERE $queryField
-        //     GROUP by enchere.id
-        //     ";
-
         $sql=
         "SELECT enchere.id FROM $this->table
             LEFT JOIN timbre 
@@ -211,16 +185,37 @@ class Enchere extends CRUD
             GROUP by enchere.id
             ";
 
-        echo "<pre>";
-        print_r($sql);
-        echo '<br>';
+        // echo "<pre>";
+        // print_r($sql);
+        // echo '<br>';
 
         $stmt = $db->query($sql);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
+    public function selectEnchereParNom($data)
+    {
+        $db = static::getDB();
+      
+        $sql=
+            "SELECT enchere.id AS id, timbre.createur_id AS createur_id,
+            date_debut, date_fin, prix_plancher, coup_de_coeur, timbre_id 
+            FROM $this->table 
+            JOIN timbre
+            ON timbre.id = enchere.timbre_id
+            WHERE timbre.nom LIKE '%$data%' OR timbre.nom_2 LIKE '%$data%'";
+
+        $stmt = $db->query($sql);
+        // print_r($stmt);
+        // $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
+
+
 
 
 

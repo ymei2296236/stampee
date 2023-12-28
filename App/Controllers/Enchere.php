@@ -37,6 +37,8 @@ class Enchere extends \Core\Controller
 
         $enchere = new \App\Models\Enchere;
         $encheres = $enchere->select();
+        // echo "<pre>";
+        // print_r($encheres);
 
         $image = new Image;
 
@@ -68,6 +70,57 @@ class Enchere extends \Core\Controller
             $i++;
         }
 
+        View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'encheres'=>$encheres]);
+        exit();
+    }
+
+    /**
+     * Afficher le catalogue d'enchères
+     */
+    public function filterAction() 
+    {
+        $etat = new Etat;
+        $etats = $etat->select();
+
+        $pays = new Pays;
+        $paysTous = $pays->select();
+
+        $dimension = new Dimension;
+        $dimensions = $dimension->select();
+
+        $enchere = new \App\Models\Enchere;
+        $encheres = $enchere->selectEnchereParNom($_POST['rechercher']);
+
+        $image = new Image;
+
+        $i = 0;
+
+        foreach($encheres as $enchereChaque)
+        {
+            $timbre = new Timbre;
+            $enchereSelect = $enchere->selectId($enchereChaque['id']);
+            $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
+            $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
+            $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
+
+            $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal');
+            $encheres[$i]['image'] = $images[0]['nom'];
+
+            $offre = new Offre;
+            $offresToutes = $offre->selectOffresParEnchere($enchereChaque['id']);
+
+            if ($offresToutes)
+            {
+                $offreDerniere = $offresToutes[0];
+                $encheres[$i]['mise_courante'] = $offreDerniere['prix'];
+            }
+            else 
+            {
+                $encheres[$i]['mise_courante'] = $encheres[$i]['prix_plancher'];
+            }
+            $i++;
+        }
+  
         View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'encheres'=>$encheres]);
         exit();
     }
@@ -462,8 +515,6 @@ class Enchere extends \Core\Controller
                 else if ($nbEncheres > 1) $nbEncheres .= ' résultats';
             }
 
-            // echo '<pre>';
-            print_r($encheresSelect);
 
             $i = 0;
                     
@@ -493,8 +544,11 @@ class Enchere extends \Core\Controller
                 }
                 $i++;
             }
-                    View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'msg'=>$msg, 'encheres'=>$encheres, 'resultats'=>$nbEncheres]);
-                    exit();
+
+            // echo '<pre>';
+            // print_r($encheres);
+            View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'msg'=>$msg, 'encheres'=>$encheres, 'filtres'=>$_POST, 'resultats'=>$nbEncheres]);
+            exit();
 
         }     
         Apps::url('Enchere/index');
