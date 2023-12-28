@@ -40,7 +40,7 @@ class Enchere extends CRUD
         usager.id AS createur_id,
         usager.alias AS createur,
         pays.nom AS pays,
-        date_debut, date_fin, prix_plancher, date_emission, tirage, extrait
+        date_debut, date_fin, prix_plancher, date_emission, tirage, extrait, dimension.id
         FROM $this->table
         INNER JOIN timbre 
         INNER JOIN etat 
@@ -49,6 +49,7 @@ class Enchere extends CRUD
         INNER JOIN pays 
         ON timbre.id = enchere.timbre_id  
         and timbre.etat_id = etat.id  
+        and timbre.dimension_id = dimension.id  
         and timbre.createur_id = usager.id  
         and timbre.pays_id = pays.id  
         WHERE enchere.id = '$value'
@@ -107,22 +108,24 @@ class Enchere extends CRUD
         $queryField = null;
         $queryEtat = null;
         $queryDimension = null;
+        $queryPrix = null;
         $queryPays = null;
+        $queryData = null;
 
         foreach($data as $key=>$value)
         {
             $queryField .="$key.nom = :$key AND ";
-        }
-                
+        }   
         $queryField = rtrim($queryField, "AND ");
-
+        
         if(isset($data['etat']))
         {
             foreach($data['etat'] as $key=>$value)
-            {
+            {                
                 $queryEtat .="etat.nom = '$value' OR ";
             }
             $queryEtat = rtrim($queryEtat, "OR ");
+            $queryEtat = "(".$queryEtat.")";
             $queryField = str_replace('etat.nom = :etat', $queryEtat, $queryField);
         }
 
@@ -133,9 +136,9 @@ class Enchere extends CRUD
                 $queryDimension .="dimension.nom = '$value' OR ";
             }
             $queryDimension = rtrim($queryDimension, "OR ");
+            $queryDimension = "(".$queryDimension.")";
             $queryField = str_replace('dimension.nom = :dimension', $queryDimension, $queryField);
         }
-
         
         if(isset($data['pays']))
         {
@@ -144,37 +147,77 @@ class Enchere extends CRUD
             $queryField = str_replace('pays.nom = :pays', $queryPays, $queryField);
         }
 
+        if(isset($data['prix']))
+        {
+            foreach($data['prix'] as $key=>$value)
+            {
+                $prix = explode(" and ", $value);
 
-        // echo '<pre>';
-        // print_r($queryField);
-        // echo '<br>';
-        // print_r($queryEtat);
-        // echo '<br>';
+                if (count($prix) == 2)
+                {
+                    // $queryPrix .="($prix[0] offre.prix $prix[1] OR $prix[0] enchere.prix_plancher $prix[1])";
+                    $queryPrix .="offre.prix $prix[0] AND offre.prix $prix[1] OR enchere.prix_plancher $prix[0] AND enchere.prix_plancher $prix[1] OR ";
+                }
+                else if (count($prix) == 1)
+                {
+                    $queryPrix .="$prix[0] offre.prix OR $prix[0] enchere.prix_plancher";
+                }
+                
+            }
+            $queryPrix = rtrim($queryPrix, "OR ");
+            $queryPrix = "(".$queryPrix.")";
+            $queryField = str_replace('prix.nom = :prix', $queryPrix, $queryField);
+        }
     
+        if(!isset($data['etat']) && !isset($data['dimension']) && !isset($data['pays']))
+        {
+            $join = 'LEFT OUTER JOIN offre';
+        }
+        else 
+            $join = ' RIGHT JOIN offre';
+            $join = ' LEFT JOIN offre';
+
+
+
+        // $sql=
+        // "SELECT enchere.id FROM $this->table 
+        //     JOIN timbre 
+        //     ON timbre.id = enchere.timbre_id
+        //     INNER JOIN etat 
+        //     ON timbre.etat_id = etat.id
+        //     INNER JOIN pays 
+        //     ON timbre.pays_id = pays.id
+        //     INNER JOIN dimension 
+        //     ON timbre.dimension_id = dimension.id
+        //     $join 
+        //     ON offre.enchere_id = enchere.id
+        //     WHERE $queryField
+        //     GROUP by enchere.id
+        //     ";
+
         $sql=
-            "SELECT enchere.id FROM $this->table 
-            INNER JOIN timbre 
-            INNER JOIN etat 
-            INNER JOIN pays 
-            INNER JOIN dimension 
-            INNER JOIN offre 
+        "SELECT enchere.id FROM $this->table
+            LEFT JOIN timbre 
             ON timbre.id = enchere.timbre_id
-            AND timbre.etat_id = etat.id
-            AND timbre.dimension_id = dimension.id
-            AND timbre.pays_id = pays.id
-            AND enchere.id = offre.enchere_id
+            LEFT JOIN offre
+            ON offre.enchere_id = enchere.id
+            INNER JOIN etat 
+            ON timbre.etat_id = etat.id
+            INNER JOIN pays 
+            ON timbre.pays_id = pays.id
+            INNER JOIN dimension 
+            ON timbre.dimension_id = dimension.id
             WHERE $queryField
             GROUP by enchere.id
             ";
 
-        $stmt = $db->prepare($sql);
+        echo "<pre>";
         print_r($sql);
         echo '<br>';
 
-        $stmt->execute();
+        $stmt = $db->query($sql);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
     }
 
 }

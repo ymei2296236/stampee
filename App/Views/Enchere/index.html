@@ -43,15 +43,15 @@
 
             <fieldset>
                 <legend>Prix</legend>
-                <input type="checkbox" id="prix1" name="prix1" value="1" >
+                <input type="checkbox" id="prix1" name="prix[1]" value=">=0.01 and <=0.99" >
                 <label for="prix1">1 ¢ - 99 ¢</label>
-                <input type="checkbox" id="prix2" name="prix2" value="2" >
+                <input type="checkbox" id="prix2" name="prix[2]" value=">=1 and <=9.99" >
                 <label for="prix2">1,00 $  - 9,99 $</label>
-                <input type="checkbox" id="prix3" name="prix3" value="3" >
+                <input type="checkbox" id="prix3" name="prix[3]" value=">=10 and <=24.99" >
                 <label for="prix3">10,00 $  - 24,99 $</label>
-                <input type="checkbox" id="prix4" name="prix4" value="4" >
+                <input type="checkbox" id="prix4" name="prix[4]" value=">=25 and <=49.99" >
                 <label for="prix4">25,00 $ - 49,99 $</label>
-                <input type="checkbox" id="prix5" name="prix5" value="5" >
+                <input type="checkbox" id="prix5" name="prix[5]" value=">=50" >
                 <label for="prix5">50 $ et plus</label>
             </fieldset>
 
@@ -70,13 +70,7 @@
 
     <div class="liste">
         <div class="tri">
-
-            <p class="note">1 à 24 de 74 résultats</p>
-            {% if msg %}
-            <span class="msg-succes">
-                {{ msg }}
-            </span>
-            {% endif %}
+            <p class="note">{{resultats}}</p>
             <form action="catalogue.html">
                 <fieldset class="tri__fieldset">
                     <label class="labelBold" for="tri">Trier par</label>
@@ -107,19 +101,6 @@
                 </a>
             </div>
             {% endfor %}
-
-        </div>
-        <div class="pagination"> 
-            <fieldset>
-                <input type="radio" value="1" name="page" id="radio-page1"  />
-                <label for="radio-page1">1</label>
-                <input type="radio" value="2" name="page" id="radio-page2"  />
-                <label for="radio-page2">2</label>
-                <input type="radio" value="3" name="page" id="radio-page3"  />
-                <label for="radio-page3">3</label>
-                <input type="radio" value="4" name="page" id="radio-page4"  />
-                <label for="radio-page4">4</label>
-            </fieldset>
         </div>
     </div>
 </main>

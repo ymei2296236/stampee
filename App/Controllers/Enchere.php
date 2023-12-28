@@ -90,6 +90,8 @@ class Enchere extends \Core\Controller
         if ($enchere_id)
         {
             $enchereSelect = $enchere->selectEnchereParId($enchere_id);
+            // echo "<pre>";
+            // print_r($enchereSelect);
     
             if(!$enchereSelect) Apps::url('enchere/index');
     
@@ -429,47 +431,39 @@ class Enchere extends \Core\Controller
         $dimensions = $dimension->select();
 
         $enchere = new \App\Models\Enchere;
-        // $encheres = $enchere->select();
-
-        // print_r($encheres);
         $encheres = [];
-        $msg = '';
+        $msg = null;
+        $nbEncheres = null;
 
-        // if($_POST['pays']) $encheresSelect = $enchere->selecEnchereParPays($_POST['pays']);
-        
-        // foreach($encheresSelect as $enchereSelect)
-        // {
-        //     $encheres[] = $enchere->selectId($enchereSelect['id']);
-        // }
-
-        // if($_POST['etat'])
-        // {
-        //     foreach ($_POST['etat'] as $etat)
-        //     // die();
-        // $encheres[] = $enchere->selecEnchereParEtat($etat);
-        // }
+        // echo "<pre>";
+        // print_r($_POST);
     
-    // print_r($_POST);
-    
-    if($_POST['pays'] == '') unset($_POST['pays']);
+        // si pays n'est pas selectionne
+        if($_POST['pays'] == '') unset($_POST['pays']);
 
         if($_POST)
         {
-
             $encheresSelect = $enchere->selecEnchereParFiltre($_POST);
 
             foreach($encheresSelect as $enchereSelect)
             {
                 $encheres[] = $enchere->selectId($enchereSelect['id']);
             }
-        
             
             if(!$encheres)
-            $msg = 'non trouve.';
+            {
+                $nbEncheres = '0 résultat';
+            } 
+            else 
+            {
+                $nbEncheres = count($encheres);
+
+                if($nbEncheres == 1) $nbEncheres .= ' résultat';
+                else if ($nbEncheres > 1) $nbEncheres .= ' résultats';
+            }
 
             // echo '<pre>';
-            // print_r($encheresSelect);
-                    // die();
+            print_r($encheresSelect);
 
             $i = 0;
                     
@@ -499,7 +493,7 @@ class Enchere extends \Core\Controller
                 }
                 $i++;
             }
-                    View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'msg'=>$msg, 'encheres'=>$encheres]);
+                    View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'msg'=>$msg, 'encheres'=>$encheres, 'resultats'=>$nbEncheres]);
                     exit();
 
         }     
