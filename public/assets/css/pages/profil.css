@@ -1,6 +1,6 @@
 [data-page="profil"] {
 	display: flex;
-	flex-direction: column;
+	/* flex-direction: column; */
 	padding: var(--espace-2) var(--espace-10);
 
 	& h1 {
@@ -58,6 +58,14 @@
 				flex-direction: column;
 				gap: var(--espace-half);
 			}
+		}
+	}
+
+	@media screen and (max-width: 1024px) {
+		padding: var(--espace-2);
+
+		& .col {
+			gap: var(--espace-4);
 		}
 	}
 }

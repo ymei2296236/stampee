@@ -40,11 +40,16 @@
 }
 
 /* tablette et mobile */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1024px) {
 	.filtres {
 		padding: var(--espace-quart);
-	}
-	.filtres__form {
-		display: none;
+		flex: 100%;
+
+		.filtres__titre-container {
+			padding: var(--espace-1) var(--espace-5);
+		}
+		.filtres__form {
+			display: none;
+		}
 	}
 }

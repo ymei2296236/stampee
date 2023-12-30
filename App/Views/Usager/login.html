@@ -1,33 +1,35 @@
-{% extends "base.html" %}
+{% extends "base.php" %}
 
 {% block title %}Se connecter{% endblock %}
 
 {% block body %}
-<main class="formulaire">
-    <h1>Se connecter</h1>
+<main>
+    <div class="formulaire">
+        <h1>Se connecter</h1>
 
-    {% if msg %}
-    <span class="msg-succes">
-        {{ msg }}
-    </span>
-    {% endif %}
+        {% if msg %}
+        <span class="msg-succes">
+            {{ msg }}
+        </span>
+        {% endif %}
 
-    {% if errors is defined %}
-    <ul class="msg-error">
-        {{ errors | raw }}
-    </ul>
-    {% endif %}
-        
-    <form class="formulaire__form" action="auth" method="post">
-        <label for="id">Utilisateur</label>
-        <input id="id" type="text" name="id" value="{{ user.id }}"></input>
-        <label for="password" >Mot de passe</label>
-        <input id="password" type="password" name="password" ></input>
-        <button type="submit" class="btn btn--principal" aria-label="Enregistrer">
-            Confirmer
-        </button>
-    </form>
-    <a class="btn btn--secondaire" href="create">Créer votre compte</a>
+        {% if errors is defined %}
+        <ul class="msg-error">
+            {{ errors | raw }}
+        </ul>
+        {% endif %}
+            
+        <form class="formulaire__form" action="auth" method="post">
+            <label for="id">Utilisateur</label>
+            <input id="id" type="text" name="id" value="{{ user.id }}"></input>
+            <label for="password" >Mot de passe</label>
+            <input id="password" type="password" name="password" ></input>
+            <button type="submit" class="btn btn--principal" aria-label="Enregistrer">
+                Confirmer
+            </button>
+        </form>
+        <a class="btn btn--secondaire" href="create">Créer votre compte</a>
+    </div>
 
 </main>
 

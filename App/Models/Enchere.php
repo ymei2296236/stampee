@@ -213,7 +213,27 @@ class Enchere extends CRUD
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function selectEncheresEnCours()
+    {
+        $db = static::getDB();
+
+        $sql=
+            "SELECT * 
+            FROM enchere 
+			JOIN timbre
+			ON enchere.timbre_id = timbre.id
+			LEFT JOIN offre
+			ON offre.enchere_id = enchere.id
+            WHERE date_fin > NOW()";
+
+        $stmt = $db->query($sql);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
+
+
 
 
 

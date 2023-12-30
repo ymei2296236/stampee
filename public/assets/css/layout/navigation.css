@@ -47,6 +47,27 @@
 	border: 2px solid var(--coul-accent);
 }
 
+@media screen and (max-width: 1024px) {
+	.navigation {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		background-color: var(--coul-principale);
+		padding: var(--espace-1half) var(--espace-4);
+
+		& nav {
+			display: flex;
+			justify-content: space-between;
+		}
+		& .navigation__recherche {
+			display: flex;
+			gap: var(--espace-2);
+			align-items: center;
+			margin-right: var(--espace-2);
+		}
+	}
+}
+
 @media screen and (max-width: 480px) {
 	.navigation {
 		display: flex;
@@ -54,10 +75,6 @@
 		flex-wrap: wrap;
 		background-color: var(--coul-principale);
 		padding: var(--espace-1half);
-
-		& .aPropos {
-			display: none;
-		}
 
 		& .menu-mobile {
 			display: block;

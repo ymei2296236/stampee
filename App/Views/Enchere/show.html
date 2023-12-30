@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.php" %}
 
 {% block title %}#{{enchere.enchere_id}} {{enchere.timbre_nom}} {% endblock %}
 
@@ -16,7 +16,7 @@
                 {% endfor %}
             </div>
             <div class="images__main">
-                <img src="{{url_racine}}assets/img/jpg/{{ enchere.image_nom }}" alt="image du timbre en recto">
+                <img src="{{url_racine}}assets/img/jpg/{{ imagePrincipale}}" alt="image du timbre en recto">
             </div>
         </div>
         <div class="mise">

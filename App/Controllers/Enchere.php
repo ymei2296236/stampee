@@ -150,7 +150,8 @@ class Enchere extends \Core\Controller
     
             $image = new Image;
             $images = $image->selectByField('timbre_id', $enchereSelect['timbre_id'], 'principal');
-            
+            $imagePrincipale = $images[0]['nom'];
+
             $offre = new Offre;
             $offres = $offre->selectOffresParEnchere($enchereSelect['enchere_id']);
     
@@ -161,7 +162,7 @@ class Enchere extends \Core\Controller
     
             $nbOffres = $offre->countOffres($enchereSelect['enchere_id']);
             
-            View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $enchereSelect, 'images'=>$images, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres]);
+            View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $enchereSelect, 'images'=>$images, 'imagePrincipale'=>$imagePrincipale, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres]);
     
             exit();
         }

@@ -2,6 +2,7 @@
 namespace App\Library;
 
 use \Core\View;
+use \Core\Model;
 use \App\Config;
 
 class Apps
@@ -90,6 +91,27 @@ class Apps
         exit();
     }
 
+    /**
+     * Exécute la requête SQL
+     * Si le paramètre $insert est true, retourne l'id de la ressource ajoutée à la db
+     */
+    static public function executeRequete($requete, $insert = false) 
+    {
+
+        print_r($db);
+
+        if ($insert) 
+        {
+            mysqli_query($connexion, $requete);
+            return $connexion->insert_id;
+        } 
+        else 
+        {
+            $stmt = $db->query($sql);
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+    }
 
 }
 

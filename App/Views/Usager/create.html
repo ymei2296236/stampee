@@ -1,36 +1,38 @@
-{% extends "base.html" %}
+{% extends "base.php" %}
 
 {% block title %}Créer un profil{% endblock %}
 
 {% block body %}
-<main class="formulaire">
-    <h1>Créer un profil</h1>
+<main>
+    <div class="formulaire">
+        <h1>Créer un profil</h1>
 
-    {% if msg %}
-    <span class="msg-succes">
-        {{ msg }}
-    </span>
-    {% endif %}
+        {% if msg %}
+        <span class="msg-succes">
+            {{ msg }}
+        </span>
+        {% endif %}
 
-    {% if errors is defined %}
-    <ul class="msg-error">
-        {{ errors | raw }}
-    </ul>
-    {% endif %}
-    
-    <form class="formulaire__form" action="store" method="post" novalidate>
-        <label for="id">Utilisateur</label>
-        <input type="text" id="id" name="id" value="{{usager}}" placeholder="votre courriel"></input>  
-        <label for="password">Mot de passe</label>
-        <input type="password" id="password" name="password" ></input>      
-        <label for="alias" >Alias</label>
-        <input type="text" id="alia" name="alias" value="{{alias}}"></input>
-        <input type="hidden" name="privilege_id" value="2"> 
-        <button type="submit" class="btn btn--principal" aria-label="Enregistrer">
-            Confirmer
-        </button>
+        {% if errors is defined %}
+        <ul class="msg-error">
+            {{ errors | raw }}
+        </ul>
+        {% endif %}
+        
+        <form class="formulaire__form" action="store" method="post" novalidate>
+            <label for="id">Utilisateur</label>
+            <input type="text" id="id" name="id" value="{{usager}}" placeholder="votre courriel"></input>  
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" ></input>      
+            <label for="alias" >Alias</label>
+            <input type="text" id="alia" name="alias" value="{{alias}}"></input>
+            <input type="hidden" name="privilege_id" value="2"> 
+            <button type="submit" class="btn btn--principal" aria-label="Enregistrer">
+                Confirmer
+            </button>
+        </form>
+    </div>
 
-    </form>
 </main>
 
 {% endblock %}

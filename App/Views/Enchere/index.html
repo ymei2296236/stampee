@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.php" %}
 
 {% block title %}Votre Compte{% endblock %}
 
@@ -68,20 +68,21 @@
     <div class="liste">
         <div class="tri">
             <p class="note">{{resultats}}</p>
-            <form action="catalogue.html">
+            <form action="catalogue.html" data-js-component="TrierEncheres">
                 <fieldset class="tri__fieldset">
                     <label class="labelBold" for="tri">Trier par</label>
                     <select name="tri" id="tri" >
-                        <option value="1">Enchères en cours</option>
-                        <option value="2">Prix le plus bas</option>
-                        <option value="3">Prix le plus élévé</option>
-                        <option value="4">Nouveautés</option>
-                        <option value="5">Enchères archivées</option>
+                        <option value="">Faire un choix</option>
+                        <option value="selectEncheresNouveautes">Nouveautés</option>
+                        <option value="selectEncheresEnCours">Enchères en cours</option>
+                        <option value="selectEncheresPrixBas">Prix le plus bas</option>
+                        <option value="selectEncheresPrixEleve">Prix le plus élévé</option>
+                        <option value="selectEncheresArchivees">Enchères archivées</option>
                     </select>
                 </fieldset>
             </form>
         </div>
-        <div class="liste__contenu">   
+        <div data-js-listeEncheres class="liste__contenu">   
             {% for enchere in encheres %}
             <div class="item">
                 <a href="{{url_racine}}enchere/show/{{enchere.id}}" class="item__lien">
