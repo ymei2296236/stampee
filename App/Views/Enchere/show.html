@@ -7,15 +7,15 @@
         <div class="breadcrumb">
             <span class="note btn btn--tertiaire"><a href="{{url_racine}}"> Accueil </a></span> / <span class="note btn btn--tertiaire"> <a href="{{url_racine}}enchere/index">Catalogue</a></span> / <span class="note btn btn--tertiaire"> <a href="{{url_racine}}enchere/show/{{enchere.enchere_id}}">{{enchere.timbre_nom}} {{enchere.timbre_nom_2}} </a></span>
         </div>
-        <div class="images">
+        <div class="images"  data-js-component="Image">
             <div class="images__thumbnails-container">
                 {% for image in images %}
-                <div class="images__thumbnails-item">
+                <div class="images__thumbnails-item" data-js-thumbnail="{{ image.nom }}">
                     <img src="{{url_racine}}assets/img/jpg/{{ image.nom }}" loading="lazy" alt="image du paquet">
                 </div>
                 {% endfor %}
             </div>
-            <div class="images__main">
+            <div class="images__main" data-js-image>
                 <img src="{{url_racine}}assets/img/jpg/{{ imagePrincipale}}" alt="image du timbre en recto">
             </div>
         </div>

@@ -18,6 +18,12 @@
 	}
 }
 
+@media screen and (max-width: 1024px) {
+	.top-bar {
+		padding: var(--espace-1) var(--espace-2);
+	}
+}
+
 @media screen and (max-width: 480px) {
 	.top-bar {
 		justify-content: center;

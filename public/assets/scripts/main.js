@@ -16,6 +16,7 @@ let elComponents = document.querySelectorAll('[data-js-component]');
         }
         
     }
+    
 
 })();
 

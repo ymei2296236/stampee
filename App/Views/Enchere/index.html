@@ -4,16 +4,24 @@
 
 {% block body %}
 <main data-page="catalogue">
-
-    <aside class="filtres">
-        <div class="filtres__titre-container">
+    <section class="modal modal--ferme" data-js-modal="exit">
+        <span class="modal__icon" data-js-modal-button><i class="fa-solid fa-xmark"></i></span>
+        <div class="filtres-modal">
             <div class="filtres__titre-titre">
                 <i class="fa-solid fa-sliders"></i>
-                <h3>Filtres</h3>
+                <h3 >Filtres</h3>
             </div>
-            <i class="fa-solid fa-chevron-left"></i>
+            <form class="filtres__form" action="select" method="post"  data-js-filtres="modal" >         
+            </form>
+
         </div>
-        <form class="filtres__form" action="select" method="post">
+    </section>
+    <aside class="filtres-ecran">
+        <div class="filtres__titre-titre">
+            <i class="fa-solid fa-sliders"></i>
+            <h3 >Filtres</h3>
+        </div>
+        <form class="filtres__form" action="select" method="post"  data-js-filtres="ecran">
             <div class="filtres__btns">
                 <button type="submit" class="btn btn--principal" aria-label="Appliquer les filtres">
                     Appliquer les filtres 
@@ -61,12 +69,19 @@
 
             </fieldset>
 
-
         </form>
     </aside>
 
     <div class="liste">
+        
         <div class="tri">
+            <div class="filtres-modal-btns" >
+                <div class="afficheModal" data-js-component="Modal">
+                    <i class="fa-solid fa-sliders"></i>
+                    <h3 >Filtres</h3>
+                </div>
+                <a href="{{url_racine}}enchere/index" class="btn btn--icon-text effacerFiltres" > <i class="fa-solid fa-trash"></i>Effacer tous les filtres</a>
+            </div>
             <p class="note">{{resultats}}</p>
             <form action="catalogue.html" data-js-component="TrierEncheres">
                 <fieldset class="tri__fieldset">

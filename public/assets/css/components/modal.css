@@ -1,0 +1,36 @@
+.modal {
+	opacity: 1;
+	position: fixed;
+	background-color: var(--coul-modal);
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	margin: 0;
+	padding: var(--espace-5);
+	transition: opacity 0.3s ease, transform 0.3s ease;
+
+	.filtres-modal {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		padding: var(--espace-4);
+		align-items: left;
+		background-color: var(--coul-neutre);
+	}
+
+	.fa-xmark {
+		color: var(--coul-arriere-plan);
+		margin-bottom: var(--espace-2);
+	}
+
+	.fa-chevron-left {
+		display: none;
+	}
+}
+
+.modal--ferme {
+	opacity: 0;
+	pointer-events: none;
+	transform: translateY(100px);
+}

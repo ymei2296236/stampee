@@ -4,6 +4,7 @@
 @import url(base/couleurs.css);
 @import url(base/typographie.css);
 @import url(base/rythme.css);
+@import url(base/overflow.css);
 
 /* import components */
 @import url(components/breadcrumb.css);
@@ -11,6 +12,7 @@
 @import url(components/buttons.css);
 @import url(components/formulaire.css);
 @import url(components/input.css);
+@import url(components/modal.css);
 
 /* import layout */
 @import url(layout/liste.css);

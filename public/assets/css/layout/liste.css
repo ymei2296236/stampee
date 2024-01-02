@@ -30,10 +30,10 @@
 }
 
 .liste__contenu {
-	display: flex;
+	display: inline-flex;
 	flex-wrap: wrap;
 	gap: var(--espace-1);
-	justify-content: flex-start;
+	/* justify-content: space-between; */
 }
 
 .item {
@@ -132,9 +132,18 @@
 }
 
 /* tablette */
-@media screen and (max-width: 768px) {
-	.item {
-		flex-basis: calc(50% - var(--espace-1));
+@media screen and (max-width: 1024px) {
+	.liste {
+		padding: var(--espace-2);
+		gap: var(--espace-1);
+
+		.tri {
+			margin-bottom: 0;
+			flex-wrap: wrap;
+		}
+		.item {
+			flex-basis: calc(33.33% - var(--espace-1));
+		}
 	}
 }
 

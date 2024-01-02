@@ -1,7 +1,7 @@
 :root {
 	--coul-principale: #2b4865;
 	--coul-secondaire: #256d85;
-	--coul-accent: #8fe3cf;
+	--coul-accent: hsl(166, 60%, 73%);
 	--coul-neutre: #f4f5f6;
 
 	--coul-texte: #002b5b;
@@ -11,4 +11,5 @@
 	--coul-texte-succes: #19760d;
 
 	--coul-arriere-plan: var(--coul-texte-clair);
+	--coul-modal: rgba(43, 70, 99, 0.9);
 }

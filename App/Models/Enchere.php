@@ -160,7 +160,7 @@ class Enchere extends CRUD
                 }
                 else if (count($prix) == 1)
                 {
-                    $queryPrix .="$prix[0] offre.prix OR $prix[0] enchere.prix_plancher";
+                    $queryPrix .="offre.prix $prix[0] OR enchere.prix_plancher $prix[0]";
                 }
                 
             }

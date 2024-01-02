@@ -25,7 +25,7 @@
 				cursor: pointer;
 			}
 
-			& .images__thumbnails-item:first-child {
+			& .images__thumbnails-item--active {
 				border: 1px solid var(--coul-principale);
 			}
 		}
