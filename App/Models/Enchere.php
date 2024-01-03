@@ -61,46 +61,6 @@ class Enchere extends CRUD
     }
 
 
-    // public function selecEnchereParEtat($data)
-    // {
-    //     $db = static::getDB();
-    
-    //     $sql=
-    //         "SELECT enchere.id FROM $this->table 
-    //         INNER JOIN timbre 
-    //         INNER JOIN etat 
-    //         ON timbre.id = enchere.timbre_id
-    //         AND timbre.etat_id = etat.id
-    //         WHERE etat.nom = '$data'
-    //         GROUP by enchere.id
-    //         ";
-
-    //     $stmt = $db->query($sql);
-
-    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-    // }
-
-    // public function selecEnchereParPays($data)
-    // {
-    //     $db = static::getDB();
-    
-    //     $sql=
-    //         "SELECT enchere.id, pays.nom AS paysNom FROM $this->table 
-    //         INNER JOIN timbre 
-    //         INNER JOIN pays 
-    //         ON timbre.id = enchere.timbre_id
-    //         AND timbre.pays_id = pays.id
-    //         WHERE pays.nom = '$data'
-    //         GROUP by enchere.id
-    //         ";
-
-    //     $stmt = $db->query($sql);
-
-    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-    // }
-
     public function selecEnchereParFiltre($data)
     {
         $db = static::getDB();
@@ -162,7 +122,6 @@ class Enchere extends CRUD
                 {
                     $queryPrix .="offre.prix $prix[0] OR enchere.prix_plancher $prix[0]";
                 }
-                
             }
             $queryPrix = rtrim($queryPrix, "OR ");
             $queryPrix = "(".$queryPrix.")";
@@ -210,22 +169,24 @@ class Enchere extends CRUD
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function selectEncheresEnCours()
+
+    public function selectEncheresArchivees()
     {
         $db = static::getDB();
-
+      
         $sql=
-            "SELECT * 
+            "SELECT enchere.id AS enchere_id, timbre.id AS timbre_id, timbre.nom AS timbre_nom, timbre.nom_2 AS timbre_nom_2, prix_plancher
             FROM enchere 
 			JOIN timbre
-			ON enchere.timbre_id = timbre.id
-			LEFT JOIN offre
-			ON offre.enchere_id = enchere.id
-            WHERE date_fin > NOW()";
+			on enchere.timbre_id = timbre.id
+            WHERE date_fin < NOW()";
 
         $stmt = $db->query($sql);
+        // print_r($stmt);
+        // $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+       
     }
 }
 

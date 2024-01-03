@@ -46,7 +46,7 @@
     function selectEncheresEnCours()
     {      
         $sql=
-            "SELECT enchere.id AS enchere_id, timbre.id AS timbre_id, timbre.nom AS timbre_nom, timbre.nom_2 AS timbre_nom_2, prix_plancher
+            "SELECT enchere.id AS enchere_id, timbre.id AS timbre_id, timbre.nom AS timbre_nom, timbre.nom_2 AS timbre_nom_2, prix_plancher, date_fin, coup_de_coeur
             FROM enchere 
 			JOIN timbre
 			on enchere.timbre_id = timbre.id
@@ -58,7 +58,7 @@
     function selectEncheresArchivees()
     {      
         $sql=
-            "SELECT enchere.id AS enchere_id, timbre.id AS timbre_id, timbre.nom AS timbre_nom, timbre.nom_2 AS timbre_nom_2, prix_plancher
+            "SELECT enchere.id AS enchere_id, timbre.id AS timbre_id, timbre.nom AS timbre_nom, timbre.nom_2 AS timbre_nom_2, prix_plancher, date_fin, coup_de_coeur
             FROM enchere 
 			JOIN timbre
 			on enchere.timbre_id = timbre.id
@@ -70,7 +70,7 @@
 	function selectEncheresPrixBas()
 	{
 		$sql=
-		"SELECT enchere.id AS enchere_id, timbre.id AS timbre_id, timbre.nom AS timbre_nom, timbre.nom_2 AS timbre_nom_2, prix_plancher
+		"SELECT enchere.id AS enchere_id, timbre.id AS timbre_id, timbre.nom AS timbre_nom, timbre.nom_2 AS timbre_nom_2, prix_plancher, date_fin, coup_de_coeur
 		FROM enchere 
 		JOIN timbre
 		on enchere.timbre_id = timbre.id
@@ -82,7 +82,7 @@
 	function selectEncheresNouveautes()
 	{
 		$sql=
-		"SELECT enchere.id AS enchere_id, timbre.id AS timbre_id, timbre.nom AS timbre_nom, timbre.nom_2 AS timbre_nom_2, prix_plancher
+		"SELECT enchere.id AS enchere_id, timbre.id AS timbre_id, timbre.nom AS timbre_nom, timbre.nom_2 AS timbre_nom_2, prix_plancher, date_fin, coup_de_coeur
 		FROM enchere 
 		JOIN timbre
 		on enchere.timbre_id = timbre.id

@@ -39,6 +39,9 @@ class Enchere extends \Core\Controller
         $enchere = new \App\Models\Enchere;
         $encheres = $enchere->select();
 
+        // echo "<pre>";
+        // print_r($encheres);
+
         $image = new Image;
 
         $i = 0;
@@ -66,6 +69,13 @@ class Enchere extends \Core\Controller
             {
                 $encheres[$i]['mise_courante'] = $encheres[$i]['prix_plancher'];
             }
+            
+
+            if($encheres[$i]['date_fin'] < date("Y-m-d h:i:sa")) 
+            {
+                $encheres[$i]['archivee'] = true; 
+            };
+            
             $i++;
         }
 

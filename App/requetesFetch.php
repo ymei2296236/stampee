@@ -40,6 +40,10 @@ if (isset($data['action']))
                 if($offreDereniere) $data[$i]['offre'] = $offreDereniere['prix'];
                 else $data[$i]['offre'] = $data[$i]['prix_plancher'];
 
+                if($data[$i]['date_fin'] < date("Y-m-d h:i:sa")) 
+                {
+                    $data[$i]['archive'] = true; 
+                };
                 $i++;
             }
             
@@ -69,6 +73,11 @@ if (isset($data['action']))
 
                 if($offreDereniere) $data[$i]['offre'] = $offreDereniere['prix'];
                 else $data[$i]['offre'] = $data[$i]['prix_plancher'];
+
+                if($data[$i]['date_fin'] < date("Y-m-d h:i:sa")) 
+                {
+                    $data[$i]['archive'] = true; 
+                };
 
                 $i++;
             }
@@ -106,6 +115,11 @@ if (isset($data['action']))
                 if($offreDereniere) $data[$i]['offre'] = $offreDereniere['prix'];
                 else $data[$i]['offre'] = $data[$i]['prix_plancher'];
 
+                if($data[$i]['date_fin'] < date("Y-m-d h:i:sa")) 
+                {
+                    $data[$i]['archive'] = true; 
+                };
+
                 $i++;
             }
 
@@ -142,6 +156,11 @@ if (isset($data['action']))
                 if($offreDereniere) $data[$i]['offre'] = $offreDereniere['prix'];
                 else $data[$i]['offre'] = $data[$i]['prix_plancher'];
 
+                if($data[$i]['date_fin'] < date("Y-m-d h:i:sa")) 
+                {
+                    $data[$i]['archive'] = true; 
+                };
+                
                 $i++;
             }
             
@@ -171,6 +190,11 @@ if (isset($data['action']))
 
                 if($offreDereniere) $data[$i]['offre'] = $offreDereniere['prix'];
                 else $data[$i]['offre'] = $data[$i]['prix_plancher'];
+
+                if($data[$i]['date_fin'] < date("Y-m-d h:i:sa")) 
+                {
+                    $data[$i]['archive'] = true; 
+                };
 
                 $i++;
             }

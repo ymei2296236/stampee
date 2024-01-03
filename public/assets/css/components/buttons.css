@@ -70,6 +70,10 @@
 	background-color: var(--coul-arriere-plan);
 }
 
+.btn--disabled {
+	pointer-events: none;
+}
+
 & a {
 	text-decoration: none;
 }

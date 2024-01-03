@@ -96,8 +96,8 @@
 	font-size: var(--texte-xs);
 }
 
-.prix__description--termine,
-.prix__montant--termine {
+.prix__description--archive,
+.prix__montant--archive {
 	color: var(--coul-secondaire);
 }
 
