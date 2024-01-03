@@ -12,6 +12,7 @@ use \App\Models\Image;
 use \App\Models\Etat;
 use \App\Models\Dimension;
 use \App\Models\Pays;
+use \App\Models\Favori;
 use \App\Library\Apps;
 use \App\Library\Validation;
 
@@ -22,7 +23,6 @@ use \App\Library\Validation;
  */
 class Profil extends \Core\Controller
 {
-
     /**
      * Afficher la page de profil
      */
@@ -35,7 +35,6 @@ class Profil extends \Core\Controller
         $timbres = $timbre->selectTimbreParUsager($_SESSION['user_id']);
 
         $image = new Image;
-
         $i=0;
         
         foreach($timbres as $timbre)
@@ -50,12 +49,10 @@ class Profil extends \Core\Controller
             $i++;
         }
         
-        // Afficher la liste d'offres
         $enchere = new Enchere;
 
         $offre = new Offre;
         $offres = $offre->selectOffresParUsager($_SESSION['user_id']);
-
         $i=0;
         
         foreach($offres as $offreSingle)
@@ -72,12 +69,41 @@ class Profil extends \Core\Controller
             $offresToutes = $offre->selectOffresParEnchere($offreSingle['enchere_id']);
             $offreDerniere = $offresToutes[0];
             $offres[$i]['mise_courante'] = $offreDerniere['prix'];
-            // $offres[$i]['offre_id'] = $offreDerniere['offre_id'];
-            
+
             $i++;
         }    
 
-        View::renderTemplate('Profil/index.html', ['timbres'=>$timbres, 'offres'=>$offres, 'usager_id'=>$_SESSION['user_id']]);
+        $favori = new Favori;
+        $favoris = $favori->selectFavoriParUsager($_SESSION['user_id']);
+
+        $image = new Image;
+        $i=0;
+
+        foreach ($favoris as $favori) 
+        {
+            $images = $image->selectByField('timbre_id', $favori['timbre_id'], 'principal');
+
+            if($images)
+                $favoris[$i]['image'] = $images[0]['nom'];
+            else
+                $favoris[$i]['image'] = 'no-image.jpeg';
+            
+            $i++;
+        }
+
+        View::renderTemplate('Profil/index.html', ['timbres'=>$timbres, 'offres'=>$offres, 'favoris'=>$favoris, 'usager_id'=>$_SESSION['user_id']]);
+    }
+
+    public function deleteFavoriAction()
+    {
+        Apps::sessionAuth(FALSE);
+        
+        $favori = new Favori;
+        $_POST['enchere_id'] = $this->route_params['id'];
+        $_POST['usager_id'] = $_SESSION['user_id'];
+        $delete = $favori->deleteFavori($_POST['enchere_id'], $_POST['usager_id']);
+
+        Apps::url('profil/index');
     }
 
 }

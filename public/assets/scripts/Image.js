@@ -3,8 +3,13 @@ export default class Image
     constructor(el)
     {
         this._el = el;
+        this._elHTML = document.documentElement;
+        this._elBody = document.body;
         this._elsThumbnail = this._el.querySelectorAll('[data-js-thumbnail]');
-        this._image = this._el.querySelector('[data-js-image]');
+        this._elDivImage = this._el.querySelector('[data-js-image]');
+        this._elImage = this._elDivImage.querySelector('img');
+        this._elModal = document.querySelector('[data-js-modal="exit"]');
+        this._elModalImage = this._elModal.querySelector('[data-js-modal="image"]');
         this.init();
     }
 
@@ -15,6 +20,9 @@ export default class Image
         {  
             this._elsThumbnail[i].addEventListener('click', this.afficherImage.bind(this),true);
         }
+
+        // this._elDivImage.addEventListener('click', this.gereTaille.bind(this));
+        this._elDivImage.addEventListener('click', this.afficheModal.bind(this));
     }
 
     
@@ -31,7 +39,7 @@ export default class Image
                         <img src="http://localhost:8888/stampee/public/assets/img/jpg/${nomImage}" alt="image du timbre en recto">
                     `;
 
-            this._image.innerHTML = dom;
+            this._elDivImage.innerHTML = dom;
 
             this.gereActive(e.currentTarget);
         }
@@ -50,5 +58,57 @@ export default class Image
 
         imageActive.classList.add('images__thumbnails-item--active');
     }
+
+    gereTaille(e)
+    {
+        let width = this._elImage.clientWidth;
+        let height = this._elImage.clientHeight;
+
+        if (e.target.dataset.jsBtn == 'ZoomIn') 
+        {
+
+            this._elImage.style.width = (width + 50) + "px";
+            this._elImage.style.height = (height + 50) + "px";
+
+        }
+        if (e.target.dataset.jsBtn == 'ZoomOut') 
+        {
+            this._elImage.style.width = (width - 50) + "px";
+            this._elImage.style.height = (height - 50) + "px";
+        }
+    }
+
+     /**
+     * Afficher modal au clic sur le bouton filtres 
+     */
+     afficheModal()
+     {
+        this._elModal.classList.remove('modal--ferme');
+        this._elHTML.classList.add("overflow-y-hidden");
+        this._elBody.classList.add("overflow-y-hidden");
+         
+        let dom = this._elImage.getAttribute('src');
+        this._elModalImage.setAttribute('src', dom);
+
+        this._elModal.addEventListener('click', this.fermeModal.bind(this));
+
+
+     }
+ 
+     /**
+      * Fermer le modal au clic sur l'entourage du formulaire de filtrage
+      */
+     fermeModal(e)
+     {
+         if(e.target.dataset.jsModal !== "image")
+         {
+             this._elModal.classList.add('modal--ferme');
+             this._elHTML.classList.remove("overflow-y-hidden");
+             this._elBody.classList.remove("overflow-y-hidden");
+
+         }
+     }
+
+
 
 }

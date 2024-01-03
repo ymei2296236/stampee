@@ -1,10 +1,10 @@
 import TrierEncheres from "./TrierEncheres.js";
 import Image from "./Image.js";
-import Modal from "./Modal.js";
+import Filtre from "./Filtre.js";
 
 export const classMapping =
 {
     'TrierEncheres': TrierEncheres,
     'Image': Image,
-    'Modal': Modal
+    'Filtre': Filtre
 }

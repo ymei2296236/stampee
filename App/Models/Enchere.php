@@ -38,9 +38,9 @@ class Enchere extends CRUD
         etat.nom AS etat, 
         dimension.nom AS dimension,
         usager.id AS createur_id,
-        usager.alias AS createur,
+        usager.alias AS createur_nom,
         pays.nom AS pays,
-        date_debut, date_fin, prix_plancher, date_emission, tirage, extrait, dimension.id
+        date_debut, date_fin, prix_plancher, date_emission, tirage, extrait, dimension.id, coup_de_coeur
         FROM $this->table
         INNER JOIN timbre 
         INNER JOIN etat 
@@ -61,45 +61,45 @@ class Enchere extends CRUD
     }
 
 
-    public function selecEnchereParEtat($data)
-    {
-        $db = static::getDB();
+    // public function selecEnchereParEtat($data)
+    // {
+    //     $db = static::getDB();
     
-        $sql=
-            "SELECT enchere.id FROM $this->table 
-            INNER JOIN timbre 
-            INNER JOIN etat 
-            ON timbre.id = enchere.timbre_id
-            AND timbre.etat_id = etat.id
-            WHERE etat.nom = '$data'
-            GROUP by enchere.id
-            ";
+    //     $sql=
+    //         "SELECT enchere.id FROM $this->table 
+    //         INNER JOIN timbre 
+    //         INNER JOIN etat 
+    //         ON timbre.id = enchere.timbre_id
+    //         AND timbre.etat_id = etat.id
+    //         WHERE etat.nom = '$data'
+    //         GROUP by enchere.id
+    //         ";
 
-        $stmt = $db->query($sql);
+    //     $stmt = $db->query($sql);
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-    }
+    // }
 
-    public function selecEnchereParPays($data)
-    {
-        $db = static::getDB();
+    // public function selecEnchereParPays($data)
+    // {
+    //     $db = static::getDB();
     
-        $sql=
-            "SELECT enchere.id, pays.nom AS paysNom FROM $this->table 
-            INNER JOIN timbre 
-            INNER JOIN pays 
-            ON timbre.id = enchere.timbre_id
-            AND timbre.pays_id = pays.id
-            WHERE pays.nom = '$data'
-            GROUP by enchere.id
-            ";
+    //     $sql=
+    //         "SELECT enchere.id, pays.nom AS paysNom FROM $this->table 
+    //         INNER JOIN timbre 
+    //         INNER JOIN pays 
+    //         ON timbre.id = enchere.timbre_id
+    //         AND timbre.pays_id = pays.id
+    //         WHERE pays.nom = '$data'
+    //         GROUP by enchere.id
+    //         ";
 
-        $stmt = $db->query($sql);
+    //     $stmt = $db->query($sql);
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-    }
+    // }
 
     public function selecEnchereParFiltre($data)
     {
@@ -184,10 +184,6 @@ class Enchere extends CRUD
             WHERE $queryField
             GROUP by enchere.id
             ";
-
-        // echo "<pre>";
-        // print_r($sql);
-        // echo '<br>';
 
         $stmt = $db->query($sql);
 

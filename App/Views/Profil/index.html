@@ -60,7 +60,8 @@
         </div>
         <div class="listeTimbres__liste">
             <h2>Historiques d'offre</h2>
-            {% for offre in offres%}
+
+            {% for offre in offres %}
             <div class="listeTimbres__item">
                 {{ loop.index }}
                 <div class="listeTimbres__timbre">
@@ -76,7 +77,35 @@
                     <span>Votre mise :  {{offre.prix}} $</span>
                     <span>Mise courante : {{offre.mise_courante}} $</span>
                     <span>Date de fin : {{offre.date_fin}}</span>
-                    <a href="{{url_racine}}enchere/show/{{offre.enchere_id}}" class="btn btn--secondaire">Faire une autre mise</a>
+                    <span  class="listeTimbres__btn">
+                        <a href="{{url_racine}}enchere/show/{{offre.enchere_id}}" class="btn btn--secondaire">Miser</a>
+                    </span>
+                </div>
+            </div>
+            {% endfor%}
+        </div>
+        <div class="listeTimbres__liste">
+            <h2>Enchères en favoris</h2>
+            {% for favori in favoris %}
+            <div class="listeTimbres__item">
+                {{ loop.index }}
+                <div class="listeTimbres__timbre">
+                    <div class="listeTimbres__image">
+                        <a href="{{url_racine}}enchere/show/{{favori.enchere_id}}">
+                        <img src="{{url_racine}}assets/img/jpg/{{ favori.image }}" alt="Image du timbre {{timbre.nom}}">
+                        </a>
+                    </div>
+                    {{ favori.timbre_nom }} 
+                </div>
+
+                <div class="listeTimbres__actions">
+                    <span>Date de fin : {{favori.date_fin}}</span>
+                    <span class="listeTimbres__btn">
+                        <a href="{{url_racine}}enchere/show/{{favori.enchere_id}}" class="btn btn--principal">Miser</a>
+                    </span>
+                    <form action="{{url_racine}}profil/deleteFavori/{{favori.enchere_id}}" method="post">
+                        <button class="btn btn--icon-text "><i class="fa-solid fa-star"></i>Enlever favori</button>
+                    </form>
                 </div>
             </div>
             {% endfor%}

@@ -1,41 +1,27 @@
-export default class Modal
+class Modal
 {
-    /**
-     * Gestion du modal (version tablette)
-     * @param {*} el 
-     */
-    constructor(el)
-    {
-        this._el = el;
-        this._elHTML = document.documentElement;
-        this._elBody = document.body;
-        this._elModal = document.querySelector('[data-js-modal]');
-        this._btn = document.querySelector('[data-js-modal-button]');
-        this._elFiltresEcran = document.querySelector('[data-js-filtres="ecran"]');
-        this._elFiltresModal = document.querySelector('[data-js-filtres="modal"]');
-        this._dom = this._elFiltresEcran.innerHTML;
-        console.log(this._dom);
-        this.init();
 
-    }
+    // constructor(el)
+    // {
+    //     this._elHTML = document.documentElement;
+    //     this._elBody = document.body;
 
-
-    init()
-    {
-        this._el.addEventListener('click', this.afficheModal.bind(this));
-    }
+    // }
 
     /**
      * Afficher modal au clic sur le bouton filtres 
      */
-    afficheModal()
+    afficheModal(elModal)
     {
-        this._elModal.classList.remove('modal--ferme');
+        elModal.classList.remove('modal--ferme');
+        let  elHTML = document.documentElement,
+        elBody = document.body;
+
+		elHTML.classList.add("overflow-y-hidden");
+		elBody.classList.add("overflow-y-hidden");
         
-		this._elHTML.classList.add("overflow-y-hidden");
-		this._elBody.classList.add("overflow-y-hidden");
+        elModal.addEventListener('click', this.fermeModal());
         
-        this._elModal.addEventListener('click', this.fermeModal.bind(this));
         this._elFiltresModal.innerHTML =  this._dom;
         this._elFiltresEcran.remove.bind(this);
     }
@@ -45,11 +31,9 @@ export default class Modal
      */
     fermeModal(e)
     {
-        e.stopPropagation();
-
         if(e.target.dataset.jsModal == "exit")
         {
-            this._elModal.classList.add('modal--ferme');
+            this._el.classList.add('modal--ferme');
             this._elHTML.classList.remove("overflow-y-hidden");
             this._elBody.classList.remove("overflow-y-hidden");
             
@@ -58,3 +42,5 @@ export default class Modal
         }
     }
 }
+
+export const {afficheModal, fermeModal} = new Modal();

@@ -1,7 +1,7 @@
 [data-page="profil"] {
 	display: flex;
-	/* flex-direction: column; */
-	padding: var(--espace-2) var(--espace-10);
+	flex-direction: column;
+	padding: var(--espace-2) var(--espace-5) var(--espace-5) var(--espace-5);
 
 	& h1 {
 		text-align: center;
@@ -16,7 +16,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
-		gap: var(--espace-10);
+		gap: var(--espace-4);
 		margin-top: var(--espace-2);
 
 		& > * {
@@ -57,6 +57,10 @@
 				display: flex;
 				flex-direction: column;
 				gap: var(--espace-half);
+
+				.listeTimbres__btn {
+					margin: var(--espace-1) 0;
+				}
 			}
 		}
 	}

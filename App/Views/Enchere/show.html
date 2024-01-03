@@ -4,13 +4,19 @@
 
 {% block body %}
     <main data-page="enchere">
+        <section class="modal modal--ferme" data-js-modal="exit">
+            <div class="modal__image" data-js-modal="divImage">
+                <img data-js-modal="image" src="" alt="image du timbre en recto">
+            </div>
+            <span class="modal__icon" data-js-modal-button><i class="fa-solid fa-xmark"></i></span>
+        </section>
         <div class="breadcrumb">
             <span class="note btn btn--tertiaire"><a href="{{url_racine}}"> Accueil </a></span> / <span class="note btn btn--tertiaire"> <a href="{{url_racine}}enchere/index">Catalogue</a></span> / <span class="note btn btn--tertiaire"> <a href="{{url_racine}}enchere/show/{{enchere.enchere_id}}">{{enchere.timbre_nom}} {{enchere.timbre_nom_2}} </a></span>
         </div>
         <div class="images"  data-js-component="Image">
             <div class="images__thumbnails-container">
                 {% for image in images %}
-                <div class="images__thumbnails-item" data-js-thumbnail="{{ image.nom }}">
+                <div class="images__thumbnails-item {% if image.nom == imagePrincipale %} images__thumbnails-item--active {% endif %}" data-js-thumbnail="{{ image.nom }}">
                     <img src="{{url_racine}}assets/img/jpg/{{ image.nom }}" loading="lazy" alt="image du paquet">
                 </div>
                 {% endfor %}
@@ -21,10 +27,12 @@
         </div>
         <div class="mise">
             <p class="note">Enchère #{{enchere.enchere_id}}</p>
+            {% if enchere.coup_de_coeur == 1 %}
             <div class="item__coups-de-coeur item__coups-de-coeur--yes">
                 <i class="fa-solid fa-heart"></i>
                 <p class="note">Coups de coeur du Lord</p>
             </div>
+            {% endif %}
             <h1>{{enchere.timbre_nom}} </h1>
             <p class="afterh1">{{enchere.timbre_nom_2}} </p>
             <table>
@@ -45,18 +53,13 @@
                     <td>{{enchere.etat}}</td>
                 </tr>
                 <tr>
-                    <th>Dimension</th>
-                    <td>{{enchere.dimension}}</td>
-                </tr>
-                <tr>
                     <th>Vendeur·euse</th>
-                    <td>{{enchere.createur}}</td>
+                    <td>{{enchere.createur_nom}}</td>
                 </tr>
             </table>
 
-            {% if session.user_id != enchere.createur_id %}
-            <!-- <form action="createOffre/{{enchere.enchere_id}}" method="post" novalidate> -->
-            <form action="{{url_racine}}enchere/createOffre/{{enchere.enchere_id}}" method="post" novalidate>
+        {% if session.user_id != enchere.createur_id %}
+            <form class="form-mise" action="{{url_racine}}enchere/createOffre/{{enchere.enchere_id}}" method="post" novalidate>
                 <fieldset>
                     <label for="prix" class="mise-lable">Votre mise</label>
                     <input id="prix" type="number" name="prix">
@@ -76,11 +79,17 @@
                 
                 <button type="submit" aria-label="Miser" class="btn btn--principal item__btn">Miser</button>
             </form>
-            {% endif %}
-            <div class="btn btn--icon-text favoris">
-                <i class="fa-regular fa-star fa-lg"></i>
-                <p class="note">Mettre en favoris</p>
-            </div>
+            {% if favoriSelect == 1 %}
+            <form action="{{url_racine}}enchere/deleteFavori/{{enchere.enchere_id}}" method="post">
+                <button class="btn btn--icon-text "><i class="fa-solid fa-star"></i>Enlever favori</button>
+            </form>
+            {% else %}
+            <form action="{{url_racine}}enchere/createFavori/{{enchere.enchere_id}} " method="post">
+                <button class="btn btn--icon-text "><i class="fa-regular fa-star"></i>Mettre en favoris</button>
+            </form>
+                {% endif %}
+        {% endif %}
+
 
         </div>
         <div class="description">
@@ -91,6 +100,10 @@
             <div class="description__item">
                 <p>Date d’émission</p>
                 <p>{{enchere.date_emission}}</p>
+            </div>
+            <div class="description__item">
+                <p>Dimension</p>
+                <p>{{enchere.dimension}}</p>
             </div>
             <div class="description__item">
                 <p>Tirage</p>

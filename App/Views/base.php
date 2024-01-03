@@ -41,7 +41,7 @@
                 <span class="menu-mobile"><i class="fa-solid fa-bars fa-lg"></i></span>
             </nav>
             <div class="navigation__recherche">
-                <form class="navigation__form" action="{{url_racine}}enchere/filter" method="post">
+                <form class="navigation__form" action="{{url_racine}}enchere/filter" method="GET">
                     <label for="rechercher"></label>
                     <input class="navigation__input" type="text" placeholder="Rechercher" id="rechercher" name="rechercher">
                     <button  aria-label="Rechercher" type="submit" class="btn btn--principal btn--icon"><i class="icon-recherche fa-solid fa-magnifying-glass"></i></button>

@@ -59,9 +59,6 @@
 			width: 100%;
 			display: flex;
 			flex-direction: column;
-			border-top: 1px solid var(--coul-principale);
-			margin-top: var(--espace-1);
-			padding-top: var(--espace-1);
 
 			& .msg-error {
 				color: var(--coul-texte-erreur);
@@ -85,6 +82,12 @@
 			& button {
 				margin-top: var(--espace-1);
 			}
+		}
+
+		& .form-mise {
+			border-top: 0.5px solid var(--coul-secondaire);
+			margin-top: var(--espace-1);
+			padding-top: var(--espace-1);
 		}
 
 		& .mise__info {

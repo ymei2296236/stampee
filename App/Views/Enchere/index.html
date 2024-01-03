@@ -5,16 +5,16 @@
 {% block body %}
 <main data-page="catalogue">
     <section class="modal modal--ferme" data-js-modal="exit">
-        <span class="modal__icon" data-js-modal-button><i class="fa-solid fa-xmark"></i></span>
-        <div class="filtres-modal">
+
+        <div class="modal__filtres">
             <div class="filtres__titre-titre">
                 <i class="fa-solid fa-sliders"></i>
                 <h3 >Filtres</h3>
             </div>
             <form class="filtres__form" action="select" method="post"  data-js-filtres="modal" >         
             </form>
-
         </div>
+        <span class="modal__icon"><i data-js-modal="exit" class="fa-solid fa-xmark"></i></span>
     </section>
     <aside class="filtres-ecran">
         <div class="filtres__titre-titre">
@@ -76,7 +76,7 @@
         
         <div class="tri">
             <div class="filtres-modal-btns" >
-                <div class="afficheModal" data-js-component="Modal">
+                <div class="afficheModal" data-js-component="Filtre">
                     <i class="fa-solid fa-sliders"></i>
                     <h3 >Filtres</h3>
                 </div>
@@ -101,7 +101,15 @@
             {% for enchere in encheres %}
             <div class="item">
                 <a href="{{url_racine}}enchere/show/{{enchere.id}}" class="item__lien">
-                    <div class="item__coups-de-coeur"></div>
+                    {% if enchere.coup_de_coeur == 1 %}
+                    <div class="item__coups-de-coeur item__coups-de-coeur--yes">
+                        <i class="fa-solid fa-heart"></i>
+                        <p class="note">Coups de coeur du Lord</p>
+                    </div>
+                    {% else %}
+                    <div class="item__coups-de-coeur">
+                    </div>
+                    {% endif %}
                     <div class="item__contenu">
                         <div class="item__img"><img src="{{url_racine}}assets/img/jpg/{{ enchere.image }}" alt="Image du timbre"></div>
                         <p class="item__description">{{enchere.timbre_nom}} {{enchere.timbre_nom_2}}</p>

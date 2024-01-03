@@ -11,6 +11,7 @@ use \App\Models\Image;
 use \App\Models\Etat;
 use \App\Models\Pays;
 use \App\Models\Dimension;
+use \App\Models\Favori;
 use \App\Library\Apps;
 use \App\Library\Validation;
 
@@ -37,8 +38,6 @@ class Enchere extends \Core\Controller
 
         $enchere = new \App\Models\Enchere;
         $encheres = $enchere->select();
-        // echo "<pre>";
-        // print_r($encheres);
 
         $image = new Image;
 
@@ -89,7 +88,7 @@ class Enchere extends \Core\Controller
         $dimensions = $dimension->select();
 
         $enchere = new \App\Models\Enchere;
-        $encheres = $enchere->selectEnchereParNom($_POST['rechercher']);
+        $encheres = $enchere->selectEnchereParNom($_GET['rechercher']);
 
         $image = new Image;
 
@@ -120,7 +119,7 @@ class Enchere extends \Core\Controller
             }
             $i++;
         }
-  
+
         View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'encheres'=>$encheres]);
         exit();
     }
@@ -143,8 +142,6 @@ class Enchere extends \Core\Controller
         if ($enchere_id)
         {
             $enchereSelect = $enchere->selectEnchereParId($enchere_id);
-            // echo "<pre>";
-            // print_r($enchereSelect);
     
             if(!$enchereSelect) Apps::url('enchere/index');
     
@@ -161,8 +158,18 @@ class Enchere extends \Core\Controller
                 $prixCourant = $enchereSelect['prix_plancher'];
     
             $nbOffres = $offre->countOffres($enchereSelect['enchere_id']);
+
+            $favoriSelect = '';
+            if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != '')
+            {
+
+                $favori = new Favori;
+                $favoriSelect = $favori->selectFavori($enchereSelect["enchere_id"], $_SESSION['user_id']);
+    
+                if($favoriSelect) $favoriSelect = 1;
+            }
             
-            View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $enchereSelect, 'images'=>$images, 'imagePrincipale'=>$imagePrincipale, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres]);
+            View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $enchereSelect, 'images'=>$images, 'imagePrincipale'=>$imagePrincipale, 'favoriSelect'=>$favoriSelect, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres]);
     
             exit();
         }
@@ -455,7 +462,12 @@ class Enchere extends \Core\Controller
                             }
                         }
                     }
-                    View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'msg'=>$msg, 'enchere'=> $enchereSelect, 'images'=>$images, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres]);
+                    $favori = new Favori;
+                    $favoriSelect = $favori->selectFavori($enchereSelect["enchere_id"], $_SESSION['user_id']);
+        
+                    if($favoriSelect) $favoriSelect = 1;
+
+                    View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'msg'=>$msg, 'enchere'=> $enchereSelect, 'images'=>$images, 'favoriSelect'=>$favoriSelect, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres]);
                 }
                 else
                 {
@@ -489,10 +501,6 @@ class Enchere extends \Core\Controller
         $msg = null;
         $nbEncheres = null;
 
-        // echo "<pre>";
-        // print_r($_POST);
-    
-        // si pays n'est pas selectionne
         if($_POST['pays'] == '') unset($_POST['pays']);
 
         if($_POST)
@@ -515,7 +523,6 @@ class Enchere extends \Core\Controller
                 if($nbEncheres == 1) $nbEncheres .= ' résultat';
                 else if ($nbEncheres > 1) $nbEncheres .= ' résultats';
             }
-
 
             $i = 0;
                     
@@ -546,15 +553,41 @@ class Enchere extends \Core\Controller
                 $i++;
             }
 
-            // echo '<pre>';
-            // print_r($encheres);
             View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'msg'=>$msg, 'encheres'=>$encheres, 'filtres'=>$_POST, 'resultats'=>$nbEncheres]);
             exit();
-
         }     
         Apps::url('Enchere/index');
         exit();
     }
 
 
+    public function createFavoriAction()
+    {
+        Apps::sessionAuth(FALSE);
+
+        $enchere = new \App\Models\Enchere();
+        $enchere_id = $this->route_params['id'];
+        $enchereSelect = $enchere->selectEnchereParId($enchere_id);
+
+        $favori = new Favori;
+        $_POST['enchere_id'] = $enchere_id;
+        $_POST['usager_id'] = $_SESSION['user_id'];
+        $_POST['timbre_id'] = $enchereSelect['timbre_id'];
+        $_POST['createur_id'] = $enchereSelect['createur_id'];
+        $insertFavori = $favori->insert($_POST);
+
+        Apps::url('Enchere/show/'.$_POST['enchere_id']);  
+    }
+
+    public function deleteFavoriAction()
+    {
+        Apps::sessionAuth(FALSE);
+        
+        $favori = new Favori;
+        $_POST['enchere_id'] = $this->route_params['id'];
+        $_POST['usager_id'] = $_SESSION['user_id'];
+        $delete = $favori->deleteFavori($_POST['enchere_id'], $_POST['usager_id']);
+
+        Apps::url('Enchere/show/'.$_POST['enchere_id']);
+    }
 }
