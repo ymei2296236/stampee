@@ -3,8 +3,132 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-<main>
-    <h1>Welcome</h1>
+<main data-page="accueil">
+    <div class="banner">
+        <div class="banner__img">
+            <img src="assets/img/svg/banner.svg" alt="bannière de l'accueil">
+        </div>
+        <div class="banner-info">
+
+            <h1>Voulez-vous en profitez</h1>
+            <div class="banner-info__liste">
+                <div class="banner-info__item">
+                    <span class="banner__icon"><i class="fa-solid fa-recycle fa-xl"></i></span>      
+                    <p>Faire circuler et revaloriser vos timbres usagés</p>
+                </div>
+                <div class="banner-info__item">
+                    <span class="banner__icon"><i class="fa-solid fa-money-check-dollar fa-xl"></i></span>
+                    <p>Faire des bénéfices</p>
+                </div>
+                <div class="banner-info__item">
+                    <span class="banner__icon"><i class="fa-solid fa-gem fa-xl"></i></span>
+                    <p>Accéder à une multitude de choix de timbres rares et authentiques</p>
+                </div>
+                <div class="banner-info__item">
+                    <span class="banner__icon"><i class="fa-solid fa-lock fa-xl"></i></span>
+                    <p>Faire des transactions sécurisées et rapides</p>
+                </div>
+                <div class="banner-info__item">
+                    <span class="banner__icon"><i class="fa-solid fa-people-group fa-xl"></i></span>
+                    <p>Faire partie des millions d'utilisateurs dans le monde</p>
+                </div>
+                <div class="banner-info__item">
+                    <span class="banner__icon"><i class="fa-solid fa-envelope fa-xl"></i></span>
+                    <p>Recevoir des notifications instantanées de vos offres et mises</p>
+                </div>
+            </div>
+            <div class="banner-info__btn">
+                <button class="btn btn--banner" aria-label="Oui, j'aimerais devenir membre">Oui, j'aimerais devenir membre</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="CTA">
+        <form class="CTA__item" action="{{url_racine}}enchere/showNouveautes" method="post">
+            <button type="submit" class="btn">Voir les nouveautés</button >
+        </form>
+        <div class="CTA__item"><a href="{{url_racine}}enchere/index">Voir toutes nos enchères</a></div>
+        <div class="CTA__item"><a href="{{url_racine}}profil/index">Vendre un timbre</a></div>
+    </div>
+
+    <div class="promo">
+        <h2>Offres en vedette</h2>
+        <div class="liste__contenu">   
+            {% for enchere in encheres %}
+            <div class="item">
+                <a href="{{url_racine}}enchere/show/{{enchere.enchere_id}}" class="item__lien">
+                    {% if enchere.coup_de_coeur == 1 %}
+                    <div class="item__coups-de-coeur item__coups-de-coeur--yes">
+                        <i class="fa-solid fa-heart"></i>
+                        <p class="note">Coups de coeur du Lord</p>
+                    </div>
+                    {% else %}
+                    <div class="item__coups-de-coeur">
+                    </div>
+                    {% endif %}
+                    <div class="item__contenu" data-js-tri>
+                        <div class="item__img"><img src="{{url_racine}}assets/img/jpg/{{ enchere.image }}" alt="Image du timbre"></div>
+                        <p class="item__description">{{enchere.timbre_nom}} {{enchere.timbre_nom_2}}</p>
+
+                    {% if enchere.archivee == true %}
+                        <div class="prix prix--archive">
+                            <p class="prix__description prix__description--archive">Mise finale</p>
+                            <p class="prix__montant prix__montant--archive">{{enchere.mise_courante}}<small class="prix_decimal"> $</small></p>
+                        </div>
+                        <button class="btn btn--icon-text btn--disabled "><i class="fa-solid fa-box-archive"></i>Enchère terminée</button>
+                    {% else %}
+                        <div class="prix">
+                            <p class="prix__description">Mise courante</p>
+                            <p class="prix__montant">{{enchere.mise_courante}}<small class="prix_decimal"> $</small></p>
+                        </div>
+                        <span class="btn btn--principal">Miser</span>
+                    {% endif %}
+
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="actualites">
+        <h2>Actualités</h2>
+        <div class="actualites__liste">
+            <div class="actualites__item">
+                <div class="actualites__img">
+                    <img src="assets/img/webp/actualites-01.webp" loading="lazy" alt="image de l'article Timbres crées par des prisonniers pour Noël">
+                </div>
+                <div class="actualites__info">
+                    <span class="note">17 novembre, 2023</span>
+                    <h3>Timbres crées par des prisonniers pour Noël </h3>
+                    <p>Mauro Olivieri, chef du Bureau philatélique du Vatican dit que confier la création des nouveaux timbres de...</p>
+                    <span class="note"><a href="#">Lire la suite</a></span>
+                </div>
+            </div>
+            <div class="actualites__item">
+                <div class="actualites__img">
+                    <img src="assets/img/webp/actualite-02.webp" loading="lazy" alt="image de l'article These Immortal Chaplains">
+                </div>                
+                <div class="actualites__info">
+                    <span class="note">15 novembre, 2023</span>
+                    <h3>These Immortal Chaplains</h3>
+                    <p>La revue Columbia de février 2023, revue distribuée par le Conseil suprême des Chevaliers de Colomb...</p>
+                    <span class="note"><a href="#">Lire la suite</a></span>
+                </div>
+            </div>
+            <div class="actualites__item">
+                <div class="actualites__img">
+                    <img src="assets/img/webp/actualite-03.webp" loading="lazy" alt="image de l'article Le premier timbre à l'effigie de Charles III">
+                </div>
+                <div class="actualites__info">
+                    <span class="note">13 novembre, 2023</span>
+                    <h3>Le premier timbre à l'effigie de Charles III mis en vente au Royaume-Uni</h3>
+                    <p>Les nouveaux timbres ne sont disponibles que sur internet pour le moment...</p>
+                    <span class="note"><a href="#">Lire la suite</a></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </main>
 
 

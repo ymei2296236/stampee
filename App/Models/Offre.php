@@ -80,6 +80,21 @@ class Offre extends CRUD
         $stmt = $db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function selectEnchereIdParOffre()
+    {
+        $db = static::getDB();
+      
+        $sql=
+            "SELECT enchere_id
+            FROM $this->table 
+            GROUP by enchere_id
+            LIMIT 4";
+
+        $stmt = $db->query($sql);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 

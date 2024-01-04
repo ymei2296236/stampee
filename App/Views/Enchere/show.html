@@ -37,17 +37,28 @@
             <p class="afterh1">{{enchere.timbre_nom_2}} </p>
             <table>
                 <tr>
+                    {% if enchere.archive != true %}
                     <th>Mise courante </th>
+                    {% else %}
+                    <th>Mise finale </th>
+                    {% endif %}
                     <td class="mise__prix-courant">{{prixCourant}} <small class="prix_decimal"> $</small></td>
+
                 </tr>
                 <tr>
                     <th>Nombres de mises</th>
                     <td>{{nbOffres}}</td>
                 </tr>
                 <tr>
+                    {% if enchere.archive != true %}
                     <th>Se termine au</th>
                     <td>{{enchere.date_fin}}</td>
+                    {% else %}
+                    <th>État de mise</th>
+                    <td>Terminé</td>
+                    {% endif %}
                 </tr>
+
                 <tr>
                     <th>État du produit</th>
                     <td>{{enchere.etat}}</td>
@@ -57,33 +68,36 @@
                     <td>{{enchere.createur_nom}}</td>
                 </tr>
             </table>
-
-        {% if session.user_id != enchere.createur_id %}
+            {% if session.user_id != enchere.createur_id %}
+                {% if enchere.archive != true %}
             <form class="form-mise" action="{{url_racine}}enchere/createOffre/{{enchere.enchere_id}}" method="post" novalidate>
                 <fieldset>
                     <label for="prix" class="mise-lable">Votre mise</label>
                     <input id="prix" type="number" name="prix">
                 </fieldset>
 
-                {% if msg %}
+
+                    {% if msg %}
                 <span class="msg-succes">
                     {{ msg }}
                 </span>
-                {% endif %}
+                    {% endif %}
             
-                {% if errors is defined %}
+                    {% if errors is defined %}
                 <ul class="msg-error">
                     {{ errors | raw }}
                 </ul>
-                {% endif %}
+                    {% endif %}
                 
                 <button type="submit" aria-label="Miser" class="btn btn--principal item__btn">Miser</button>
             </form>
-            {% if favoriSelect == 1 %}
+                {% endif %}
+
+                {% if favoriSelect == 1 %}
             <form action="{{url_racine}}enchere/deleteFavori/{{enchere.enchere_id}}" method="post">
                 <button class="btn btn--icon-text "><i class="fa-solid fa-star"></i>Enlever favori</button>
             </form>
-            {% else %}
+                {% else %}
             <form action="{{url_racine}}enchere/createFavori/{{enchere.enchere_id}} " method="post">
                 <button class="btn btn--icon-text "><i class="fa-regular fa-star"></i>Mettre en favoris</button>
             </form>
@@ -116,6 +130,45 @@
             </div>
         </div>
 
+        <div class="promo">
+            <h2>Dernières nouveautés</h2>
+            <div class="liste__contenu">   
+                {% for enchere in encheresNouveautes %}
+                <div class="item">
+                    <a href="{{url_racine}}enchere/show/{{enchere.enchere_id}}" class="item__lien">
+                        {% if enchere.coup_de_coeur == 1 %}
+                        <div class="item__coups-de-coeur item__coups-de-coeur--yes">
+                            <i class="fa-solid fa-heart"></i>
+                            <p class="note">Coups de coeur du Lord</p>
+                        </div>
+                        {% else %}
+                        <div class="item__coups-de-coeur">
+                        </div>
+                        {% endif %}
+                        <div class="item__contenu" data-js-tri>
+                            <div class="item__img"><img src="{{url_racine}}assets/img/jpg/{{ enchere.image }}" alt="Image du timbre"></div>
+                            <p class="item__description">{{enchere.timbre_nom}} {{enchere.timbre_nom_2}}</p>
+    
+                        {% if enchere.archivee == true %}
+                            <div class="prix prix--archive">
+                                <p class="prix__description prix__description--archive">Mise finale</p>
+                                <p class="prix__montant prix__montant--archive">{{enchere.mise_courante}}<small class="prix_decimal"> $</small></p>
+                            </div>
+                            <button class="btn btn--icon-text btn--disabled "><i class="fa-solid fa-box-archive"></i>Enchère terminée</button>
+                        {% else %}
+                            <div class="prix">
+                                <p class="prix__description">Mise courante</p>
+                                <p class="prix__montant">{{enchere.mise_courante}}<small class="prix_decimal"> $</small></p>
+                            </div>
+                            <span class="btn btn--principal">Miser</span>
+                        {% endif %}
+    
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
     </main>
 
     {% endblock %}

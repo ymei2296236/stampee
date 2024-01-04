@@ -39,25 +39,25 @@ class Enchere extends \Core\Controller
         $enchere = new \App\Models\Enchere;
         $encheres = $enchere->select();
 
-        // echo "<pre>";
-        // print_r($encheres);
+     
 
         $image = new Image;
+        $timbre = new Timbre;
+        $offre = new Offre;
 
         $i = 0;
 
         foreach($encheres as $enchereChaque)
         {
-            $timbre = new Timbre;
             $enchereSelect = $enchere->selectId($enchereChaque['id']);
             $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
             $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
             $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
+            $encheres[$i]['enchere_id'] = $encheres[$i]['id'];
 
             $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal');
             $encheres[$i]['image'] = $images[0]['nom'];
 
-            $offre = new Offre;
             $offresToutes = $offre->selectOffresParEnchere($enchereChaque['id']);
 
             if ($offresToutes)
@@ -84,7 +84,7 @@ class Enchere extends \Core\Controller
     }
 
     /**
-     * Afficher le catalogue d'enchères
+     * Selectionner encheres par mot de cle
      */
     public function filterAction() 
     {
@@ -111,6 +111,7 @@ class Enchere extends \Core\Controller
             $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
             $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
             $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
+            $encheres[$i]['enchere_id'] = $encheres[$i]['id'];
 
             $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal');
             $encheres[$i]['image'] = $images[0]['nom'];
@@ -122,6 +123,7 @@ class Enchere extends \Core\Controller
             {
                 $offreDerniere = $offresToutes[0];
                 $encheres[$i]['mise_courante'] = $offreDerniere['prix'];
+
             }
             else 
             {
@@ -178,8 +180,16 @@ class Enchere extends \Core\Controller
     
                 if($favoriSelect) $favoriSelect = 1;
             }
+
+            if($enchereSelect['date_fin'] < date("Y-m-d h:i:sa")) 
+            {
+                $enchereSelect['archive'] = true; 
+            };
             
-            View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $enchereSelect, 'images'=>$images, 'imagePrincipale'=>$imagePrincipale, 'favoriSelect'=>$favoriSelect, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres]);
+
+            $encheres = $enchere->selectEncheresNouveautes(true);
+
+            View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $enchereSelect, 'encheresNouveautes'=>$encheres, 'images'=>$images, 'imagePrincipale'=>$imagePrincipale, 'favoriSelect'=>$favoriSelect, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres]);
     
             exit();
         }
@@ -320,7 +330,9 @@ class Enchere extends \Core\Controller
     }
 
 
-
+    /**
+     * Modifier les infos d'enchere
+     */
     public function editAction()
     {
         Apps::sessionAuth(FALSE);
@@ -343,7 +355,9 @@ class Enchere extends \Core\Controller
         
     }
     
-    
+    /**
+     * Enregistrer la modification
+     */
     public function updateAction()
     {
         Apps::sessionAuth(FALSE);
@@ -493,7 +507,9 @@ class Enchere extends \Core\Controller
         }
     }
 
-
+    /**
+     * Selectionner encheres par filtres predefinis
+     */
     public function selectAction()
     {
         
@@ -543,6 +559,8 @@ class Enchere extends \Core\Controller
                 $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
                 $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
                 $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
+                $encheres[$i]['enchere_id'] = $encheres[$i]['id'];
+
                 
                 $image = new Image;
                 $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal');
@@ -570,7 +588,9 @@ class Enchere extends \Core\Controller
         exit();
     }
 
-
+    /**
+     * Mettre en favori une enchere
+     */
     public function createFavoriAction()
     {
         Apps::sessionAuth(FALSE);
@@ -589,6 +609,9 @@ class Enchere extends \Core\Controller
         Apps::url('Enchere/show/'.$_POST['enchere_id']);  
     }
 
+    /**
+     * Enlever favori
+     */
     public function deleteFavoriAction()
     {
         Apps::sessionAuth(FALSE);
@@ -599,5 +622,56 @@ class Enchere extends \Core\Controller
         $delete = $favori->deleteFavori($_POST['enchere_id'], $_POST['usager_id']);
 
         Apps::url('Enchere/show/'.$_POST['enchere_id']);
+    }
+
+    /**
+     * Afficher encheres par nouveautes
+     */
+    public function showNouveautes()
+    {
+        $etat = new Etat;
+        $etats = $etat->select();
+
+        $pays = new Pays;
+        $paysTous = $pays->select();
+
+        $dimension = new Dimension;
+        $dimensions = $dimension->select();
+
+        $enchere = new \App\Models\Enchere;
+        $encheres = $enchere->selectEncheresNouveautes();
+
+        $image = new Image;
+        $timbre = new Timbre;
+        $offre = new Offre;
+
+        $i = 0;
+
+        foreach($encheres as $enchereChaque)
+        {
+            $enchereSelect = $enchere->selectId($enchereChaque['enchere_id']);
+            $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
+            $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
+            $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
+
+            $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal');
+            $encheres[$i]['image'] = $images[0]['nom'];
+
+            $offresToutes = $offre->selectOffresParEnchere($enchereChaque['enchere_id']);
+
+            if ($offresToutes)
+            {
+                $offreDerniere = $offresToutes[0];
+                $encheres[$i]['mise_courante'] = $offreDerniere['prix'];
+            }
+            else 
+            {
+                $encheres[$i]['mise_courante'] = $encheres[$i]['prix_plancher'];
+            }
+            $i++;
+        }
+
+        View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'encheres'=>$encheres]);
+        exit();
     }
 }

@@ -182,12 +182,33 @@ class Enchere extends CRUD
             WHERE date_fin < NOW()";
 
         $stmt = $db->query($sql);
-        // print_r($stmt);
-        // $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
        
     }
+
+    public function selectEncheresNouveautes($limit=false)
+    {
+        $db = static::getDB();
+
+        if($limit == true) $limitSql = 'LIMIT 4';
+        else $limitSql = null;
+
+		$sql=
+		"SELECT enchere.id AS enchere_id, timbre.id AS timbre_id, timbre.nom AS timbre_nom, timbre.nom_2 AS timbre_nom_2, prix_plancher, date_fin, coup_de_coeur
+		FROM enchere 
+		JOIN timbre
+		on enchere.timbre_id = timbre.id
+		ORDER by date_debut DESC
+        $limitSql";
+
+        $stmt = $db->query($sql);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+    }
+
+
 }
 
 

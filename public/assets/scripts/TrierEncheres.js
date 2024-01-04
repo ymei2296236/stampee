@@ -71,7 +71,7 @@ export default class TrierEncheres
                                         <p class="prix__montant prix__montant--archive">${data[i]['offre']}<small class="prix_decimal"> $</small></p>
                                     </div>
                                     <button class="btn btn--icon-text btn--disabled ">
-                                        <i class="fa-solid fa-star"></i>Enchère terminée
+                                    <i class="fa-solid fa-box-archive"></i>Enchère terminée
                                     </button>
                                 `;
                         }

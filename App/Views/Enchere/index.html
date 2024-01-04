@@ -90,9 +90,9 @@
                         <option value="">Faire un choix</option>
                         <option value="selectEncheresNouveautes">Nouveautés</option>
                         <option value="selectEncheresEnCours">Enchères en cours</option>
+                        <option value="selectEncheresArchivees">Enchères archivées</option>
                         <option value="selectEncheresPrixBas">Prix le plus bas</option>
                         <option value="selectEncheresPrixEleve">Prix le plus élévé</option>
-                        <option value="selectEncheresArchivees">Enchères archivées</option>
                     </select>
                 </fieldset>
             </form>
@@ -100,7 +100,7 @@
         <div data-js-listeEncheres class="liste__contenu">   
             {% for enchere in encheres %}
             <div class="item">
-                <a href="{{url_racine}}enchere/show/{{enchere.id}}" class="item__lien">
+                <a href="{{url_racine}}enchere/show/{{enchere.enchere_id}}" class="item__lien">
                     {% if enchere.coup_de_coeur == 1 %}
                     <div class="item__coups-de-coeur item__coups-de-coeur--yes">
                         <i class="fa-solid fa-heart"></i>
@@ -119,7 +119,7 @@
                             <p class="prix__description prix__description--archive">Mise finale</p>
                             <p class="prix__montant prix__montant--archive">{{enchere.mise_courante}}<small class="prix_decimal"> $</small></p>
                         </div>
-                        <button class="btn btn--icon-text btn--disabled "><i class="fa-solid fa-star"></i>Enchère terminée</button>
+                        <button class="btn btn--icon-text btn--disabled "><i class="fa-solid fa-box-archive"></i>Enchère terminée</button>
                     {% else %}
                         <div class="prix">
                             <p class="prix__description">Mise courante</p>
