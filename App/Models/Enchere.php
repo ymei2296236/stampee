@@ -199,7 +199,7 @@ class Enchere extends CRUD
 		FROM enchere 
 		JOIN timbre
 		on enchere.timbre_id = timbre.id
-		ORDER by date_debut DESC
+		ORDER by enchere.id DESC
         $limitSql";
 
         $stmt = $db->query($sql);

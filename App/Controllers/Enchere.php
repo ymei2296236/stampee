@@ -302,7 +302,6 @@ class Enchere extends \Core\Controller
         if(!$enchereSelect) Apps::url('profil/index');
         
         Apps::usagerAuth($enchereSelect['createur_id'], $_SESSION['user_id']);
-        
         if($enchereSelect) 
         {
             $enchereId = $enchereSelect['id'];
@@ -314,15 +313,33 @@ class Enchere extends \Core\Controller
             if($offres) 
             {
                 $i = 0; 
-
+                
                 foreach($offres as $offreSelect)
                 {
                     $delete = $offre->delete($offres[$i]['id']);
                     $i++;
                 }
             }
+
+            // Supprimer favoris du timbres
+            $favori = new Favori;
+            $favorisSelect = $favori->selectFavoriParEnchereId($enchereId);
+
+            if($favorisSelect)
+            {
+                $i = 0;
+
+                foreach ($favorisSelect as $favoriSelect) 
+                {
+                    $delete = $favori->deleteFavori($enchereId, $favoriSelect['usager_id']);
+                    $i++;
+
+                }
+            }
+
             // Supprimer l'enchère du timbres
             $delete = $enchere->delete($enchereId);
+            
         }
 
         Apps::url('profil/index');

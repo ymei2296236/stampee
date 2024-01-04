@@ -76,6 +76,7 @@
 
 			.btn {
 				padding: 0;
+				background-color: rgba(0, 0, 0, 0);
 			}
 		}
 		& a {
@@ -84,7 +85,8 @@
 			text-align: center;
 		}
 
-		& .CTA__item:hover {
+		& .CTA__item:hover,
+		.btn:hover {
 			background-color: var(--coul-secondaire);
 
 			& a {

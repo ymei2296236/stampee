@@ -49,6 +49,19 @@ class Favori extends CRUD
         if($stmt->execute()) return true;
         else return $stmt->errorInfo();
     }
+
+    public function selectFavoriParEnchereId($enchere_id)
+    {
+        $db = static::getDB();
+
+        $sql="SELECT usager_id
+        FROM $this->table 
+        WHERE enchere_id = $enchere_id";
+
+        $stmt = $db->query($sql);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 

@@ -86,7 +86,7 @@
 		FROM enchere 
 		JOIN timbre
 		on enchere.timbre_id = timbre.id
-		ORDER by date_debut DESC";
+		ORDER by enchere.id DESC";
 	
 		return executeRequete($sql);
 	}

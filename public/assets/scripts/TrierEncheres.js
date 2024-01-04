@@ -24,7 +24,7 @@ export default class TrierEncheres
 
             this.appelFetch()
                 .then(function(data){
-                    console.log(data);
+                    // console.log(data);
                     
                     let dom ='';
 
