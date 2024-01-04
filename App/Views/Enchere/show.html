@@ -133,9 +133,9 @@
         <div class="promo">
             <h2>Dernières nouveautés</h2>
             <div class="liste__contenu">   
-                {% for enchere in encheresNouveautes %}
+                {% for enchereChaque in encheresNouveautes %}
                 <div class="item">
-                    <a href="{{url_racine}}enchere/show/{{enchere.enchere_id}}" class="item__lien">
+                    <a href="{{url_racine}}enchere/show/{{enchereChaque.enchere_id}}" class="item__lien">
                         {% if enchere.coup_de_coeur == 1 %}
                         <div class="item__coups-de-coeur item__coups-de-coeur--yes">
                             <i class="fa-solid fa-heart"></i>
@@ -146,19 +146,19 @@
                         </div>
                         {% endif %}
                         <div class="item__contenu" data-js-tri>
-                            <div class="item__img"><img src="{{url_racine}}assets/img/jpg/{{ enchere.image }}" alt="Image du timbre"></div>
+                            <div class="item__img"><img src="{{url_racine}}assets/img/jpg/{{ enchereChaque.image }}" alt="Image du timbre"></div>
                             <p class="item__description">{{enchere.timbre_nom}} {{enchere.timbre_nom_2}}</p>
     
                         {% if enchere.archivee == true %}
                             <div class="prix prix--archive">
                                 <p class="prix__description prix__description--archive">Mise finale</p>
-                                <p class="prix__montant prix__montant--archive">{{enchere.mise_courante}}<small class="prix_decimal"> $</small></p>
+                                <p class="prix__montant prix__montant--archive">{{enchereChaque.mise_courante}}<small class="prix_decimal"> $</small></p>
                             </div>
                             <button class="btn btn--icon-text btn--disabled "><i class="fa-solid fa-box-archive"></i>Enchère terminée</button>
                         {% else %}
                             <div class="prix">
                                 <p class="prix__description">Mise courante</p>
-                                <p class="prix__montant">{{enchere.mise_courante}}<small class="prix_decimal"> $</small></p>
+                                <p class="prix__montant">{{enchereChaque.mise_courante}}<small class="prix_decimal"> $</small></p>
                             </div>
                             <span class="btn btn--principal">Miser</span>
                         {% endif %}

@@ -74,7 +74,7 @@ class Home extends \Core\Controller
 
             $i++;
         }
-
+        
         View::renderTemplate('Home/index.html', ['encheres'=>$encheresSelect]);
         exit();
     }

@@ -147,6 +147,9 @@ class Enchere extends \Core\Controller
         $errors = '';
         
         $enchere = new \App\Models\Enchere();
+        $image = new Image;
+        $offre = new Offre;
+        $favori = new Favori;
 
         if($this->route_params);
             $enchere_id = $this->route_params['id'];
@@ -157,11 +160,10 @@ class Enchere extends \Core\Controller
     
             if(!$enchereSelect) Apps::url('enchere/index');
     
-            $image = new Image;
-            $images = $image->selectByField('timbre_id', $enchereSelect['timbre_id'], 'principal');
-            $imagePrincipale = $images[0]['nom'];
+            $imagesProduit = $image->selectByField('timbre_id', $enchereSelect['timbre_id'], 'principal');
+            $imagePrincipale = $imagesProduit[0]['nom'];
 
-            $offre = new Offre;
+
             $offres = $offre->selectOffresParEnchere($enchereSelect['enchere_id']);
     
             if($offres) 
@@ -175,7 +177,6 @@ class Enchere extends \Core\Controller
             if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != '')
             {
 
-                $favori = new Favori;
                 $favoriSelect = $favori->selectFavori($enchereSelect["enchere_id"], $_SESSION['user_id']);
     
                 if($favoriSelect) $favoriSelect = 1;
@@ -186,10 +187,51 @@ class Enchere extends \Core\Controller
                 $enchereSelect['archive'] = true; 
             };
             
-
+            // Afficher la secion Dernieres nouveautes
             $encheres = $enchere->selectEncheresNouveautes(true);
+    
+            $i = 0;
+            foreach ($encheres as $enchereChaque) 
+            {
+                $enchere_id = $enchereChaque['enchere_id'];
 
-            View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $enchereSelect, 'encheresNouveautes'=>$encheres, 'images'=>$images, 'imagePrincipale'=>$imagePrincipale, 'favoriSelect'=>$favoriSelect, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres]);
+                $nbOffresParEnchere = $offre->countOffres($enchere_id);
+                $encheres[$i]['nbOffres'] = $nbOffresParEnchere;
+
+                $enchereInfo = $enchere->selectEnchereParId($enchere_id);
+
+                $encheres[$i]['timbre_nom'] = $enchereInfo['timbre_nom'];
+                $encheres[$i]['timbre_nom_2'] = $enchereInfo['timbre_nom_2'];
+                $encheres[$i]['timbre_id'] = $enchereInfo['timbre_id'];
+                $encheres[$i]['date_fin'] = $enchereInfo['date_fin'];
+
+                $images = $image->selectByField('timbre_id', $enchereInfo['timbre_id'], 'principal');
+                $encheres[$i]['image'] = $images[0]['nom'];
+
+                $offresToutes = $offre->selectOffresParEnchere($enchere_id);
+
+                if ($offresToutes)
+                {
+                    $offreDerniere = $offresToutes[0];
+                    $encheres[$i]['mise_courante'] = $offreDerniere['prix'];
+                }
+                else 
+                {
+                    $encheres[$i]['mise_courante'] = $encheres[$i]['prix_plancher'];
+                }
+
+                if($encheres[$i]['date_fin'] < date("Y-m-d h:i:sa")) 
+                {
+                    $encheres[$i]['archivee'] = true; 
+                };
+
+                $i++;
+            }
+            // echo "<pre>";
+            // // print_r($enchereSelect);
+            // print_r($encheres);
+
+            View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $enchereSelect, 'encheresNouveautes'=>$encheres, 'images'=>$imagesProduit, 'imagePrincipale'=>$imagePrincipale, 'favoriSelect'=>$favoriSelect, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres]);
     
             exit();
         }
@@ -458,7 +500,9 @@ class Enchere extends \Core\Controller
             if ($enchereSelect['createur_id'] != $_SESSION['user_id'])
             {
                 $image = new Image;
-                $images = $image->selectByField('timbre_id', $enchereSelect['timbre_id'], 'principal');
+                $imagesProduit = $image->selectByField('timbre_id', $enchereSelect['timbre_id'], 'principal');
+
+                $imagePrincipale = $imagesProduit[0]['nom'];
                 
                 $offre = new Offre;
                 $offres = $offre->selectOffresParEnchere($enchereSelect['enchere_id']);
@@ -508,7 +552,48 @@ class Enchere extends \Core\Controller
         
                     if($favoriSelect) $favoriSelect = 1;
 
-                    View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'msg'=>$msg, 'enchere'=> $enchereSelect, 'images'=>$images, 'favoriSelect'=>$favoriSelect, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres]);
+                    // Afficher la secion Dernieres nouveautes
+                    $encheres = $enchere->selectEncheresNouveautes(true);
+            
+                    $i = 0;
+                    foreach ($encheres as $enchereChaque) 
+                    {
+                        $enchere_id = $enchereChaque['enchere_id'];
+
+                        $nbOffresParEnchere = $offre->countOffres($enchere_id);
+                        $encheres[$i]['nbOffres'] = $nbOffresParEnchere;
+
+                        $enchereInfo = $enchere->selectEnchereParId($enchere_id);
+
+                        $encheres[$i]['timbre_nom'] = $enchereInfo['timbre_nom'];
+                        $encheres[$i]['timbre_nom_2'] = $enchereInfo['timbre_nom_2'];
+                        $encheres[$i]['timbre_id'] = $enchereInfo['timbre_id'];
+                        $encheres[$i]['date_fin'] = $enchereInfo['date_fin'];
+
+                        $images = $image->selectByField('timbre_id', $enchereInfo['timbre_id'], 'principal');
+                        $encheres[$i]['image'] = $images[0]['nom'];
+
+                        $offresToutes = $offre->selectOffresParEnchere($enchere_id);
+
+                        if ($offresToutes)
+                        {
+                            $offreDerniere = $offresToutes[0];
+                            $encheres[$i]['mise_courante'] = $offreDerniere['prix'];
+                        }
+                        else 
+                        {
+                            $encheres[$i]['mise_courante'] = $encheres[$i]['prix_plancher'];
+                        }
+
+                        if($encheres[$i]['date_fin'] < date("Y-m-d h:i:sa")) 
+                        {
+                            $encheres[$i]['archivee'] = true; 
+                        };
+
+                        $i++;
+                    }
+
+                    View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'msg'=>$msg, 'enchere'=> $enchereSelect, 'encheresNouveautes'=>$encheres, 'images'=>$imagesProduit, 'imagePrincipale'=>$imagePrincipale,'favoriSelect'=>$favoriSelect, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres]);
                 }
                 else
                 {

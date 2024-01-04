@@ -59,24 +59,24 @@ export default class Image
         imageActive.classList.add('images__thumbnails-item--active');
     }
 
-    gereTaille(e)
-    {
-        let width = this._elImage.clientWidth;
-        let height = this._elImage.clientHeight;
+    // gereTaille(e)
+    // {
+    //     let width = this._elImage.clientWidth;
+    //     let height = this._elImage.clientHeight;
 
-        if (e.target.dataset.jsBtn == 'ZoomIn') 
-        {
+    //     if (e.target.dataset.jsBtn == 'ZoomIn') 
+    //     {
 
-            this._elImage.style.width = (width + 50) + "px";
-            this._elImage.style.height = (height + 50) + "px";
+    //         this._elImage.style.width = (width + 50) + "px";
+    //         this._elImage.style.height = (height + 50) + "px";
 
-        }
-        if (e.target.dataset.jsBtn == 'ZoomOut') 
-        {
-            this._elImage.style.width = (width - 50) + "px";
-            this._elImage.style.height = (height - 50) + "px";
-        }
-    }
+    //     }
+    //     if (e.target.dataset.jsBtn == 'ZoomOut') 
+    //     {
+    //         this._elImage.style.width = (width - 50) + "px";
+    //         this._elImage.style.height = (height - 50) + "px";
+    //     }
+    // }
 
      /**
      * Afficher modal au clic sur le bouton filtres 
@@ -88,10 +88,10 @@ export default class Image
         this._elBody.classList.add("overflow-y-hidden");
          
         let dom = this._elImage.getAttribute('src');
+        console.log(this._elImage);
         this._elModalImage.setAttribute('src', dom);
 
         this._elModal.addEventListener('click', this.fermeModal.bind(this));
-
 
      }
  
