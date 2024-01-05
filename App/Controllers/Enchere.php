@@ -39,8 +39,6 @@ class Enchere extends \Core\Controller
         $enchere = new \App\Models\Enchere;
         $encheres = $enchere->select();
 
-     
-
         $image = new Image;
         $timbre = new Timbre;
         $offre = new Offre;
@@ -49,15 +47,20 @@ class Enchere extends \Core\Controller
 
         foreach($encheres as $enchereChaque)
         {
+            // Recuperer chaque enchere
             $enchereSelect = $enchere->selectId($enchereChaque['id']);
+
+            // Recuperer les infos de l'enchere
             $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
             $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
             $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
             $encheres[$i]['enchere_id'] = $encheres[$i]['id'];
 
+            // Recuperer les images de l'enchere
             $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal');
             $encheres[$i]['image'] = $images[0]['nom'];
 
+            // Recuperer les offres de l'enchere
             $offresToutes = $offre->selectOffresParEnchere($enchereChaque['id']);
 
             if ($offresToutes)
@@ -69,7 +72,6 @@ class Enchere extends \Core\Controller
             {
                 $encheres[$i]['mise_courante'] = $encheres[$i]['prix_plancher'];
             }
-            
 
             if($encheres[$i]['date_fin'] < date("Y-m-d h:i:sa")) 
             {
@@ -83,103 +85,44 @@ class Enchere extends \Core\Controller
         exit();
     }
 
-    /**
-     * Selectionner encheres par mot de cle
-     */
-    public function filterAction() 
-    {
-        $etat = new Etat;
-        $etats = $etat->select();
-
-        $pays = new Pays;
-        $paysTous = $pays->select();
-
-        $dimension = new Dimension;
-        $dimensions = $dimension->select();
-
-        $enchere = new \App\Models\Enchere;
-        $encheres = $enchere->selectEnchereParNom($_GET['rechercher']);
-
-        $image = new Image;
-
-        $i = 0;
-
-        foreach($encheres as $enchereChaque)
-        {
-            $timbre = new Timbre;
-            $enchereSelect = $enchere->selectId($enchereChaque['id']);
-            $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
-            $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
-            $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
-            $encheres[$i]['enchere_id'] = $encheres[$i]['id'];
-
-            $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal');
-            $encheres[$i]['image'] = $images[0]['nom'];
-
-            $offre = new Offre;
-            $offresToutes = $offre->selectOffresParEnchere($enchereChaque['id']);
-
-            if ($offresToutes)
-            {
-                $offreDerniere = $offresToutes[0];
-                $encheres[$i]['mise_courante'] = $offreDerniere['prix'];
-
-            }
-            else 
-            {
-                $encheres[$i]['mise_courante'] = $encheres[$i]['prix_plancher'];
-            }
-            $i++;
-        }
-
-        View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'encheres'=>$encheres]);
-        exit();
-    }
-
 
     /**
      * Afficher la page d'enchère
      *
-     * @return void
      */
     public function showAction()
     {
         $errors = '';
-        
-        $enchere = new \App\Models\Enchere();
         $image = new Image;
         $offre = new Offre;
         $favori = new Favori;
 
-        if($this->route_params);
-            $enchere_id = $this->route_params['id'];
+        $enchere = new \App\Models\Enchere;
+        $enchere_id = $this->route_params['id'];
+        if($enchere_id) $enchereSelect = $enchere->selectId($enchere_id);
 
-        if ($enchere_id)
+        if($enchereSelect) 
         {
-            $enchereSelect = $enchere->selectEnchereParId($enchere_id);
-    
-            if(!$enchereSelect) Apps::url('enchere/index');
-    
+            // Recuperer les images de l'enchere
             $imagesProduit = $image->selectByField('timbre_id', $enchereSelect['timbre_id'], 'principal');
             $imagePrincipale = $imagesProduit[0]['nom'];
 
-
+            // Recuperer les offres de l'enchere
             $offres = $offre->selectOffresParEnchere($enchereSelect['enchere_id']);
     
-            if($offres) 
-                $prixCourant = $offres[0]['prix'];
-            else 
-                $prixCourant = $enchereSelect['prix_plancher'];
+            if($offres) $prixCourant = $offres[0]['prix'];
+            else $prixCourant = $enchereSelect['prix_plancher'];
     
             $nbOffres = $offre->countOffres($enchereSelect['enchere_id']);
-
-            $favoriSelect = '';
+            
+            // Recuperer les favoris de l'enchere
+            $favoriSelect = false
+            ;
             if(isset($_SESSION['user_id']) && $_SESSION['user_id'] != '')
             {
-
                 $favoriSelect = $favori->selectFavori($enchereSelect["enchere_id"], $_SESSION['user_id']);
     
-                if($favoriSelect) $favoriSelect = 1;
+                if($favoriSelect) $favoriSelect = true;
             }
 
             if($enchereSelect['date_fin'] < date("Y-m-d h:i:sa")) 
@@ -187,27 +130,32 @@ class Enchere extends \Core\Controller
                 $enchereSelect['archive'] = true; 
             };
             
-            // Afficher la secion Dernieres nouveautes
+            /**
+             *  Afficher la section Dernieres nouveautes
+             */ 
             $encheres = $enchere->selectEncheresNouveautes(true);
     
             $i = 0;
+
             foreach ($encheres as $enchereChaque) 
             {
                 $enchere_id = $enchereChaque['enchere_id'];
 
+                // Recupere les infos de l'enchere
                 $nbOffresParEnchere = $offre->countOffres($enchere_id);
                 $encheres[$i]['nbOffres'] = $nbOffresParEnchere;
 
-                $enchereInfo = $enchere->selectEnchereParId($enchere_id);
-
+                $enchereInfo = $enchere->selectId($enchere_id);
                 $encheres[$i]['timbre_nom'] = $enchereInfo['timbre_nom'];
                 $encheres[$i]['timbre_nom_2'] = $enchereInfo['timbre_nom_2'];
                 $encheres[$i]['timbre_id'] = $enchereInfo['timbre_id'];
                 $encheres[$i]['date_fin'] = $enchereInfo['date_fin'];
 
+                // Recuperer les images de l'enchere
                 $images = $image->selectByField('timbre_id', $enchereInfo['timbre_id'], 'principal');
                 $encheres[$i]['image'] = $images[0]['nom'];
 
+                // Recuperer les offres de l'enchere
                 $offresToutes = $offre->selectOffresParEnchere($enchere_id);
 
                 if ($offresToutes)
@@ -227,17 +175,13 @@ class Enchere extends \Core\Controller
 
                 $i++;
             }
-            // echo "<pre>";
-            // // print_r($enchereSelect);
-            // print_r($encheres);
 
             View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'enchere'=> $enchereSelect, 'encheresNouveautes'=>$encheres, 'images'=>$imagesProduit, 'imagePrincipale'=>$imagePrincipale, 'favoriSelect'=>$favoriSelect, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres]);
-    
             exit();
         }
         else
         {
-            Apps::url('index.php');
+            Apps::url('enchere/index');
             exit();   
         }
     }
@@ -250,14 +194,16 @@ class Enchere extends \Core\Controller
     {
         Apps::sessionAuth(FALSE);
 
-        // Valider si le timbre est cree
-        $timbre_id = $this->route_params['id'];
+        // Apps::checkTimbre($this->route_params['id']);
 
+        // Valider si le timbre existe
         $timbre = new Timbre;
-        $timbreSelect = $timbre->selectId($timbre_id);
+        $timbre_id = $this->route_params['id'];
+        if($timbre_id) $timbreSelect = $timbre->selectId($timbre_id);
 
         if(!$timbreSelect) Apps::url('profil/index');
 
+        // Valider si usager est le createur
         Apps::usagerAuth($timbreSelect['createur_id'], $_SESSION['user_id']);
 
         // Afficher les images a choissir
@@ -265,6 +211,7 @@ class Enchere extends \Core\Controller
         $images = $image->selectByField('timbre_id', $timbre_id);
         
         View::renderTemplate('Enchere/create.html', ['timbre_id'=>$timbre_id, 'images'=>$images, 'usager_id'=>$_SESSION['user_id']]);
+        exit();
     }
 
 
@@ -274,23 +221,25 @@ class Enchere extends \Core\Controller
     public function storeAction()
     {
         Apps::sessionAuth(FALSE);
-        
-        extract($_POST);
 
-        $timbre_id = $this->route_params['id'];
-
+        // Valider si le timbre existe
         $timbre = new Timbre;
-        $timbreSelect = $timbre->selectId($timbre_id);
+        $timbre_id = $this->route_params['id'];
+        if($timbre_id) $timbreSelect = $timbre->selectId($timbre_id);
 
         if(!$timbreSelect) Apps::url('profil/index');
 
+        // Valider si usager est le createur
         Apps::usagerAuth($timbreSelect['createur_id'], $_SESSION['user_id']);
-
+        
+        // Afficher les images a choissir
         $image = new Image;
         $images = $image->selectByField('timbre_id', $timbre_id);
-
+        
+        // Valider les champs
         $validation = new Validation;
         $errors = '';
+        extract($_POST);
 
         $validation->name('Date de début')->value($date_debut)->required();
         if($date_debut != '' && $date_debut < date("Y-m-d")) 
@@ -337,17 +286,16 @@ class Enchere extends \Core\Controller
     {
         Apps::sessionAuth(FALSE);
 
+        // Valider si l'enchere existe
         $enchere = new \App\Models\Enchere;
         $enchereId = $this->route_params['id'];
-        $enchereSelect = $enchere->selectId($enchereId);
+        if($enchereId) $enchereSelect = $enchere->selectId($enchereId);
 
-        if(!$enchereSelect) Apps::url('profil/index');
-        
-        Apps::usagerAuth($enchereSelect['createur_id'], $_SESSION['user_id']);
-        if($enchereSelect) 
+        if($enchereSelect)  
         {
-            $enchereId = $enchereSelect['id'];
-            
+            // Valider si l'usager est le createur
+            Apps::usagerAuth($enchereSelect['createur_id'], $_SESSION['user_id']);
+
             // Supprimer toutes les offres de l'enchère 
             $offre = new Offre;
             $offres = $offre->selectByField('enchere_id', $enchereId, 'prix', 'DESC');
@@ -362,26 +310,24 @@ class Enchere extends \Core\Controller
                     $i++;
                 }
             }
-
+            
             // Supprimer favoris du timbres
             $favori = new Favori;
             $favorisSelect = $favori->selectFavoriParEnchereId($enchereId);
-
+            
             if($favorisSelect)
             {
                 $i = 0;
-
+                
                 foreach ($favorisSelect as $favoriSelect) 
                 {
                     $delete = $favori->deleteFavori($enchereId, $favoriSelect['usager_id']);
                     $i++;
-
                 }
             }
-
-            // Supprimer l'enchère du timbres
-            $delete = $enchere->delete($enchereId);
             
+            // Supprimer l'enchère du timbres
+            $delete = $enchere->delete($enchereId);  
         }
 
         Apps::url('profil/index');
@@ -397,8 +343,8 @@ class Enchere extends \Core\Controller
         Apps::sessionAuth(FALSE);
 
         $enchere = new \App\Models\Enchere;        
-        $enchere_id = $this->route_params['id'];
-        $enchereSelect = $enchere->selectId($enchere_id);
+        $enchereId = $this->route_params['id'];
+        if($enchereId) $enchereSelect = $enchere->selectId($enchereId);
 
         if(!$enchereSelect) Apps::url('profil/index');
 
@@ -410,8 +356,7 @@ class Enchere extends \Core\Controller
         $enchereSelect['imagePrincipale']= $images[0]['nom'];
 
         
-        View::renderTemplate('Enchere/edit.html', ['enchere'=>$enchereSelect, 'enchere_id'=> $enchere_id,'images'=>$images]);
-        
+        View::renderTemplate('Enchere/edit.html', ['enchere'=>$enchereSelect, 'enchere_id'=> $enchereId,'images'=>$images]);
     }
     
     /**
@@ -420,18 +365,17 @@ class Enchere extends \Core\Controller
     public function updateAction()
     {
         Apps::sessionAuth(FALSE);
-        
-        
+         
         extract($_POST);
-        
-        $enchere_id = $this->route_params['id'];
-        
+
+        // Valider si l'enchere existe
         $enchere = new \App\Models\Enchere;
-        $enchereSelect = $enchere->selectId($enchere_id);
-        
+        $enchereId = $this->route_params['id'];
+        if($enchereId) $enchereSelect = $enchere->selectId($enchereId);
+
         if(!$enchereSelect) Apps::url('profil/index');
-        
-        
+
+        // Valider si l'usager est le createur
         Apps::usagerAuth($enchereSelect['createur_id'], $_SESSION['user_id']);
         
         $timbre_id = $enchereSelect['timbre_id'];
@@ -487,127 +431,194 @@ class Enchere extends \Core\Controller
     {
         Apps::sessionAuth(FALSE);
         
-        $enchere = new \App\Models\Enchere();
-        $enchere_id = $this->route_params['id'];
-        
+        // Valider si l'enchere existe
+        $enchere = new \App\Models\Enchere;
+        $enchereId = $this->route_params['id'];
+        if($enchereId) $enchereSelect = $enchere->selectId($enchereId);
 
-        if ($enchere_id)
+        if ($enchereSelect)
         {
-            $enchereSelect = $enchere->selectEnchereParId($enchere_id);
-            
-            if(!$enchereSelect) Apps::url('enchere/index');
-            
-            if ($enchereSelect['createur_id'] != $_SESSION['user_id'])
-            {
-                $image = new Image;
-                $imagesProduit = $image->selectByField('timbre_id', $enchereSelect['timbre_id'], 'principal');
+            // Valider si l'usager est le createur
+            Apps::usagerAuth($enchereSelect['createur_id'], $_SESSION['user_id'], false);
 
-                $imagePrincipale = $imagesProduit[0]['nom'];
-                
-                $offre = new Offre;
-                $offres = $offre->selectOffresParEnchere($enchereSelect['enchere_id']);
-                $nbOffres = $offre->countOffres($enchereSelect['enchere_id']);
-                
-                if($offres) 
-                    $prixCourant = $offres[0]['prix'];
-                else
-                    $prixCourant = $enchereSelect['prix_plancher'];
-            
-                $errors = '';
-                extract($_POST);
+            // Recuperer les infos de l'enchere
+            $image = new Image;
+            $imagesProduit = $image->selectByField('timbre_id', $enchereSelect['timbre_id'], 'principal');
 
-                if ($_POST)
-                {
-                    $msg = '';
-                    $validation = new Validation;
-                    $validation->name('Votre mise')->value($prix)->required();
+            $imagePrincipale = $imagesProduit[0]['nom'];
+            
+            $offre = new Offre;
+            $offres = $offre->selectOffresParEnchere($enchereSelect['enchere_id']);
+            $nbOffres = $offre->countOffres($enchereSelect['enchere_id']);
+            
+            if($offres) $prixCourant = $offres[0]['prix'];
+            else $prixCourant = $enchereSelect['prix_plancher'];
         
-                    if(!$validation->isSuccess()) 
+            $favori = new Favori;
+            $favoriSelect = $favori->selectFavori($enchereSelect["enchere_id"], $_SESSION['user_id']);
+
+            if($favoriSelect) $favoriSelect = 1;
+
+            $errors = '';
+            extract($_POST);
+
+            if ($_POST)
+            {
+                $msg = '';
+                $validation = new Validation;
+                $validation->name('Votre mise')->value($prix)->required();
+                
+                // Valider les champs 
+                if(!$validation->isSuccess()) 
+                {
+                    $errors = $validation->displayErrors();
+                } 
+                else
+                {
+                    // Valider l'offre
+                    if($prix <= $prixCourant)
                     {
-                        $errors = $validation->displayErrors();
-                    } 
+                        $errors = 'Votre mise doit être plus grande que la mise courante '. $prixCourant .' $.';
+                    }
                     else
                     {
-                        if($prix <= $prixCourant)
+                        // Inserer l'offre
+                        $_POST['usager_id'] = $_SESSION['user_id'];
+                        $_POST['enchere_id'] = $enchereId;
+                        $insertOffre = $offre->insert($_POST);
+                
+                        if ($insertOffre) 
                         {
-                            $errors = 'Votre mise doit être plus grande que la mise courante '. $prixCourant .' $.';
-                        }
-                        else
-                        {
-                            $_POST['usager_id'] = $_SESSION['user_id'];
-                            $_POST['enchere_id'] = $enchere_id;
-                            $insertOffre = $offre->insert($_POST);
-                    
-                            if ($insertOffre) 
-                            {
-                                $msg = 'Mise réussite.';
-                                $offreSelect = $offre->selectId($insertOffre);
-                                $prixCourant = $offreSelect['prix'];
-                                $nbOffres = $offre->countOffres($enchereSelect['enchere_id']);
-                            }
+                            $msg = 'Mise réussite.';
+                            $offreSelect = $offre->selectId($insertOffre);
+                            $prixCourant = $offreSelect['prix'];
+                            $nbOffres = $offre->countOffres($enchereSelect['enchere_id']);
                         }
                     }
-                    $favori = new Favori;
-                    $favoriSelect = $favori->selectFavori($enchereSelect["enchere_id"], $_SESSION['user_id']);
+                }
+
+                /**
+                 * Afficher la secion Dernieres nouveautes
+                 */
+                $encheres = $enchere->selectEncheresNouveautes(true);
         
-                    if($favoriSelect) $favoriSelect = 1;
+                $i = 0;
 
-                    // Afficher la secion Dernieres nouveautes
-                    $encheres = $enchere->selectEncheresNouveautes(true);
-            
-                    $i = 0;
-                    foreach ($encheres as $enchereChaque) 
+                foreach ($encheres as $enchereChaque) 
+                {
+                    $enchereId = $enchereChaque['enchere_id'];
+
+                    $nbOffresParEnchere = $offre->countOffres($enchereId);
+                    $encheres[$i]['nbOffres'] = $nbOffresParEnchere;
+
+                    $enchereInfo = $enchere->selectId($enchereId);
+
+                    $encheres[$i]['timbre_nom'] = $enchereInfo['timbre_nom'];
+                    $encheres[$i]['timbre_nom_2'] = $enchereInfo['timbre_nom_2'];
+                    $encheres[$i]['timbre_id'] = $enchereInfo['timbre_id'];
+                    $encheres[$i]['date_fin'] = $enchereInfo['date_fin'];
+
+                    $images = $image->selectByField('timbre_id', $enchereInfo['timbre_id'], 'principal');
+                    $encheres[$i]['image'] = $images[0]['nom'];
+
+                    $offresToutes = $offre->selectOffresParEnchere($enchereId);
+
+                    if ($offresToutes)
                     {
-                        $enchere_id = $enchereChaque['enchere_id'];
-
-                        $nbOffresParEnchere = $offre->countOffres($enchere_id);
-                        $encheres[$i]['nbOffres'] = $nbOffresParEnchere;
-
-                        $enchereInfo = $enchere->selectEnchereParId($enchere_id);
-
-                        $encheres[$i]['timbre_nom'] = $enchereInfo['timbre_nom'];
-                        $encheres[$i]['timbre_nom_2'] = $enchereInfo['timbre_nom_2'];
-                        $encheres[$i]['timbre_id'] = $enchereInfo['timbre_id'];
-                        $encheres[$i]['date_fin'] = $enchereInfo['date_fin'];
-
-                        $images = $image->selectByField('timbre_id', $enchereInfo['timbre_id'], 'principal');
-                        $encheres[$i]['image'] = $images[0]['nom'];
-
-                        $offresToutes = $offre->selectOffresParEnchere($enchere_id);
-
-                        if ($offresToutes)
-                        {
-                            $offreDerniere = $offresToutes[0];
-                            $encheres[$i]['mise_courante'] = $offreDerniere['prix'];
-                        }
-                        else 
-                        {
-                            $encheres[$i]['mise_courante'] = $encheres[$i]['prix_plancher'];
-                        }
-
-                        if($encheres[$i]['date_fin'] < date("Y-m-d h:i:sa")) 
-                        {
-                            $encheres[$i]['archivee'] = true; 
-                        };
-
-                        $i++;
+                        $offreDerniere = $offresToutes[0];
+                        $encheres[$i]['mise_courante'] = $offreDerniere['prix'];
+                    }
+                    else 
+                    {
+                        $encheres[$i]['mise_courante'] = $encheres[$i]['prix_plancher'];
                     }
 
-                    View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'msg'=>$msg, 'enchere'=> $enchereSelect, 'encheresNouveautes'=>$encheres, 'images'=>$imagesProduit, 'imagePrincipale'=>$imagePrincipale,'favoriSelect'=>$favoriSelect, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres]);
+                    if($encheres[$i]['date_fin'] < date("Y-m-d h:i:sa")) 
+                    {
+                        $encheres[$i]['archivee'] = true; 
+                    };
+
+                    $i++;
                 }
-                else
-                {
-                    Apps::url('Enchere/index');
-                }
+
+                View::renderTemplate('Enchere/show.html', ['errors'=> $errors, 'msg'=>$msg, 'enchere'=> $enchereSelect, 'encheresNouveautes'=>$encheres, 'images'=>$imagesProduit, 'imagePrincipale'=>$imagePrincipale,'favoriSelect'=>$favoriSelect, 'prixCourant'=> $prixCourant, 'nbOffres'=>$nbOffres]);
             }
             else
             {
-                $encheres = $enchere->select();
-    
-                Apps::url('enchere/index');
+                Apps::url('Enchere/index');
             }
         }
+        else
+        {
+            Apps::url('enchere/index');
+        }
     }
+
+
+    /**
+     * Selectionner encheres par mot de cle
+     */
+    public function filterAction() 
+    {
+        $etat = new Etat;
+        $etats = $etat->select();
+
+        $pays = new Pays;
+        $paysTous = $pays->select();
+
+        $dimension = new Dimension;
+        $dimensions = $dimension->select();
+
+        $enchere = new \App\Models\Enchere;
+        $encheres = $enchere->selectEnchereParNom($_GET['rechercher']);
+
+        $image = new Image;
+        $timbre = new Timbre;
+        $offre = new Offre;
+
+        $i = 0;
+
+        foreach($encheres as $enchereChaque)
+        {
+            // Recuperer chaque enchere
+            $enchereSelect = $enchere->selectId($enchereChaque['id']);
+
+            // Recuperer les infos de l'enchere
+            $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
+            $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
+            $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
+            $encheres[$i]['enchere_id'] = $encheres[$i]['id'];
+
+            // Recuperer les images de l'enchere
+            $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal');
+            $encheres[$i]['image'] = $images[0]['nom'];
+
+            // Recuperer les offres de l'enchere
+            $offresToutes = $offre->selectOffresParEnchere($enchereChaque['id']);
+
+            if ($offresToutes)
+            {
+                $offreDerniere = $offresToutes[0];
+                $encheres[$i]['mise_courante'] = $offreDerniere['prix'];
+            }
+            else 
+            {
+                $encheres[$i]['mise_courante'] = $encheres[$i]['prix_plancher'];
+            }
+
+            if($encheres[$i]['date_fin'] < date("Y-m-d h:i:sa")) 
+            {
+                $encheres[$i]['archivee'] = true; 
+            };
+
+            $i++;
+        }
+
+        View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'encheres'=>$encheres]);
+        exit();
+    }
+
+
 
     /**
      * Selectionner encheres par filtres predefinis
@@ -629,17 +640,20 @@ class Enchere extends \Core\Controller
         $msg = null;
         $nbEncheres = null;
 
+        // Reinitialiser la valeur du champs pays
         if($_POST['pays'] == '') unset($_POST['pays']);
 
         if($_POST)
         {
+            // Filtrage d'encheres
             $encheresSelect = $enchere->selecEnchereParFiltre($_POST);
 
             foreach($encheresSelect as $enchereSelect)
             {
                 $encheres[] = $enchere->selectId($enchereSelect['id']);
             }
-            
+
+            // Calculer le nombre d'encheres filtres
             if(!$encheres)
             {
                 $nbEncheres = '0 résultat';
@@ -656,6 +670,7 @@ class Enchere extends \Core\Controller
                     
             foreach($encheres as $enchereChaque)
             {
+                // Recuperer les infos de l'enchere
                 $timbre = new Timbre;
                 $enchereSelect = $enchere->selectId($enchereChaque['id']);
                 $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
@@ -663,11 +678,12 @@ class Enchere extends \Core\Controller
                 $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
                 $encheres[$i]['enchere_id'] = $encheres[$i]['id'];
 
-                
+                // Recuperer les images de l'enchere
                 $image = new Image;
                 $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal');
                 $encheres[$i]['image'] = $images[0]['nom'];
 
+                // Recuperer les offres de l'enchere
                 $offre = new Offre;
                 $offresToutes = $offre->selectOffresParEnchere($enchereChaque['id']);
 
@@ -680,6 +696,12 @@ class Enchere extends \Core\Controller
                 {
                     $encheres[$i]['mise_courante'] = $encheres[$i]['prix_plancher'];
                 }
+
+                if($encheres[$i]['date_fin'] < date("Y-m-d h:i:sa")) 
+                {
+                    $encheres[$i]['archivee'] = true; 
+                };
+
                 $i++;
             }
 
@@ -699,7 +721,7 @@ class Enchere extends \Core\Controller
 
         $enchere = new \App\Models\Enchere();
         $enchere_id = $this->route_params['id'];
-        $enchereSelect = $enchere->selectEnchereParId($enchere_id);
+        if($enchere_id) $enchereSelect = $enchere->selectId($enchere_id);
 
         $favori = new Favori;
         $_POST['enchere_id'] = $enchere_id;
@@ -727,7 +749,7 @@ class Enchere extends \Core\Controller
     }
 
     /**
-     * Afficher encheres par nouveautes
+     * Afficher encheres par nouveautes (un des CTAs sur la page d'accueil)
      */
     public function showNouveautes()
     {
@@ -751,14 +773,17 @@ class Enchere extends \Core\Controller
 
         foreach($encheres as $enchereChaque)
         {
+            // Recuperer les infos de l'enchere
             $enchereSelect = $enchere->selectId($enchereChaque['enchere_id']);
             $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
             $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
             $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
 
+            // Recuperer les images de l'enchere
             $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal');
             $encheres[$i]['image'] = $images[0]['nom'];
 
+            // Recuperer les offres de l'enchere
             $offresToutes = $offre->selectOffresParEnchere($enchereChaque['enchere_id']);
 
             if ($offresToutes)

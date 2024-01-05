@@ -26,7 +26,7 @@ class Enchere extends CRUD
         }
     }
 
-    public function selectEnchereParId($value)
+    public function selectId($value)
     {
         $db = static::getDB();
 

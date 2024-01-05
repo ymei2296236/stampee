@@ -57,7 +57,7 @@ class Profil extends \Core\Controller
         
         foreach($offres as $offreSingle)
         {    
-            $enchereSelect = $enchere->selectEnchereParId($offreSingle['enchere_id']);  
+            $enchereSelect = $enchere->selectId($offreSingle['enchere_id']);  
             $offres[$i]['timbre_id'] = $enchereSelect['timbre_id'];
             $offres[$i]['timbre_nom'] = $enchereSelect['timbre_nom'];
             $offres[$i]['date_fin'] = $enchereSelect['date_fin'];

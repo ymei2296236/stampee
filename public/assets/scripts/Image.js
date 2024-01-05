@@ -5,11 +5,12 @@ export default class Image
         this._el = el;
         this._elHTML = document.documentElement;
         this._elBody = document.body;
+
         this._elsThumbnail = this._el.querySelectorAll('[data-js-thumbnail]');
-        this._elDivImage = this._el.querySelector('[data-js-image]');
-        this._elImage = this._elDivImage.querySelector('img');
+        this._elImagePrincipale = this._el.querySelector('[data-js-image]');
         this._elModal = document.querySelector('[data-js-modal="exit"]');
         this._elModalImage = this._elModal.querySelector('[data-js-modal="image"]');
+
         this.init();
     }
 
@@ -20,9 +21,10 @@ export default class Image
         {  
             this._elsThumbnail[i].addEventListener('click', this.afficherImage.bind(this),true);
         }
+        // this._elImagePrincipale.addEventListener('click', this.gereTaille.bind(this));
+        this._elImagePrincipale.addEventListener('click', this.afficheModal.bind(this));
 
-        // this._elDivImage.addEventListener('click', this.gereTaille.bind(this));
-        this._elDivImage.addEventListener('click', this.afficheModal.bind(this));
+
     }
 
     
@@ -39,7 +41,7 @@ export default class Image
                         <img src="http://localhost:8888/stampee/public/assets/img/jpg/${nomImage}" alt="image du timbre en recto">
                     `;
 
-            this._elDivImage.innerHTML = dom;
+            this._elImagePrincipale.innerHTML = dom;
 
             this.gereActive(e.currentTarget);
         }
@@ -86,10 +88,11 @@ export default class Image
         this._elModal.classList.remove('modal--ferme');
         this._elHTML.classList.add("overflow-y-hidden");
         this._elBody.classList.add("overflow-y-hidden");
-         
-        let dom = this._elImage.getAttribute('src');
-        console.log(this._elImage);
-        this._elModalImage.setAttribute('src', dom);
+
+        let elImage = this._elImagePrincipale.querySelector('img'),
+            srcImage = elImage.getAttribute('src');
+
+        this._elModalImage.setAttribute('src', srcImage);
 
         this._elModal.addEventListener('click', this.fermeModal.bind(this));
 
@@ -105,7 +108,6 @@ export default class Image
              this._elModal.classList.add('modal--ferme');
              this._elHTML.classList.remove("overflow-y-hidden");
              this._elBody.classList.remove("overflow-y-hidden");
-
          }
      }
 

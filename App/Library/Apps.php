@@ -7,7 +7,9 @@ use \App\Config;
 
 class Apps
 {
-    // valide la session
+    /**
+     * Valider la session
+     */
     static public function sessionAuth($status)
     {        
         // empêcher une connextion répétitive
@@ -38,39 +40,50 @@ class Apps
         }
     }
 
-    static public function usagerAuth($createur_id, $usager_id)
+    /**
+     * Valider si l'usager est le createur
+     */
+    static public function usagerAuth($createur_id, $usager_id, $same=true)
     {
-        if ($createur_id == $usager_id)
+        // L'usager et le createur doivent etre identiques
+        if ($same == true)
         {
-            return true;
+            if ($createur_id == $usager_id)
+            {
+                return true;
+            }
+            else
+            {
+                Apps::url('profil/index');
+                exit(); 
+            }
         }
+        // L'usager et le createur ne doivent pas etre identiques
         else
         {
-            Apps::url('profil/index');
-            exit(); 
+            if ($createur_id != $usager_id)
+            {
+                return true;
+            }
+            else
+            {
+                Apps::url('Enchere/index');
+                exit(); 
+            }
         }
     }
 
-    static public function idCheck($condition)
-    {
-        if($condition)
-        {
-            return true;
-        } 
-        else
-        {
-            Apps::url('enchere/index');
-            exit();
-        }
-    }
 
+    /**
+     * Televerser plusieurs images
+     */
     static public function reArrayFiles($file)
     {
         $file_ary = array();
         $file_count = count($file['name']);
         $file_key = array_keys($file);
         
-        for($i=0;$i<$file_count;$i++)
+        for($i = 0; $i < $file_count; $i++)
         {
             foreach($file_key as $val)
             {
@@ -80,11 +93,9 @@ class Apps
         return $file_ary;
     }
 
-    static public function library($library) 
-    {
-        return require_once('library/'.$library.'.php');
-    }
-
+    /**
+     * Diriger vers une page
+     */
     static public function url($url)
     {
         header('location:'. Config::URL_RACINE.$url);
@@ -112,6 +123,7 @@ class Apps
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
     }
+
 
 }
 

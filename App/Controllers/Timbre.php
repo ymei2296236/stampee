@@ -21,7 +21,7 @@ use \App\Library\Validation;
  */
 class Timbre extends \Core\Controller
 {
-        /**
+    /**
      * Ajouter un nouveau timbre au compte
      */
     public function createAction()
@@ -41,7 +41,9 @@ class Timbre extends \Core\Controller
         exit();    
     }
 
-
+    /**
+     * Enregistrer l'info du timbre
+     */
     public function storeAction()
     {
         Apps::sessionAuth(FALSE);
@@ -113,6 +115,8 @@ class Timbre extends \Core\Controller
                     $img_desc = Apps::reArrayFiles($img);
 
                     $name = str_replace(' ', '_', $_POST['nom']);
+                    // $name = str_replace(':', '', $name);
+                    // $name = str_replace('__', '_', $name);
 
                     $realpath = realpath(Config::URL_RACINE); 
                     $folder = "assets/img/jpg/";
@@ -132,7 +136,6 @@ class Timbre extends \Core\Controller
                         $timbre_id = $insertTimbre;
                     }
                 }
-
                 View::renderTemplate('Enchere/create.html', ['timbre_id'=>$insertTimbre, 'images'=> $images, 'usager_id'=>$_SESSION['user_id']]);
                 exit();    
             }
@@ -151,14 +154,14 @@ class Timbre extends \Core\Controller
     {
         Apps::sessionAuth(FALSE);
 
-        $timbre_id = $this->route_params['id'];
-
+        // Valider si le timbre existe
         $timbre = new \App\Models\Timbre;
-        $timbreSelect = $timbre->selectId($timbre_id);
+        $timbre_id = $this->route_params['id'];
+        if($timbre_id) $timbreSelect = $timbre->selectId($timbre_id);
 
         if(!$timbreSelect) Apps::url('profil/index');
 
-
+        // Valider si l'usager est le createur
         Apps::usagerAuth($timbreSelect['createur_id'], $_SESSION['user_id']);
 
         if ($timbreSelect)
@@ -207,24 +210,31 @@ class Timbre extends \Core\Controller
             }
         }
         // Supprimer le timbres
+        $timbre = new \App\Models\Timbre;
         $delete = $timbre->delete($timbre_id );
 
         Apps::url('profil/index');
         exit();   
     }
 
+    /**
+     * Modifier un timbre
+     */
     public function editAction()
     {
         Apps::sessionAuth(FALSE);
         
+        // Valider si le timbre existe
         $timbre = new \App\Models\Timbre;        
         $timbre_id = $this->route_params['id'];
-        $timbreSelect = $timbre->selectId($timbre_id);
+        if($timbre_id) $timbreSelect = $timbre->selectId($timbre_id);
 
         if(!$timbreSelect) Apps::url('profil/index');
-
+        
+        // Valider si usager est le createur
         Apps::usagerAuth($timbreSelect['createur_id'], $_SESSION['user_id']);
 
+        // Afficher les infos existantes du timbre
         $etat = new Etat;
         $etats = $etat->select();
 
@@ -234,22 +244,27 @@ class Timbre extends \Core\Controller
         $pays = new Pays;
         $tousPays = $pays->select('nom');
 
-        View::renderTemplate('timbre/edit.html', ['etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'timbre'=>$timbreSelect, 'usager_id'=>$_SESSION['user_id']]);
+        View::renderTemplate('timbre/edit.html', ['etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'timbre'=>$timbreSelect, 'timbre_id'=>$timbre_id, 'usager_id'=>$_SESSION['user_id']]);
     }
 
-
+    /**
+     * Enregistrer la modification
+     */
     public function updateAction()
     {
         Apps::sessionAuth(FALSE);
-        
+
+        // Valider si le timbre existe
         $timbre = new \App\Models\Timbre;        
         $timbre_id = $this->route_params['id'];
-        $timbreSelect = $timbre->selectId($timbre_id);
+        if($timbre_id) $timbreSelect = $timbre->selectId($timbre_id);
 
         if(!$timbreSelect) Apps::url('profil/index');
 
+        // Valider si usager est le createur
         Apps::usagerAuth($timbreSelect['createur_id'], $_SESSION['user_id']);
 
+        // Afficher les infos existantes du timbre
         $etat = new Etat;
         $etats = $etat->select();
 
@@ -259,19 +274,16 @@ class Timbre extends \Core\Controller
         $pays = new Pays;
         $tousPays = $pays->select('nom');
 
-        if (!$_POST)
+        if ($_POST)
         {
-            View::renderTemplate('timbre/edit.html', ['etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'timbre'=>$timbreSelect, 'usager_id'=>$_SESSION['user_id']]);
-        }
-        else
-        {
+            extract($_POST);
             // l'action Update
             // initialiser les variables de fonction renderTemplate
             $errors = '';
             $timbre = '';
             $images = '';
 
-                // Valider les champs
+            // Valider les champs
             $validation = new Validation;
             $validation->name('Nom')->value($nom)->max(45)->min(2);
             $validation->name('Description')->value($nom_2)->max(100);
@@ -285,25 +297,29 @@ class Timbre extends \Core\Controller
                 if (!$validation->isSuccess()) 
                     $errors = $validation->displayErrors();
 
-
-                View::renderTemplate('timbre/edit.html', ['errors'=> $errors, 'etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'timbre'=>$_POST, 'usager_id'=>$_SESSION['user_id']]);
+                View::renderTemplate('timbre/edit.html', ['errors'=> $errors, 'etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'timbre'=>$_POST, 'timbre_id'=>$timbre_id, 'usager_id'=>$_SESSION['user_id']]);
+                exit(); 
             } 
-            // sinon
             else
-            {             
+            {          
                 // insère le timbre à la DB
-                $timbre = new Timbre;
+                $timbre = new \App\Models\Timbre;
                 $_POST['id'] = $timbre_id;
                 $updateTimbre = $timbre->update($_POST);
 
                 $image = new Image;
                 $images = $image->selectByField('timbre_id', $timbre_id, 'principal');
 
+                // Diriger ver la page de modification d'image
                 View::renderTemplate('image/edit.html', ['timbre_id'=>$timbre_id, 'images'=>$images, 'usager_id'=>$_SESSION['user_id']]);
                 exit();    
             }
         }
-
+        else
+        {
+            Apps::url('profil/index');
+            exit(); 
+        }
     }
 
 }

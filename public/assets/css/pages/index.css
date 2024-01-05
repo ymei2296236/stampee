@@ -62,8 +62,8 @@
 		padding: 0 var(--espace-3);
 
 		& .CTA__item,
-		.btn {
-			flex: 1;
+		.btn,
+		.CTA__form {
 			background-color: var(--coul-principale);
 			color: var(--coul-texte-clair);
 			text-align: center;
@@ -73,12 +73,22 @@
 			padding: var(--espace-3);
 			letter-spacing: 2px;
 			line-height: 150%;
+			width: 33.33%;
+		}
 
-			.btn {
-				padding: 0;
-				background-color: rgba(0, 0, 0, 0);
+		.btn {
+			border: 0px;
+		}
+
+		& .CTA__form {
+			padding: 0 0;
+
+			& .btn {
+				width: 100%;
+				flex: 1;
 			}
 		}
+
 		& a {
 			text-decoration: none;
 			color: var(--coul-texte-clair);
@@ -197,6 +207,7 @@
 				width: 100%;
 				padding: var(--espace-3) var(--espace-half);
 			}
+
 			& a {
 				text-decoration: none;
 				color: var(--coul-texte-clair);

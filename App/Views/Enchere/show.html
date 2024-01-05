@@ -93,7 +93,7 @@
             </form>
                 {% endif %}
 
-                {% if favoriSelect == 1 %}
+                {% if favoriSelect == true %}
             <form action="{{url_racine}}enchere/deleteFavori/{{enchere.enchere_id}}" method="post">
                 <button class="btn btn--icon-text "><i class="fa-solid fa-star"></i>Enlever favori</button>
             </form>

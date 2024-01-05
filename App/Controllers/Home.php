@@ -46,7 +46,7 @@ class Home extends \Core\Controller
             $nbOffresParEnchere = $offre->countOffres($enchere_id);
             $encheresSelect[$i]['nbOffres'] = $nbOffresParEnchere;
 
-            $enchereInfo = $enchere->selectEnchereParId($enchere_id);
+            $enchereInfo = $enchere->selectId($enchere_id);
             $encheresSelect[$i]['timbre_nom'] = $enchereInfo['timbre_nom'];
             $encheresSelect[$i]['timbre_nom_2'] = $enchereInfo['timbre_nom_2'];
             $encheresSelect[$i]['timbre_id'] = $enchereInfo['timbre_id'];

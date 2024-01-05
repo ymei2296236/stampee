@@ -18,7 +18,7 @@
     </ul>
     {% endif %}
     
-    <form class="formulaire__form" action="{{url_racine}}image/edit/{{timbre.id}}" method="post" novalidate>
+    <form class="formulaire__form" action="{{url_racine}}timbre/update/{{timbre_id}}" method="post" novalidate>
 
         <label for="nom">Nom <i class="fa-solid fa-star-of-life fa-2xs"></i></label>
         <input type="text" id="nom" name="nom" value="{{timbre.nom}}"></input>  
