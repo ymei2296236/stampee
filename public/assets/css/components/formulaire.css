@@ -86,3 +86,9 @@
 	color: var(--coul-texte-succes);
 	line-height: 1.4rem;
 }
+
+@media screen and (max-width: 480px) {
+	.formulaire {
+		margin: 0;
+	}
+}

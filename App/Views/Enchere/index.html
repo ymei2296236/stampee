@@ -5,6 +5,7 @@
 {% block body %}
 <main data-page="catalogue">
     <section class="modal modal--ferme" data-js-modal="exit">
+        <span class="modal__icon"><i data-js-modal="exit" class="fa-solid fa-xmark"></i></span>
 
         <div class="modal__filtres">
             <div class="filtres__titre-titre">
@@ -14,7 +15,6 @@
             <form class="filtres__form" action="select" method="post"  data-js-filtres="modal" >         
             </form>
         </div>
-        <span class="modal__icon"><i data-js-modal="exit" class="fa-solid fa-xmark"></i></span>
     </section>
     <aside class="filtres-ecran">
         <div class="filtres__titre-titre">
@@ -133,6 +133,7 @@
             </div>
             {% endfor %}
         </div>
+
     </div>
 </main>
 

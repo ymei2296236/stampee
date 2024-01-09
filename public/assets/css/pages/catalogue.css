@@ -7,4 +7,14 @@
 	& .liste {
 		padding-bottom: var(--espace-6);
 	}
+
+	@media screen and (max-width: 1024px) {
+		& .modal {
+			padding: var(--espace-4);
+
+			.modal__filtres {
+				padding: var(--espace-3) var(--espace-1);
+			}
+		}
+	}
 }

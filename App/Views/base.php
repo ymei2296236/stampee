@@ -15,6 +15,21 @@
 
 <body>
     <header>
+        <section class="menu-bar menu-bar--ferme" data-js-menu-bar="exit">
+            <div data-js-menu class="menu-bar__item">
+                    <a href="#" class="lien">English</a>
+                    {% if guest %}
+                    <a href="{{url_racine}}usager/login" aria-label="Se connecter" class="btn btn--secondaire">Se connecter</a>
+                    <a href="{{url_racine}}usager/create" aria-label="Devenir membre" class="btn btn--principal">Devenir membre</a>
+                    {% else %}
+                    <span href="{{url_racine}}profil/index" class="profil">{% if session.user_id %}{{session.user_id}} {% endif %}</span>
+                    <a href="{{url_racine}}profil/index" aria-label="Votre compte" class="btn btn--principal">Votre compte</a>
+                    <a href="{{url_racine}}usager/logout" aria-label="Se déconnecter" class="btn btn--secondaire">Se déconnecter</a>
+                    {% endif %}
+                </div>
+            <span class="modal__icon" data-js-modal-button><i class="fa-solid fa-xmark"></i></span>
+        </section>
+
         <div class="top-bar">
             <span class="logo"><a href="{{url_racine}}"><img src="{{url_racine}}assets/img/svg/logo.svg" alt="logo du site"></a></span>
             <div>
@@ -28,7 +43,6 @@
                 <a href="{{url_racine}}profil/index" aria-label="Votre compte" class="btn btn--principal">Votre compte</a>
                 <a href="{{url_racine}}usager/logout" aria-label="Se déconnecter" class="btn btn--secondaire">Se déconnecter</a>
                 {% endif %}
-
             </div>
         </div>
         <div class="navigation">
@@ -38,7 +52,7 @@
                     <li><a href="{{url_racine}}">Accueil</a></li>
                     <li><a href="{{url_racine}}enchere/index">Catalogue</a></li>
                 </ul>
-                <span class="menu-mobile"><i class="fa-solid fa-bars fa-lg"></i></span>
+                <span data-js-component="MenuBar" class="menu-mobile"><i class="fa-solid fa-bars fa-lg"></i></span>
             </nav>
             <div class="navigation__recherche">
                 <form class="navigation__form" action="{{url_racine}}enchere/filter" method="GET">
@@ -51,6 +65,7 @@
         </div>
     </header>
     {% block body %}
+
     {% endblock %}
     <footer>
         <nav>

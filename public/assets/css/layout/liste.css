@@ -37,7 +37,6 @@
 }
 
 .item {
-	/* flex: calc(25% - var(--espace-1)); */
 	width: calc(25% - var(--espace-1));
 	border: 0.5px solid var(--coul-principale);
 	cursor: pointer;
@@ -137,11 +136,11 @@
 		padding: var(--espace-2);
 		gap: var(--espace-1);
 
-		.tri {
+		& .tri {
 			margin-bottom: 0;
 			flex-wrap: wrap;
 		}
-		.item {
+		& .item {
 			flex-basis: calc(33.33% - var(--espace-1));
 		}
 	}
@@ -152,9 +151,13 @@
 @media screen and (max-width: 480px) {
 	.liste {
 		padding: var(--espace-1);
-	}
 
-	.item {
-		flex-basis: 100%;
+		& .tri {
+			gap: var(--espace-1);
+		}
+
+		& .item {
+			flex-basis: 100%;
+		}
 	}
 }

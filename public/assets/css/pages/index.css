@@ -76,10 +76,6 @@
 			width: 33.33%;
 		}
 
-		.btn {
-			border: 0px;
-		}
-
 		& .CTA__form {
 			padding: 0 0;
 
@@ -183,7 +179,7 @@
 		& .banner {
 			flex-direction: column;
 			gap: var(--espace-1);
-			padding: var(--espace-3);
+			padding: var(--espace-2);
 
 			& .banner__img {
 				flex: 25%;
@@ -208,6 +204,10 @@
 				padding: var(--espace-3) var(--espace-half);
 			}
 
+			& .CTA__form {
+				width: 100%;
+			}
+
 			& a {
 				text-decoration: none;
 				color: var(--coul-texte-clair);
@@ -215,7 +215,7 @@
 			}
 		}
 		& .promo {
-			padding: var(--espace-3) var(--espace-1);
+			padding: var(--espace-3) 0;
 		}
 
 		& .actualites {

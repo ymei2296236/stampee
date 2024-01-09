@@ -66,10 +66,11 @@
 	}
 
 	@media screen and (max-width: 1024px) {
-		padding: var(--espace-2);
+		padding: var(--espace-1);
+		margin-bottom: var(--espace-2);
 
 		& .col {
-			gap: var(--espace-4);
+			gap: var(--espace-1);
 		}
 	}
 }

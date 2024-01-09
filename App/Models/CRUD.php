@@ -103,13 +103,7 @@ abstract class CRUD extends \Core\Model
         foreach($data as $key => $value)
         {
             $stmt->bindValue(":$key", $value);
-            // echo "<pre>";
-            // print_r($value);
-
         }
-
-        // print_r($stmt);
-        // die();
 
         if($stmt->execute()) return true;
         else return $stmt->errorInfo();

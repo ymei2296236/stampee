@@ -13,6 +13,7 @@
 @import url(components/formulaire.css);
 @import url(components/input.css);
 @import url(components/modal.css);
+@import url(components/menu-bar.css);
 
 /* import layout */
 @import url(layout/liste.css);

@@ -581,6 +581,7 @@ class Enchere extends \Core\Controller
         foreach($encheres as $enchereChaque)
         {
             // Recuperer chaque enchere
+            
             $enchereSelect = $enchere->selectId($enchereChaque['id']);
 
             // Recuperer les infos de l'enchere
@@ -647,7 +648,7 @@ class Enchere extends \Core\Controller
         {
             // Filtrage d'encheres
             $encheresSelect = $enchere->selecEnchereParFiltre($_POST);
-
+      
             foreach($encheresSelect as $enchereSelect)
             {
                 $encheres[] = $enchere->selectId($enchereSelect['id']);
@@ -671,12 +672,13 @@ class Enchere extends \Core\Controller
             foreach($encheres as $enchereChaque)
             {
                 // Recuperer les infos de l'enchere
+                $enchereSelect = $enchere->selectId($enchereChaque['enchere_id']);
+                
+                
                 $timbre = new Timbre;
-                $enchereSelect = $enchere->selectId($enchereChaque['id']);
                 $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
                 $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
                 $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
-                $encheres[$i]['enchere_id'] = $encheres[$i]['id'];
 
                 // Recuperer les images de l'enchere
                 $image = new Image;
@@ -685,7 +687,7 @@ class Enchere extends \Core\Controller
 
                 // Recuperer les offres de l'enchere
                 $offre = new Offre;
-                $offresToutes = $offre->selectOffresParEnchere($enchereChaque['id']);
+                $offresToutes = $offre->selectOffresParEnchere($enchereChaque['enchere_id']);
 
                 if ($offresToutes)
                 {

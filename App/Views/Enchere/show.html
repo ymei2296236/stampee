@@ -5,10 +5,10 @@
 {% block body %}
     <main data-page="enchere">
         <section class="modal modal--ferme" data-js-modal="exit">
+            <span class="modal__icon" data-js-modal-button><i class="fa-solid fa-xmark"></i></span>
             <div class="modal__image" data-js-modal="divImage">
                 <img data-js-modal="image" src="" alt="image du timbre en recto">
             </div>
-            <span class="modal__icon" data-js-modal-button><i class="fa-solid fa-xmark"></i></span>
         </section>
         <div class="breadcrumb">
             <span class="note btn btn--tertiaire"><a href="{{url_racine}}"> Accueil </a></span> / <span class="note btn btn--tertiaire"> <a href="{{url_racine}}enchere/index">Catalogue</a></span> / <span class="note btn btn--tertiaire"> <a href="{{url_racine}}enchere/show/{{enchere.enchere_id}}">{{enchere.timbre_nom}} {{enchere.timbre_nom_2}} </a></span>
@@ -130,7 +130,7 @@
             </div>
         </div>
 
-        <div class="promo">
+        <div class="promo liste">
             <h2>Dernières nouveautés</h2>
             <div class="liste__contenu">   
                 {% for enchereChaque in encheresNouveautes %}

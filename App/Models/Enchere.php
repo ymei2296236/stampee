@@ -40,7 +40,8 @@ class Enchere extends CRUD
         usager.id AS createur_id,
         usager.alias AS createur_nom,
         pays.nom AS pays,
-        date_debut, date_fin, prix_plancher, date_emission, tirage, extrait, dimension.id, coup_de_coeur
+        -- dimension.id AS dimension_id
+        date_debut, date_fin, prix_plancher, date_emission, tirage, extrait, coup_de_coeur
         FROM $this->table
         INNER JOIN timbre 
         INNER JOIN etat 

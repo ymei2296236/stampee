@@ -164,9 +164,6 @@
 					max-width: 10vw;
 					max-height: 10vw;
 					width: 20%;
-					/* height: 20%; */
-					/* aspect-ratio: 1 / 1; */
-					/* min-height: 10vh; */
 				}
 			}
 
@@ -194,9 +191,21 @@
 
 		& .description {
 			/* flex: 30%; */
+
+			margin: var(--espace-1);
 			& .description__item {
 				padding: var(--espace-1) 0;
 			}
+		}
+	}
+
+	@media screen and (max-width: 480px) {
+		padding: var(--espace-3) 0;
+
+		& .images,
+		.mise {
+			width: 100%;
+			margin: 0 var(--espace-1);
 		}
 	}
 }

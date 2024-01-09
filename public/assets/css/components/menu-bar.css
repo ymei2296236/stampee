@@ -1,0 +1,35 @@
+.menu-bar {
+	opacity: 1;
+	position: fixed;
+	background-color: var(--coul-modal);
+	height: auto;
+	width: auto;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: var(--espace-5) var(--espace-2);
+	transition: opacity 0.3s ease, transform 0.3s ease;
+	display: flex;
+	justify-content: center;
+
+	.fa-xmark {
+		color: var(--coul-arriere-plan);
+		margin-bottom: var(--espace-2);
+	}
+
+	.fa-chevron-left {
+		display: none;
+	}
+
+	.menu-bar__item {
+		display: flex;
+		flex-direction: column;
+		gap: var(--espace-2);
+	}
+}
+
+.menu-bar--ferme {
+	opacity: 0;
+	pointer-events: none;
+	transform: translateX(100px);
+}

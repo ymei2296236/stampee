@@ -11,6 +11,7 @@ export default class Image
         this._elModal = document.querySelector('[data-js-modal="exit"]');
         this._elModalImage = this._elModal.querySelector('[data-js-modal="image"]');
 
+        console.log(this._elModalImage);
         this.init();
     }
 
