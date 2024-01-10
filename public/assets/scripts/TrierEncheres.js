@@ -1,30 +1,36 @@
 export default class TrierEncheres
 {
+    #_el;
+    #_elSelect;
+    #_requete;
+    #_oOptions;
+    #_elListe;
+
     constructor(el)
     {
-        this._el = el;
-        this._elSelect = this._el.querySelector('select');
-        this._requete = new Request('/stampee/App/requetesFetch.php');
-        this._oOptions = { 
+        this.#_el = el;
+        this.#_elSelect = this.#_el.querySelector('select');
+        this.#_requete = new Request('/stampee/App/requetesFetch.php');
+        this.#_oOptions = 
+        { 
             method: 'POST',
             headers: { "Content-Type": "application/json" }
         };
-        this.elListe = document.querySelector('[data-js-listeEncheres]');
-        this.init();
+        this.#_elListe = document.querySelector('[data-js-listeEncheres]');
+        this.#init();
     }
     
-    init()
+    #init()
     {
-        
-        this._elSelect.addEventListener('change', function()
+        this.#_elSelect.addEventListener('change', function()
         {
-            // console.log(this._elDivDom);
-            let selectValue = this._elSelect.value;
-            this._oOptions.body = JSON.stringify({action:selectValue});
+            let selectValue = this.#_elSelect.value;
 
-            this.appelFetch()
+            this.#_oOptions.body = JSON.stringify({action:selectValue});
+
+            this.#appelFetch()
                 .then(function(data){
-                    // console.log(data);
+                    console.log(data);
                     
                     let dom ='';
 
@@ -94,7 +100,7 @@ export default class TrierEncheres
                                     </div>
                                 `;
                                 
-                        this.elListe.innerHTML = dom;
+                        this.#_elListe.innerHTML = dom;
                     }
                 }.bind(this))
                 .catch (function(err) {
@@ -107,12 +113,12 @@ export default class TrierEncheres
      * Retourne la promesse de la fonction asynchrone
      * @returns 
      */
-        async appelFetch() {
+        async #appelFetch() {
             try {
-                let response = await fetch(this._requete, this._oOptions);
+                let response = await fetch(this.#_requete, this.#_oOptions);
                 if (response.ok) 
                 {
-                    // console.log(response);
+                    console.log(response);
                     return response.json();
                 }
                 else throw new Error('La réponse n\'est pas OK');

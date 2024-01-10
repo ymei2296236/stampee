@@ -200,12 +200,17 @@
 	}
 
 	@media screen and (max-width: 480px) {
-		padding: var(--espace-3) 0;
+		padding: var(--espace-1) 0;
 
 		& .images,
 		.mise {
 			width: 100%;
 			margin: 0 var(--espace-1);
+			gap: var(--espace-1);
+
+			& .images__main {
+				padding: var(--espace-1);
+			}
 		}
 	}
 }

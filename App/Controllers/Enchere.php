@@ -194,8 +194,6 @@ class Enchere extends \Core\Controller
     {
         Apps::sessionAuth(FALSE);
 
-        // Apps::checkTimbre($this->route_params['id']);
-
         // Valider si le timbre existe
         $timbre = new Timbre;
         $timbre_id = $this->route_params['id'];
@@ -288,8 +286,8 @@ class Enchere extends \Core\Controller
 
         // Valider si l'enchere existe
         $enchere = new \App\Models\Enchere;
-        $enchereId = $this->route_params['id'];
-        if($enchereId) $enchereSelect = $enchere->selectId($enchereId);
+        $enchere_id = $this->route_params['id'];
+        if($enchere_id) $enchereSelect = $enchere->selectId($enchere_id);
 
         if($enchereSelect)  
         {
@@ -298,7 +296,7 @@ class Enchere extends \Core\Controller
 
             // Supprimer toutes les offres de l'enchère 
             $offre = new Offre;
-            $offres = $offre->selectByField('enchere_id', $enchereId, 'prix', 'DESC');
+            $offres = $offre->selectByField('enchere_id', $enchere_id, 'prix', 'DESC');
             
             if($offres) 
             {
@@ -313,7 +311,7 @@ class Enchere extends \Core\Controller
             
             // Supprimer favoris du timbres
             $favori = new Favori;
-            $favorisSelect = $favori->selectFavoriParEnchereId($enchereId);
+            $favorisSelect = $favori->selectFavoriParEnchereId($enchere_id);
             
             if($favorisSelect)
             {
@@ -321,13 +319,13 @@ class Enchere extends \Core\Controller
                 
                 foreach ($favorisSelect as $favoriSelect) 
                 {
-                    $delete = $favori->deleteFavori($enchereId, $favoriSelect['usager_id']);
+                    $delete = $favori->deleteFavori($enchere_id, $favoriSelect['usager_id']);
                     $i++;
                 }
             }
             
             // Supprimer l'enchère du timbres
-            $delete = $enchere->delete($enchereId);  
+            $delete = $enchere->delete($enchere_id);  
         }
 
         Apps::url('profil/index');
@@ -343,8 +341,8 @@ class Enchere extends \Core\Controller
         Apps::sessionAuth(FALSE);
 
         $enchere = new \App\Models\Enchere;        
-        $enchereId = $this->route_params['id'];
-        if($enchereId) $enchereSelect = $enchere->selectId($enchereId);
+        $enchere_id = $this->route_params['id'];
+        if($enchere_id) $enchereSelect = $enchere->selectId($enchere_id);
 
         if(!$enchereSelect) Apps::url('profil/index');
 
@@ -356,7 +354,7 @@ class Enchere extends \Core\Controller
         $enchereSelect['imagePrincipale']= $images[0]['nom'];
 
         
-        View::renderTemplate('Enchere/edit.html', ['enchere'=>$enchereSelect, 'enchere_id'=> $enchereId,'images'=>$images]);
+        View::renderTemplate('Enchere/edit.html', ['enchere'=>$enchereSelect, 'enchere_id'=> $enchere_id,'images'=>$images]);
     }
     
     /**
@@ -370,8 +368,8 @@ class Enchere extends \Core\Controller
 
         // Valider si l'enchere existe
         $enchere = new \App\Models\Enchere;
-        $enchereId = $this->route_params['id'];
-        if($enchereId) $enchereSelect = $enchere->selectId($enchereId);
+        $enchere_id = $this->route_params['id'];
+        if($enchere_id) $enchereSelect = $enchere->selectId($enchere_id);
 
         if(!$enchereSelect) Apps::url('profil/index');
 
@@ -433,8 +431,8 @@ class Enchere extends \Core\Controller
         
         // Valider si l'enchere existe
         $enchere = new \App\Models\Enchere;
-        $enchereId = $this->route_params['id'];
-        if($enchereId) $enchereSelect = $enchere->selectId($enchereId);
+        $enchere_id = $this->route_params['id'];
+        if($enchere_id) $enchereSelect = $enchere->selectId($enchere_id);
 
         if ($enchereSelect)
         {
@@ -484,7 +482,7 @@ class Enchere extends \Core\Controller
                     {
                         // Inserer l'offre
                         $_POST['usager_id'] = $_SESSION['user_id'];
-                        $_POST['enchere_id'] = $enchereId;
+                        $_POST['enchere_id'] = $enchere_id;
                         $insertOffre = $offre->insert($_POST);
                 
                         if ($insertOffre) 
@@ -506,12 +504,12 @@ class Enchere extends \Core\Controller
 
                 foreach ($encheres as $enchereChaque) 
                 {
-                    $enchereId = $enchereChaque['enchere_id'];
+                    $enchere_id = $enchereChaque['enchere_id'];
 
-                    $nbOffresParEnchere = $offre->countOffres($enchereId);
+                    $nbOffresParEnchere = $offre->countOffres($enchere_id);
                     $encheres[$i]['nbOffres'] = $nbOffresParEnchere;
 
-                    $enchereInfo = $enchere->selectId($enchereId);
+                    $enchereInfo = $enchere->selectId($enchere_id);
 
                     $encheres[$i]['timbre_nom'] = $enchereInfo['timbre_nom'];
                     $encheres[$i]['timbre_nom_2'] = $enchereInfo['timbre_nom_2'];
@@ -521,7 +519,7 @@ class Enchere extends \Core\Controller
                     $images = $image->selectByField('timbre_id', $enchereInfo['timbre_id'], 'principal');
                     $encheres[$i]['image'] = $images[0]['nom'];
 
-                    $offresToutes = $offre->selectOffresParEnchere($enchereId);
+                    $offresToutes = $offre->selectOffresParEnchere($enchere_id);
 
                     if ($offresToutes)
                     {

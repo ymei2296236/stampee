@@ -30,7 +30,7 @@
             <span class="modal__icon" data-js-modal-button><i class="fa-solid fa-xmark"></i></span>
         </section>
 
-        <div class="top-bar">
+        <section class="top-bar">
             <span class="logo"><a href="{{url_racine}}"><img src="{{url_racine}}assets/img/svg/logo.svg" alt="logo du site"></a></span>
             <div>
                 <a href="#" class="lien">English</a>
@@ -44,10 +44,9 @@
                 <a href="{{url_racine}}usager/logout" aria-label="Se déconnecter" class="btn btn--secondaire">Se déconnecter</a>
                 {% endif %}
             </div>
-        </div>
-        <div class="navigation">
+        </section>
+        <section class="navigation">
             <nav>
-                <span class="menu-mobile"><i class="fa-solid fa-arrow-left fa-lg"></i></span>
                 <ul>
                     <li><a href="{{url_racine}}">Accueil</a></li>
                     <li><a href="{{url_racine}}enchere/index">Catalogue</a></li>
@@ -62,7 +61,7 @@
                 </form>
             </div>
 
-        </div>
+        </section>
     </header>
     {% block body %}
 

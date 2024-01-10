@@ -1,5 +1,4 @@
 import { classMapping } from "./classMapping.js";
-let elComponents = document.querySelectorAll('[data-js-component]');
 
 (function(){
     
