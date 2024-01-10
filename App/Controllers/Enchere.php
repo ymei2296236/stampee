@@ -554,9 +554,9 @@ class Enchere extends \Core\Controller
 
 
     /**
-     * Selectionner encheres par mot de cle
+     * Rechercher encheres par mot de cle
      */
-    public function filterAction() 
+    public function rechercherAction() 
     {
         $etat = new Etat;
         $etats = $etat->select();
@@ -568,13 +568,26 @@ class Enchere extends \Core\Controller
         $dimensions = $dimension->select();
 
         $enchere = new \App\Models\Enchere;
-        $encheres = $enchere->selectEnchereParNom($_GET['rechercher']);
+        $encheres = $enchere->selectEnchereParNom($_GET['motDeCle']);
 
         $image = new Image;
         $timbre = new Timbre;
         $offre = new Offre;
 
         $i = 0;
+
+        // Calculer le nombre d'encheres filtres
+        if(!$encheres)
+        {
+            $nbEncheres = '0 résultat';
+        } 
+        else 
+        {
+            $nbEncheres = count($encheres);
+
+            if($nbEncheres == 1) $nbEncheres .= ' résultat';
+            else if ($nbEncheres > 1) $nbEncheres .= ' résultats';
+        }
 
         foreach($encheres as $enchereChaque)
         {
@@ -613,7 +626,7 @@ class Enchere extends \Core\Controller
             $i++;
         }
 
-        View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'encheres'=>$encheres]);
+        View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'encheres'=>$encheres, 'resultats'=>$nbEncheres]);
         exit();
     }
 

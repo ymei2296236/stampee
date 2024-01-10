@@ -54,9 +54,9 @@
                 <span data-js-component="MenuBar" class="menu-mobile"><i class="fa-solid fa-bars fa-lg"></i></span>
             </nav>
             <div class="navigation__recherche">
-                <form class="navigation__form" action="{{url_racine}}enchere/filter" method="GET">
+                <form class="navigation__form" action="{{url_racine}}enchere/rechercher" method="GET">
                     <label for="rechercher"></label>
-                    <input class="navigation__input" type="text" placeholder="Rechercher" id="rechercher" name="rechercher">
+                    <input class="navigation__input" type="text" placeholder="Rechercher" id="rechercher" name="motDeCle">
                     <button  aria-label="Rechercher" type="submit" class="btn btn--principal btn--icon"><i class="icon-recherche fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </div>

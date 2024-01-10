@@ -5,6 +5,7 @@ export default class TrierEncheres
     #_requete;
     #_oOptions;
     #_elListe;
+    #_elFiltresEcran;
 
     constructor(el)
     {
@@ -17,6 +18,10 @@ export default class TrierEncheres
             headers: { "Content-Type": "application/json" }
         };
         this.#_elListe = document.querySelector('[data-js-listeEncheres]');
+        this.#_elFiltresEcran = document.querySelector('[data-js-filtres="ecran"]');
+        this._elsCheckbox = this.#_elFiltresEcran.querySelectorAll('input[type=checkbox]');
+        this._elResultatFiltre = document.querySelector('[data-js-resultat]');
+
         this.#init();
     }
     
@@ -24,13 +29,17 @@ export default class TrierEncheres
     {
         this.#_elSelect.addEventListener('change', function()
         {
+            // supprimer les filtres selectiones
+            this.supprimeFiltre();
+
+            // faire appel asynchrone pour recuperer des donness
             let selectValue = this.#_elSelect.value;
 
             this.#_oOptions.body = JSON.stringify({action:selectValue});
 
             this.#appelFetch()
                 .then(function(data){
-                    console.log(data);
+                    // console.log(data);
                     
                     let dom ='';
 
@@ -107,6 +116,8 @@ export default class TrierEncheres
                     console.log(`Il y a eu un problème avec l'opération fetch: ${err.message}`);
                 });
         }.bind(this))
+
+        
     }
 
     /**
@@ -118,7 +129,7 @@ export default class TrierEncheres
                 let response = await fetch(this.#_requete, this.#_oOptions);
                 if (response.ok) 
                 {
-                    console.log(response);
+                    // console.log(response);
                     return response.json();
                 }
                 else throw new Error('La réponse n\'est pas OK');
@@ -128,6 +139,25 @@ export default class TrierEncheres
             }
         };
     
+    supprimeFiltre()
+    {
+        // supprimer le resultat de filtrage
+        this._elResultatFiltre.innerHTML = '';
+
+        // enlever les filtres selectionnes
+        for (let i = 0, l = this._elsCheckbox.length; i < l; i++) {
+            if (this._elsCheckbox[i].checked) 
+            {
+
+                this._elsCheckbox[i].checked = false;
+                
+                console.log(this._elsCheckbox[i]);
+            }
+        }
+
+
+
+    }
 
 
 }
