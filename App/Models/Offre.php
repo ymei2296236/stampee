@@ -89,7 +89,7 @@ class Offre extends CRUD
             "SELECT enchere_id
             FROM $this->table 
             GROUP by enchere_id
-            LIMIT 4";
+            LIMIT 5";
 
         $stmt = $db->query($sql);
 

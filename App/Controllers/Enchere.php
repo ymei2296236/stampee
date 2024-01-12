@@ -43,9 +43,6 @@ class Enchere extends \Core\Controller
         $timbre = new Timbre;
         $offre = new Offre;
 
-        // echo "<pre>";
-        // print_r($encheres);
-
         $i = 0;
 
         foreach($encheres as $enchereChaque)
@@ -507,7 +504,7 @@ class Enchere extends \Core\Controller
 
                 foreach ($encheres as $enchereChaque) 
                 {
-                    $enchere_id = $enchereChaque['enchere_id'];
+                    $enchere_id = $enchereChaque['id'];
 
                     $nbOffresParEnchere = $offre->countOffres($enchere_id);
                     $encheres[$i]['nbOffres'] = $nbOffresParEnchere;
@@ -629,6 +626,9 @@ class Enchere extends \Core\Controller
             $i++;
         }
 
+        // echo "<pre>";
+        // print_r($encheres);
+
         View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'encheres'=>$encheres, 'resultats'=>$nbEncheres]);
         exit();
     }
@@ -721,6 +721,9 @@ class Enchere extends \Core\Controller
                 $i++;
             }
 
+
+
+
             View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'msg'=>$msg, 'encheres'=>$encheres, 'filtres'=>$_POST, 'resultats'=>$nbEncheres]);
             exit();
         }     
@@ -795,6 +798,7 @@ class Enchere extends \Core\Controller
             $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
             $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
             $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
+            $encheres[$i]['enchere_id'] = $encheres[$i]['id'];
 
             // Recuperer les images de l'enchere
             $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal');
@@ -814,7 +818,8 @@ class Enchere extends \Core\Controller
             }
             $i++;
         }
-
+        // echo "<pre>";
+        // print_r($encheres);
         View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'encheres'=>$encheres]);
         exit();
     }
@@ -878,6 +883,8 @@ class Enchere extends \Core\Controller
             
             $i++;
         }
+        // echo "<pre>";
+        // print_r($encheres);
 
         View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'encheres'=>$encheres]);
         exit();

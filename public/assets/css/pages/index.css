@@ -103,61 +103,14 @@
 	}
 
 	& .promo {
-		padding: var(--espace-6) var(--espace-10) var(--espace-8)
-			var(--espace-10);
-	}
-	& .actualites {
-		display: flex;
-		flex-direction: column;
-		background-color: var(--coul-neutre);
-		padding: var(--espace-4) var(--espace-10);
-		padding-bottom: var(--espace-8);
+		.liste {
+			padding: var(--espace-3);
 
-		& .actualites__liste {
-			display: flex;
-			flex-wrap: wrap;
-			gap: var(--espace-1);
-
-			& .actualites__item {
-				flex: calc(33.33% - var(--espace-2));
-				display: flex;
-				gap: var(--espace-1half);
-				padding: var(--espace-1half);
-				align-items: center;
-				background-color: var(--coul-arriere-plan);
-				align-items: flex-start;
-				cursor: pointer;
-
-				& .actualites__img {
-					width: 30%;
-
-					& img {
-						width: 100%;
-						height: 100%;
-						aspect-ratio: 1 / 1;
-						object-fit: cover;
-					}
-				}
-
-				& .actualites__info {
-					width: 80%;
-					display: flex;
-					flex-direction: column;
-					gap: var(--espace-quart);
-
-					& .note {
-						color: var(--coul-secondaire);
-					}
-
-					& a {
-						text-decoration: none;
-						color: var(--coul-secondaire);
-					}
-				}
+			.item {
+				width: calc(20% - var(--espace-1));
 			}
 		}
 	}
-
 	@media screen and (max-width: 1024px) {
 		& .banner {
 			gap: var(--espace-3);
@@ -168,9 +121,6 @@
 			}
 		}
 		& .promo {
-			padding: var(--espace-3);
-		}
-		& .actualites {
 			padding: var(--espace-3);
 		}
 	}
@@ -216,53 +166,6 @@
 		}
 		& .promo {
 			padding: var(--espace-3) 0;
-		}
-
-		& .actualites {
-			padding: var(--espace-3) var(--espace-1);
-			padding-bottom: var(--espace-6);
-
-			& .actualites__liste {
-				flex-direction: column;
-
-				& .actualites__item {
-					flex: calc(33.33% - var(--espace-2));
-					display: flex;
-					gap: var(--espace-1half);
-					padding: var(--espace-1half);
-					align-items: center;
-					background-color: var(--coul-arriere-plan);
-					align-items: flex-start;
-
-					& .actualites__img {
-						width: 30%;
-						/* height: 12rem; */
-
-						& img {
-							width: 100%;
-							height: 100%;
-							aspect-ratio: 1 / 1;
-							object-fit: cover;
-						}
-					}
-
-					& .actualites__info {
-						width: 80%;
-						display: flex;
-						flex-direction: column;
-						gap: var(--espace-quart);
-
-						& .note {
-							color: var(--coul-secondaire);
-						}
-
-						& a {
-							text-decoration: none;
-							color: var(--coul-secondaire);
-						}
-					}
-				}
-			}
 		}
 	}
 }
