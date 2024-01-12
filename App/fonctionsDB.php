@@ -5,10 +5,17 @@
 	 * Connection avec la base de données
 	 */
 	function connexionDB() {
-		define('DB_HOST', 'localhost');
-		define('DB_USER', 'root');
+		define('DB_HOST', 'localhost');			// Mac, Windows
+
+		define('DB_USER', 'root');				// Mac, Windows
+		// define('DB_USER', 'e2296236');  		// webdev
+		
 		define('DB_PASSWORD', 'root');			// MAC
 		//define('DB_PASSWORD', '');			// Windows
+		define('DB_PASSWORD', 'owioZ7vb1n0D0d4uLPw4');			// webdev
+
+		define('DB_NAME', 'stampee');				// Mac, Windows
+		// define('DB_NAME', 'e2296236');			// webdev
 
 		$laConnexion = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD);
 				
@@ -17,7 +24,7 @@
 			die('Erreur de connexion à la base de données. ' . mysqli_connect_error());
 		}
 		
-		$db = mysqli_select_db($laConnexion, 'stampee');
+		$db = mysqli_select_db($laConnexion, DB_NAME);
 
 		if (!$db) {
 			die ('La base de données n\'existe pas.');

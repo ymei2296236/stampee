@@ -170,13 +170,29 @@ class Enchere extends CRUD
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function selectEncheresEnCours()
+    {   
+		$db = static::getDB();
+
+        $sql=
+            "SELECT enchere.id AS id, timbre.id AS timbre_id, timbre.nom AS timbre_nom, timbre.nom_2 AS timbre_nom_2, prix_plancher, date_fin, coup_de_coeur
+            FROM enchere 
+			JOIN timbre
+			on enchere.timbre_id = timbre.id
+            WHERE date_fin > NOW()";
+
+		$stmt = $db->query($sql);
+
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
 
     public function selectEncheresArchivees()
     {
         $db = static::getDB();
       
         $sql=
-            "SELECT enchere.id AS enchere_id, timbre.id AS timbre_id, timbre.nom AS timbre_nom, timbre.nom_2 AS timbre_nom_2, prix_plancher
+            "SELECT enchere.id AS id, timbre.id AS timbre_id, timbre.nom AS timbre_nom, timbre.nom_2 AS timbre_nom_2, prix_plancher, date_fin, coup_de_coeur
             FROM enchere 
 			JOIN timbre
 			on enchere.timbre_id = timbre.id
@@ -188,6 +204,7 @@ class Enchere extends CRUD
        
     }
 
+    
     public function selectEncheresNouveautes($limit=false)
     {
         $db = static::getDB();
@@ -196,7 +213,7 @@ class Enchere extends CRUD
         else $limitSql = null;
 
 		$sql=
-		"SELECT enchere.id AS enchere_id, timbre.id AS timbre_id, timbre.nom AS timbre_nom, timbre.nom_2 AS timbre_nom_2, prix_plancher, date_fin, coup_de_coeur
+		"SELECT enchere.id AS id, timbre.id AS timbre_id, timbre.nom AS timbre_nom, timbre.nom_2 AS timbre_nom_2, prix_plancher, date_fin, coup_de_coeur
 		FROM enchere 
 		JOIN timbre
 		on enchere.timbre_id = timbre.id
@@ -206,8 +223,26 @@ class Enchere extends CRUD
         $stmt = $db->query($sql);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-	
     }
+
+
+    public function selectEncheresPrixEleve()
+    {
+        $db = static::getDB();
+      
+        $sql=
+            "SELECT enchere.id AS id, timbre.id AS timbre_id, timbre.nom AS timbre_nom, timbre.nom_2 AS timbre_nom_2, prix_plancher, date_fin, coup_de_coeur
+            FROM enchere 
+            JOIN timbre
+            on enchere.timbre_id = timbre.id
+            ORDER by enchere.id DESC";
+
+        $stmt = $db->query($sql);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+       
+    }
+
 
 
 }

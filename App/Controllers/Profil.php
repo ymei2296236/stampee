@@ -31,6 +31,8 @@ class Profil extends \Core\Controller
         Apps::sessionAuth(FALSE);
         
         // Afficher la liste de timbres et enchères
+
+        
         $timbre = new Timbre;
         $timbres = $timbre->selectTimbreParUsager($_SESSION['user_id']);
 

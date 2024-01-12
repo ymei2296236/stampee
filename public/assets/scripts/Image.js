@@ -7,7 +7,7 @@ export default class Image
     #_elImage;
     #_elModal;
     #_elModalImage;
-
+    #_urlRacine;
 
     constructor(el)
     {
@@ -19,6 +19,8 @@ export default class Image
         this.#_elImage = this.#_el.querySelector('[data-js-image]');
         this.#_elModal = document.querySelector('[data-js-modal="exit"]');
         this.#_elModalImage = this.#_elModal.querySelector('[data-js-modal="image"]');
+        this.#_urlRacine = 'http://localhost:8888/stampee/public/';
+        // this.#_urlRacine = 'https://e2296236.webdev.cmaisonneuve.qc.ca/stampee/public/';
 
         this.#init();
     }
@@ -30,7 +32,6 @@ export default class Image
         {  
             this.#_elsThumbnail[i].addEventListener('click', this.#afficherImage.bind(this),true);
         }
-
         this.#_elImage.addEventListener('click', this.#afficheModal.bind(this));
     }
 
@@ -51,7 +52,7 @@ export default class Image
         // Creer et inserer le dom de l'image 
         let nomImage = e.currentTarget.dataset.jsThumbnail,
             dom = `
-                    <img src="https://e2296236.webdev.cmaisonneuve.qc.ca/stampee/public//assets/img/jpg/${nomImage}" alt="image du timbre en recto">
+                    <img src="${this.#_urlRacine}assets/img/jpg/${nomImage}" alt="image du timbre en recto">
                 `;
 
         this.#_elImage.innerHTML = dom;

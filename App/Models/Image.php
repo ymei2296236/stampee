@@ -38,6 +38,17 @@ class Image extends CRUD
         else return $stmt->errorInfo();
 
     }
+
+    public function selectImageByField($table, $column, $value, $field='id')
+    {
+        $db = static::getDB();
+
+        $sql="SELECT * FROM $table WHERE $column = '$value' ORDER BY $field DESC" ;
+        $stmt = $db->query($sql);
+
+        return $stmt->errorInfo();
+    }
+
 }
 
 ?>

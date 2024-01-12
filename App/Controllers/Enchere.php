@@ -43,6 +43,9 @@ class Enchere extends \Core\Controller
         $timbre = new Timbre;
         $offre = new Offre;
 
+        // echo "<pre>";
+        // print_r($encheres);
+
         $i = 0;
 
         foreach($encheres as $enchereChaque)
@@ -139,7 +142,7 @@ class Enchere extends \Core\Controller
 
             foreach ($encheres as $enchereChaque) 
             {
-                $enchere_id = $enchereChaque['enchere_id'];
+                $enchere_id = $enchereChaque['id'];
 
                 // Recupere les infos de l'enchere
                 $nbOffresParEnchere = $offre->countOffres($enchere_id);
@@ -764,7 +767,7 @@ class Enchere extends \Core\Controller
     /**
      * Afficher encheres par nouveautes (un des CTAs sur la page d'accueil)
      */
-    public function showNouveautes()
+    public function selectEncheresNouveautes()
     {
         $etat = new Etat;
         $etats = $etat->select();
@@ -786,8 +789,9 @@ class Enchere extends \Core\Controller
 
         foreach($encheres as $enchereChaque)
         {
+
             // Recuperer les infos de l'enchere
-            $enchereSelect = $enchere->selectId($enchereChaque['enchere_id']);
+            $enchereSelect = $enchere->selectId($enchereChaque['id']);
             $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
             $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
             $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
@@ -797,7 +801,7 @@ class Enchere extends \Core\Controller
             $encheres[$i]['image'] = $images[0]['nom'];
 
             // Recuperer les offres de l'enchere
-            $offresToutes = $offre->selectOffresParEnchere($enchereChaque['enchere_id']);
+            $offresToutes = $offre->selectOffresParEnchere($enchereChaque['id']);
 
             if ($offresToutes)
             {
@@ -814,4 +818,279 @@ class Enchere extends \Core\Controller
         View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'encheres'=>$encheres]);
         exit();
     }
+
+
+
+    public function selectEncheresEnCours() 
+    {
+        $data = array();
+
+        $etat = new Etat;
+        $etats = $etat->select();
+
+        $pays = new Pays;
+        $paysTous = $pays->select();
+
+        $dimension = new Dimension;
+        $dimensions = $dimension->select();
+
+        $enchere = new \App\Models\Enchere;
+        $encheres = $enchere->selectEncheresEnCours();
+
+        $image = new Image;
+        $timbre = new Timbre;
+        $offre = new Offre;
+
+        $i = 0;
+
+        foreach($encheres as $enchereChaque)
+        {
+            // Recuperer chaque enchere
+            $enchereSelect = $enchere->selectId($enchereChaque['id']);
+
+            // Recuperer les infos de l'enchere
+            $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
+            $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
+            $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
+            $encheres[$i]['enchere_id'] = $encheres[$i]['id'];
+
+            // Recuperer les images de l'enchere
+            $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal');
+            $encheres[$i]['image'] = $images[0]['nom'];
+
+            // Recuperer les offres de l'enchere
+            $offresToutes = $offre->selectOffresParEnchere($enchereChaque['id']);
+
+            if ($offresToutes)
+            {
+                $offreDerniere = $offresToutes[0];
+                $encheres[$i]['mise_courante'] = $offreDerniere['prix'];
+            }
+            else 
+            {
+                $encheres[$i]['mise_courante'] = $encheres[$i]['prix_plancher'];
+            }
+
+            if($encheres[$i]['date_fin'] < date("Y-m-d h:i:sa")) 
+            {
+                $encheres[$i]['archivee'] = true; 
+            };
+            
+            $i++;
+        }
+
+        View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'encheres'=>$encheres]);
+        exit();
+
+    }
+
+    public function selectEncheresArchivees() 
+    {
+        $data = array();
+
+        $etat = new Etat;
+        $etats = $etat->select();
+
+        $pays = new Pays;
+        $paysTous = $pays->select();
+
+        $dimension = new Dimension;
+        $dimensions = $dimension->select();
+
+        $enchere = new \App\Models\Enchere;
+        $encheres = $enchere->selectEncheresArchivees();
+
+        $image = new Image;
+        $timbre = new Timbre;
+        $offre = new Offre;
+
+        $i = 0;
+
+        foreach($encheres as $enchereChaque)
+        {
+            // Recuperer chaque enchere
+            $enchereSelect = $enchere->selectId($enchereChaque['id']);
+
+            // Recuperer les infos de l'enchere
+            $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
+            $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
+            $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
+            $encheres[$i]['enchere_id'] = $encheres[$i]['id'];
+
+            // Recuperer les images de l'enchere
+            $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal');
+            $encheres[$i]['image'] = $images[0]['nom'];
+
+            // Recuperer les offres de l'enchere
+            $offresToutes = $offre->selectOffresParEnchere($enchereChaque['id']);
+
+            if ($offresToutes)
+            {
+                $offreDerniere = $offresToutes[0];
+                $encheres[$i]['mise_courante'] = $offreDerniere['prix'];
+            }
+            else 
+            {
+                $encheres[$i]['mise_courante'] = $encheres[$i]['prix_plancher'];
+            }
+
+            if($encheres[$i]['date_fin'] < date("Y-m-d h:i:sa")) 
+            {
+                $encheres[$i]['archivee'] = true; 
+            };
+            
+            $i++;
+        }
+
+        View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'encheres'=>$encheres]);
+        exit();
+
+    }
+
+
+    public function selectEncheresPrixEleve() 
+    {
+        $data = array();
+
+        $etat = new Etat;
+        $etats = $etat->select();
+
+        $pays = new Pays;
+        $paysTous = $pays->select();
+
+        $dimension = new Dimension;
+        $dimensions = $dimension->select();
+
+        $enchere = new \App\Models\Enchere;
+        $encheres = $enchere->selectEncheresNouveautes();
+
+        $image = new Image;
+        $timbre = new Timbre;
+        $offre = new Offre;
+
+        $i = 0;
+
+        foreach($encheres as $enchereChaque)
+        {
+            // Recuperer chaque enchere
+            $enchereSelect = $enchere->selectId($enchereChaque['id']);
+
+            // Recuperer les infos de l'enchere
+            $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
+            $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
+            $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
+            $encheres[$i]['enchere_id'] = $encheres[$i]['id'];
+
+            // Recuperer les images de l'enchere
+            $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal');
+            $encheres[$i]['image'] = $images[0]['nom'];
+
+            $offresToutes = $offre->selectOffresParEnchere($enchereChaque['id']);
+
+
+            if ($offresToutes)
+            {
+                $offreDerniere = $offresToutes[0];
+                $encheres[$i]['mise_courante'] = $offreDerniere['prix'];
+            }
+            else 
+            {
+                $encheres[$i]['mise_courante'] = $encheres[$i]['prix_plancher'];
+            }
+
+            if($encheres[$i]['date_fin'] < date("Y-m-d h:i:sa")) 
+            {
+                $encheres[$i]['archivee'] = true; 
+            };
+            
+            $i++;
+
+        }
+        
+
+        usort($encheres, array($this, "prixEleve"));
+
+        View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'encheres'=>$encheres]);
+        exit();
+    }
+
+
+    public function selectEncheresPrixBas() 
+    {
+        $data = array();
+
+        $etat = new Etat;
+        $etats = $etat->select();
+
+        $pays = new Pays;
+        $paysTous = $pays->select();
+
+        $dimension = new Dimension;
+        $dimensions = $dimension->select();
+
+        $enchere = new \App\Models\Enchere;
+        $encheres = $enchere->selectEncheresNouveautes();
+
+        $image = new Image;
+        $timbre = new Timbre;
+        $offre = new Offre;
+
+        $i = 0;
+
+        foreach($encheres as $enchereChaque)
+        {
+            // Recuperer chaque enchere
+            $enchereSelect = $enchere->selectId($enchereChaque['id']);
+
+            // Recuperer les infos de l'enchere
+            $timbreSelect = $timbre->selectId($enchereSelect['timbre_id']);
+            $encheres[$i]['timbre_nom'] = $timbreSelect['nom'];
+            $encheres[$i]['timbre_nom_2'] = $timbreSelect['nom_2'];
+            $encheres[$i]['enchere_id'] = $encheres[$i]['id'];
+
+            // Recuperer les images de l'enchere
+            $images = $image->selectByField('timbre_id', $enchereChaque['timbre_id'], 'principal');
+            $encheres[$i]['image'] = $images[0]['nom'];
+
+            $offresToutes = $offre->selectOffresParEnchere($enchereChaque['id']);
+
+
+            if ($offresToutes)
+            {
+                $offreDerniere = $offresToutes[0];
+                $encheres[$i]['mise_courante'] = $offreDerniere['prix'];
+            }
+            else 
+            {
+                $encheres[$i]['mise_courante'] = $encheres[$i]['prix_plancher'];
+            }
+
+            if($encheres[$i]['date_fin'] < date("Y-m-d h:i:sa")) 
+            {
+                $encheres[$i]['archivee'] = true; 
+            };
+            
+            $i++;
+
+        }
+        
+
+        usort($encheres, array($this, "prixBas"));
+
+        View::renderTemplate('Enchere/index.html', ['etats'=> $etats, 'paysTous'=> $paysTous, 'dimensions'=>$dimensions, 'encheres'=>$encheres]);
+        exit();
+    }
+
+    // Trier les encheres par prix eleve
+    private function prixEleve($a, $b) 
+    {
+        return strcmp($b['mise_courante'], $a['mise_courante']);
+    }
+
+    // Trier les encheres par prix eleve
+    private function prixBas($a, $b) 
+    {
+        return strcmp($a['mise_courante'], $b['mise_courante']);
+    }
+    
 }

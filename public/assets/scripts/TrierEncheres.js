@@ -6,6 +6,9 @@ export default class TrierEncheres
     #_oOptions;
     #_elListe;
     #_elFiltresEcran;
+    #_elsCheckbox;
+    #_elResultatFiltre;
+    #_urlRacine;
 
     constructor(el)
     {
@@ -19,8 +22,10 @@ export default class TrierEncheres
         };
         this.#_elListe = document.querySelector('[data-js-listeEncheres]');
         this.#_elFiltresEcran = document.querySelector('[data-js-filtres="ecran"]');
-        this._elsCheckbox = this.#_elFiltresEcran.querySelectorAll('input[type=checkbox]');
-        this._elResultatFiltre = document.querySelector('[data-js-resultat]');
+        this.#_elsCheckbox = this.#_elFiltresEcran.querySelectorAll('input[type=checkbox]');
+        this.#_elResultatFiltre = document.querySelector('[data-js-resultat]');
+        this.#_urlRacine = 'http://localhost:8888/stampee/public/';
+        // this.#_urlRacine = 'https://e2296236.webdev.cmaisonneuve.qc.ca/stampee/public/';
 
         this.#init();
     }
@@ -48,7 +53,7 @@ export default class TrierEncheres
                         dom += 
                             `
                                 <div class="item">
-                                <a href="http://localhost:8888/stampee/public/enchere/show/${data[i]['enchere_id']}" class="item__lien">
+                                <a href="${this.#_urlRacine}enchere/show/${data[i]['enchere_id']}" class="item__lien">
                             `;
 
                         if(data[i]['coup_de_coeur'] == 1)
@@ -72,7 +77,7 @@ export default class TrierEncheres
                             `
                                 <div class="item__contenu" data-js-tri>
                                     <div class="item__img">
-                                        <img src="http://localhost:8888/stampee/public/assets/img/jpg/${data[i]['image']}" alt="Image du timbre">
+                                        <img src="${this.#_urlRacine}assets/img/jpg/${data[i]['image']}" alt="Image du timbre">
                                     </div>
                                     <p class="item__description">${data[i]['timbre_nom']} ${data[i]['timbre_nom_2']}</p>
                             `;
@@ -142,16 +147,14 @@ export default class TrierEncheres
     supprimeFiltre()
     {
         // supprimer le resultat de filtrage
-        this._elResultatFiltre.innerHTML = '';
+        this.#_elResultatFiltre.innerHTML = '';
 
         // enlever les filtres selectionnes
-        for (let i = 0, l = this._elsCheckbox.length; i < l; i++) {
-            if (this._elsCheckbox[i].checked) 
+        for (let i = 0, l = this.#_elsCheckbox.length; i < l; i++) 
+        {
+            if (this.#_elsCheckbox[i].checked) 
             {
-
-                this._elsCheckbox[i].checked = false;
-                
-                console.log(this._elsCheckbox[i]);
+                this.#_elsCheckbox[i].checked = false;
             }
         }
 
