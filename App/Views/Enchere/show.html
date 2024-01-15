@@ -140,7 +140,7 @@
                 {% for enchereChaque in encheresNouveautes %}
                 <div class="item">
                     <a href="{{url_racine}}enchere/show/{{enchereChaque.id}}" class="item__lien">
-                        {% if enchere.coup_de_coeur == 1 %}
+                        {% if enchereChaque.coup_de_coeur == 1 %}
                         <div class="item__coups-de-coeur item__coups-de-coeur--yes">
                             <i class="fa-solid fa-heart"></i>
                             <p class="note">Coups de coeur du Lord</p>
@@ -151,9 +151,9 @@
                         {% endif %}
                         <div class="item__contenu" data-js-tri>
                             <div class="item__img"><img src="{{url_racine}}assets/img/jpg/{{ enchereChaque.image }}" alt="Image du timbre"></div>
-                            <p class="item__description">{{enchere.timbre_nom}} {{enchere.timbre_nom_2}}</p>
+                            <p class="item__description">{{enchereChaque.timbre_nom}} {{enchereChaque.timbre_nom_2}}</p>
     
-                        {% if enchere.archivee == true %}
+                        {% if enchereChaque.archivee == true %}
                             <div class="prix prix--archive">
                                 <p class="prix__description prix__description--archive">Mise finale</p>
                                 <p class="prix__montant prix__montant--archive">{{enchereChaque.mise_courante}}<small class="prix_decimal"> $</small></p>

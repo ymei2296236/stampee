@@ -228,6 +228,7 @@ class Timbre extends \Core\Controller
         $timbre = new \App\Models\Timbre;        
         $timbre_id = $this->route_params['id'];
         if($timbre_id) $timbreSelect = $timbre->selectId($timbre_id);
+        print_r($timbre_id);
 
         if(!$timbreSelect) Apps::url('profil/index');
         
@@ -244,7 +245,7 @@ class Timbre extends \Core\Controller
         $pays = new Pays;
         $tousPays = $pays->select('nom');
 
-        View::renderTemplate('timbre/edit.html', ['etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'timbre'=>$timbreSelect, 'timbre_id'=>$timbre_id, 'usager_id'=>$_SESSION['user_id']]);
+        View::renderTemplate('Timbre/edit.html', ['etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'timbre'=>$timbreSelect, 'timbre_id'=>$timbre_id, 'usager_id'=>$_SESSION['user_id']]);
     }
 
     /**
@@ -297,7 +298,7 @@ class Timbre extends \Core\Controller
                 if (!$validation->isSuccess()) 
                     $errors = $validation->displayErrors();
 
-                View::renderTemplate('timbre/edit.html', ['errors'=> $errors, 'etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'timbre'=>$_POST, 'timbre_id'=>$timbre_id, 'usager_id'=>$_SESSION['user_id']]);
+                View::renderTemplate('Timbre/edit.html', ['errors'=> $errors, 'etats'=>$etats, 'dimensions'=>$dimensions, 'tousPays'=>$tousPays, 'timbre'=>$_POST, 'timbre_id'=>$timbre_id, 'usager_id'=>$_SESSION['user_id']]);
                 exit(); 
             } 
             else
@@ -311,7 +312,7 @@ class Timbre extends \Core\Controller
                 $images = $image->selectByField('timbre_id', $timbre_id, 'principal');
 
                 // Diriger ver la page de modification d'image
-                View::renderTemplate('image/edit.html', ['timbre_id'=>$timbre_id, 'images'=>$images, 'usager_id'=>$_SESSION['user_id']]);
+                View::renderTemplate('Image/edit.html', ['timbre_id'=>$timbre_id, 'images'=>$images, 'usager_id'=>$_SESSION['user_id']]);
                 exit();    
             }
         }
