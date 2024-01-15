@@ -12,7 +12,7 @@ export default class Router
     #init() 
     {        
         /**
-        * À l'événement change du select
+        * À l'événement change du select, change la route d'Url selon l'option selectionnee
         */
         this.#_elSelectTri.addEventListener('change', function(e) 
         {   
@@ -23,13 +23,13 @@ export default class Router
 
         }.bind(this));
         
-        this.gereSelectTri();
+        this.#gereSelectTri();
     }
 
     /**
-     * Seulement pour appels ayschrone - javascript
+     * Ajouter l'attribut 'selected' à l'option selectionnee
      */
-    gereSelectTri()
+    #gereSelectTri()
     {
         let href = location.href,
             indexSlug = href.lastIndexOf('/') + 1,

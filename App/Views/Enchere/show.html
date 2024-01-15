@@ -26,7 +26,13 @@
             </div>
         </div>
         <div class="mise">
-            <p class="note">Enchère #{{enchere.enchere_id}}</p>
+            <p class="note">
+            {% if enchere.archive == true %} 
+                <i class="fa-solid fa-box-archive"></i> Enchère terminée #{{enchere.enchere_id}}
+            {% else %}
+                Enchère #{{enchere.enchere_id}}
+            {% endif %}
+            </p>
             {% if enchere.coup_de_coeur == 1 %}
             <div class="item__coups-de-coeur item__coups-de-coeur--yes">
                 <i class="fa-solid fa-heart"></i>
@@ -53,9 +59,6 @@
                     {% if enchere.archive != true %}
                     <th>Se termine au</th>
                     <td>{{enchere.date_fin}}</td>
-                    {% else %}
-                    <th>État de mise</th>
-                    <td>Terminé</td>
                     {% endif %}
                 </tr>
 
@@ -91,6 +94,7 @@
                 
                 <button type="submit" aria-label="Miser" class="btn btn--principal item__btn">Miser</button>
             </form>
+
                 {% endif %}
 
                 {% if favoriSelect == true %}

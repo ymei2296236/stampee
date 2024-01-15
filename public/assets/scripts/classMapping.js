@@ -6,8 +6,8 @@ import Router from "./Router.js";
 
 export const classMapping =
 {
-    // 'TrierEncheres': TrierEncheres, // pour appels asynchrones - javascript
-    'Router': Router, // pour appels synchrones - php 
+    // 'TrierEncheres': TrierEncheres, //  appels asynchrones - javascript
+    'Router': Router, //  appels synchrones - php 
     'Image': Image,
     'Filtrage': Filtrage,
     'MenuBar': MenuBar
