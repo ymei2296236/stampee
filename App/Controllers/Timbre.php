@@ -228,7 +228,6 @@ class Timbre extends \Core\Controller
         $timbre = new \App\Models\Timbre;        
         $timbre_id = $this->route_params['id'];
         if($timbre_id) $timbreSelect = $timbre->selectId($timbre_id);
-        print_r($timbre_id);
 
         if(!$timbreSelect) Apps::url('profil/index');
         
