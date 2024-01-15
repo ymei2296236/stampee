@@ -12,11 +12,9 @@ input[type="text"],
 input[type="number"],
 input[type="password"],
 input[type="datetime-local"],
-input[type="date"] 
-{
+input[type="date"] {
 	padding: var(--espace-half);
 	font-family: var(--police-texte);
-	/* line-height: 150%; */
 	color: var(--coul-texte);
 	height: 3rem;
 	border: 1px solid var(--coul-principale);

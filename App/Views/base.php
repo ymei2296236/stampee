@@ -27,7 +27,6 @@
                     <a href="{{url_racine}}usager/logout" aria-label="Se déconnecter" class="btn btn--secondaire">Se déconnecter</a>
                     {% endif %}
                 </div>
-            <span class="modal__icon" data-js-modal-button><i class="fa-solid fa-xmark"></i></span>
         </section>
 
         <section class="top-bar">

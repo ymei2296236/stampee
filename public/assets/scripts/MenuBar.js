@@ -20,27 +20,28 @@ export default class MenuBar
 
     #init()
     {
-        this.#_el.addEventListener('click', this.#afficheModal.bind(this));
+        this.#_el.addEventListener('click', this.#afficheMenuBar.bind(this));
     }
 
     /**
      * Afficher modal au clic sur le bouton filtres 
      */
-         #afficheModal()
+         #afficheMenuBar()
          {
             this.#_elDivMenuBar.classList.remove('menu-bar--ferme');
             this.#_elHTML.classList.add("overflow-y-hidden");
             this.#_elBody.classList.add("overflow-y-hidden");
     
-            this.#_elDivMenuBar.addEventListener('click', this.#fermeModal.bind(this));
+            this.#_elDivMenuBar.addEventListener('click', this.#fermeMenuBar.bind(this));
          }
      
          /**
           * Fermer le modal au clic sur l'entourage du formulaire de filtrage
           */
-         #fermeModal(e)
+         #fermeMenuBar(e)
          {
-             if(e.target.dataset.jsModal !== "image")
+             console.log(e.target);
+             if(e.target.dataset.jsMenuBar == "exit")
              {
                  this.#_elDivMenuBar.classList.add('menu-bar--ferme');
                  this.#_elHTML.classList.remove("overflow-y-hidden");

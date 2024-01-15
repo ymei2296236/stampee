@@ -19,16 +19,13 @@
 		gap: var(--espace-4);
 		margin-top: var(--espace-2);
 
-		& > * {
-			border: 0.5px solid var(--coul-principale);
-			padding: var(--espace-2);
-			flex: 1;
-		}
-
 		& .listeTimbres__liste {
 			display: flex;
 			flex-direction: column;
 			gap: var(--espace-2);
+			border: 0.5px solid var(--coul-principale);
+			padding: var(--espace-2);
+			flex: 1;
 
 			& .listeTimbres__item {
 				display: flex;
@@ -66,11 +63,29 @@
 	}
 
 	@media screen and (max-width: 1024px) {
-		padding: var(--espace-1);
+		padding: var(--espace-2);
 		margin-bottom: var(--espace-2);
 
 		& .col {
 			gap: var(--espace-1);
+
+			& .listeTimbres__liste {
+				gap: var(--espace-1);
+				padding: var(--espace-1);
+
+				& .listeTimbres__item {
+					gap: var(--espace-1);
+
+					& .listeTimbres__timbre {
+						width: 5rem;
+
+						& .listeTimbres__image {
+							height: 5rem;
+							padding: var(--espace-quart);
+						}
+					}
+				}
+			}
 		}
 	}
 }

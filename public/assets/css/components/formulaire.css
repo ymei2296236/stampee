@@ -90,5 +90,7 @@
 @media screen and (max-width: 480px) {
 	.formulaire {
 		margin: 0;
+		width: 100%;
+		padding: var(--espace-2) var(--espace-1) var(--espace-6) var(--espace-1);
 	}
 }

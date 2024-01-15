@@ -11,5 +11,5 @@
 	--coul-texte-succes: #19760d;
 
 	--coul-arriere-plan: var(--coul-texte-clair);
-	--coul-modal: rgba(244, 245, 246, 0.9);
+	--coul-modal: rgba(255, 255, 255, 0.9);
 }

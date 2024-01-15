@@ -11,6 +11,7 @@ body {
 	font-size: var(--texte-sm);
 	font-weight: normal;
 	color: var(--coul-texte);
+	min-height: 100vh;
 }
 
 main {
