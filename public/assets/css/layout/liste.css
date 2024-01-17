@@ -151,6 +151,7 @@
 @media screen and (max-width: 480px) {
 	.liste {
 		padding: var(--espace-1);
+		padding-bottom: var(--espace-6);
 
 		& .tri {
 			gap: var(--espace-1);

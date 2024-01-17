@@ -102,13 +102,11 @@
 		}
 	}
 
-	& .promo {
-		.liste {
-			padding: var(--espace-1);
+	.liste {
+		margin-top: var(--espace-3);
 
-			.item {
-				width: calc(20% - var(--espace-1));
-			}
+		.item {
+			width: calc(20% - var(--espace-1));
 		}
 	}
 	@media screen and (max-width: 1024px) {
@@ -119,9 +117,6 @@
 			& .banner-info__liste {
 				column-count: 1;
 			}
-		}
-		& .promo {
-			padding: var(--espace-3);
 		}
 	}
 
@@ -165,7 +160,11 @@
 			}
 		}
 		& .promo {
-			padding: var(--espace-3) 0;
+			.liste {
+				.item {
+					width: calc(20% - var(--espace-1));
+				}
+			}
 		}
 	}
 }

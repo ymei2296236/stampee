@@ -86,6 +86,8 @@ export default class Image
              this.#_elModal.classList.add('modal--ferme');
              this.#_elHTML.classList.remove("overflow-y-hidden");
              this.#_elBody.classList.remove("overflow-y-hidden");
+             
+             this.#_elModalImage.setAttribute('src', '');
          }
      }
 
