@@ -209,7 +209,7 @@ class Enchere extends CRUD
     {
         $db = static::getDB();
 
-        if($limit == true) $limitSql = 'LIMIT 4';
+        if($limit == true) $limitSql = 'LIMIT 5';
         else $limitSql = null;
 
 		$sql=

@@ -141,6 +141,10 @@
 		border-top: 1px solid var(--coul-principale);
 		margin-top: var(--espace-3);
 		padding-top: var(--espace-4);
+
+		& .item {
+			width: calc(20% - var(--espace-1));
+		}
 	}
 
 	@media screen and (max-width: 1024px) {
@@ -211,6 +215,11 @@
 			& .images__main {
 				padding: var(--espace-1);
 			}
+		}
+
+		& .promo {
+			padding: var(--espace-4) var(--espace-1) var(--espace-6)
+				var(--espace-1);
 		}
 	}
 }

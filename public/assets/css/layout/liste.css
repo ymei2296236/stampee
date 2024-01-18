@@ -3,7 +3,7 @@
 	flex: calc(80%);
 	display: flex;
 	flex-direction: column;
-	padding: var(--espace-3) var(--espace-4) var(--espace-1) var(--espace-4);
+	padding: var(--espace-3) var(--espace-4) var(--espace-6) var(--espace-4);
 	color: var(--coul-texte);
 }
 
@@ -140,9 +140,9 @@
 			margin-bottom: 0;
 			flex-wrap: wrap;
 		}
-		& .item {
-			flex-basis: calc(33.33% - var(--espace-1));
-		}
+	}
+	& .item {
+		flex-basis: calc(33.33% - var(--espace-1));
 	}
 }
 
@@ -156,9 +156,8 @@
 		& .tri {
 			gap: var(--espace-1);
 		}
-
-		& .item {
-			flex-basis: 100%;
-		}
+	}
+	& .item {
+		flex-basis: 100%;
 	}
 }
