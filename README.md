@@ -1,5 +1,9 @@
 # Projet Stampee
 
+## Introduction
+
+This is a stamp auction website, which allows member to post bids and place bids, quickly find specific auctions, whether current or past. It is accessible on any desktop, tablette and mobile phone. This project involves creating a website using the technologies (HTML, CSS, JavaScript, PHP MVC). The project will be structured using the agile methodology (SCRUM).
+
 ![Screenshot](screenshot.png)
 
 ## Connection 
